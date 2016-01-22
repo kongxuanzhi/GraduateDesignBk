@@ -1,0 +1,57 @@
+﻿@model IEnumerable<GraduateDesignBk.Models.ApplicationRole >
+@{
+    ViewBag.Title = "Index";
+}
+
+<ol class="breadcrumb">
+    <li><a href="/Role/Index">角色管理</a></li>
+    <li class="active">所有角色</li>
+</ol>
+@Html.ActionLink("添加", "Create", "Role");
+
+@if (Model.Count() == 0)
+{
+    <p> 暂无角色</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover table-striped table-condensed" style="text-align:center">
+            <thead>
+                <tr>
+                    <td><b>角色名称</b></td>
+                    <td colspan="2"><b>描述</b></td>
+                    <td colspan="2"><b>创建时间</b></td>
+                    <td colspan="4"><b>创建人</b></td>
+                    <td colspan="4"><b>操作</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (GraduateDesignBk.Models.ApplicationRole role in Model.OrderByDescending(m => m.CreateTime))
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                        <td colspan="2">@role.Description.Substring(0, @role.Description.Length < 18 ? @role.Description.Length : 18)...</td>
+                        <td colspan="2">@role.CreateTime</td>
+                        <td colspan="4">@role.WhoCreate</td>
+                        <td colspan="4">
+                            @using (Html.BeginForm("Delete", "Role", new { Id = role.Id }))
+                            {
+                                @Html.ActionLink("编 辑", "Edit", new { Id = role.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("详 情", "Detail", new { Id = role.Id }, new { @class = "btn btn-default" })
+                                <input type="submit" name="name" value="删除" class="btn btn-danger" />
+                            }
+
+                            @*<form action="/Role/Delete" method="post">
+                                        <input type="hidden"  name="Id" value="@role.Id" />
+                                        <a  href="/Role/Edit/@role.Id" class="btn btn-default">编辑</a>
+                                        <a href="/Role/Edit/@role.Id" class="btn btn-default">详情</a>
+                                        <input type="submit"  name="Delete" value="删除"  class="btn btn-danger"/>
+                                </form>*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+     </div>
+}

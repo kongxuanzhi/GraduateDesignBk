@@ -1,0 +1,17 @@
+﻿@model GraduateDesignBk.Models.ApplicationRole
+@{
+    ViewBag.Title = "Detail";
+}
+<ol class="breadcrumb">
+    <li><a href="/Role/Index">角色管理</a></li>
+    <li class="ative">角色详情</li>
+</ol>
+
+<h3>角色详情:</h3>
+<blockquote>
+    <h4>角色名：@Model.Name </h4>
+    <h4 class="text-overflow">关于角色：@Model.Description</h4>
+    <h4>创建时间：@Model.CreateTime</h4>
+    <h4>创建人:  @Model.WhoCreate</h4>
+
+</blockquote>

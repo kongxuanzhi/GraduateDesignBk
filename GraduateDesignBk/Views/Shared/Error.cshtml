@@ -1,0 +1,20 @@
+﻿@model IEnumerable<string>
+
+@{
+    ViewBag.Title = "Error";
+}
+
+<div class="alert alert-danger">
+    <p>出现了以下错误:</p>
+    <ul>
+        @foreach (string error in Model)
+        {
+            <li>@error</li>
+        }
+    </ul>
+</div>
+
+@Html.ActionLink("Ok", "Index", null, new  { @class="btn btn-default"})
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+

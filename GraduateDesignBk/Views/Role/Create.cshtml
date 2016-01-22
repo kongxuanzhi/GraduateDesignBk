@@ -1,0 +1,32 @@
+﻿@model  GraduateDesignBk.Models.AddNewRoleModel
+@{
+    ViewBag.Title = "Create";
+}
+<ol class="breadcrumb">
+    <li><a href="/Role/Index">角色管理</a></li>
+    <li  class="active">创建角色</li>
+</ol>
+@using(Html.BeginForm("Create","Role",FormMethod.Post,new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken();
+    <h4> 添加角色</h4>
+    @Html.ValidationSummary("",new { @class="text-denger"})
+    <div class="form-group">
+        @Html.LabelFor(m => m.RoleName, new { @class= "col-md-2 control-label"})
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.RoleName,new { @class="form-control "})
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-4">
+            <input type="submit" class="btn btn-default" value="添加" />
+        </div>
+    </div>    
+}
