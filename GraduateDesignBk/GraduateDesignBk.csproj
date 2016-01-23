@@ -197,10 +197,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\GraduateDesignBk.mdf" />
-    <Content Include="App_Data\GraduateDesignBk_log.ldf">
-      <DependentUpon>GraduateDesignBk.mdf</DependentUpon>
-    </Content>
     <Content Include="bin\Antlr3.Runtime.dll" />
     <Content Include="bin\Antlr3.Runtime.pdb" />
     <Content Include="bin\EntityFramework.dll" />
@@ -352,6 +348,7 @@
     <Content Include="Views\Role\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>
