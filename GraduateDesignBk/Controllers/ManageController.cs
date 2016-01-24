@@ -13,6 +13,8 @@ namespace GraduateDesignBk.Controllers
     [Authorize]
     public class ManageController : Controller
     {
+        #region 属性从中间件中获得属性
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -49,7 +51,7 @@ namespace GraduateDesignBk.Controllers
                 _userManager = value;
             }
         }
-
+        #endregion
         //
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
@@ -194,7 +196,6 @@ namespace GraduateDesignBk.Controllers
             return View(model);
         }
 
-        //
         // GET: /Manage/RemovePhoneNumber
         public async Task<ActionResult> RemovePhoneNumber()
         {
