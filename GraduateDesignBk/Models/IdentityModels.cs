@@ -16,12 +16,21 @@ namespace GraduateDesignBk.Models
     {
         public ApplicationUser():base(){
             base.Id = Guid.NewGuid().ToString();
+            Comment = "暂无评语";
+            Photo = "/img/default.png";
         }
         [StringLength(128)]
         public string Photo { get; set; }
 
         public Mayjor Mayjor { get; set; }
 
+        public Level  level { get; set; }
+
+        [StringLength(500)]
+        public string Comment { get; set; }
+       
+        [StringLength(50)]
+        public string StuNum { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser,string> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -29,6 +38,16 @@ namespace GraduateDesignBk.Models
             // Add custom user claims here
             return userIdentity;
         }
+    }
+
+    public enum Level
+    {
+        系2011级,
+        系2012级,
+        系2013级,
+        系2014级,
+        系2015级,
+        系2016级
     }
 
     public enum Mayjor
@@ -83,9 +102,9 @@ namespace GraduateDesignBk.Models
         {
             return new ApplicationDbContext();
         }
+
+        //  public System.Data.Entity.DbSet<GraduateDesignBk.Models.ApplicationUser> ApplicationUsers { get; set; }
         #region 数据库初始化，行不通
-
-
         //static ApplicationDbContext()
         //{
         //    Database.SetInitializer(new ApplicationDbInitializer());

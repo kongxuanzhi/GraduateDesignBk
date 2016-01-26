@@ -1,0 +1,160 @@
+﻿@model IEnumerable<GraduateDesignBk.Models.UserViewModel>
+
+@{
+    ViewBag.Title = "List";
+    int num = 0;
+}
+<style>
+    hr {
+        border: 1px solid #cccccc;
+        margin-bottom: 0px;
+    }
+
+</style>
+<form class="form-inline">
+    <div class="form-group">
+        <a href="javascript:void(0)" onclick="showSetting()">
+            <span class="glyphicon glyphicon-cog btn-lg" aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="form-group">
+        <input type="email" class="form-control" id="" placeholder="姓名">
+    </div>
+    <div class="form-group">
+        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="学号">
+    </div>
+    <div class="form-group">
+        <select class="form-control " placeholder="Default input">
+            <option>11级</option>
+            <option>12级</option>
+            <option>13级</option>
+            <option>14级</option>
+            <option>15级</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <select class="form-control">
+            <option>信息与计算科学</option>
+            <option>电科</option>
+            <option>社体</option>
+            <option>1</option>
+            <option>15级</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜 索</button>
+</form>
+<div id="settings" class="hidden">
+    <label for="Totalselect">全 选</label>
+    <input type="checkbox" id="Totalselect" onclick="CheckDelete()" />
+    @Html.ActionLink("添加","AddNewUser", new { roleType =  @ViewBag.RoleName, },htmlAttributes: new { @class="btn btn-default"})
+    <input type="button" name="" value="删除" />
+    <input type="button" name="" value="移除" />
+</div>
+
+<hr />
+<div class="row">
+    @foreach (var item in Model)
+    {
+       
+        if (num%4==0){
+          @:<div class="row"></div>
+        }
+        num += 1;
+        string comment = @item.Comment;
+
+        <div class="col-md-3" style="border:ridge;">
+            <div class="row">
+                <div class="col-md-6" onclick="checked(this)">
+                    <label for="@item.Id">
+                        <span style="cursor:pointer;" >
+                            <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
+                            <img class="img-responsive" style="width:100%;" src="@item.Photo" />
+                        </span>
+                    </label>
+                </div>
+                <input type="checkbox" style="width:16px" id="@item.Id" name="delId" />
+                <div class="col-md-6" style="padding-top:20px;padding-right:0px;font-size:smaller;padding-left:2px">
+                    <div>
+                        <b>学号：</b>@Html.DisplayFor(modelItem => item.StuNum)
+                    </div>
+                    <div>
+                        <b>姓名：</b>@Html.DisplayFor(modelItem => item.UserName)
+                    </div>
+                    <div>
+                        <b> 年级：</b>@Html.DisplayFor(modelItem => item.level)
+                    </div>
+                    <div>
+                        <b>专业：</b>@Html.DisplayFor(modelItem => item.mayjor)
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div>
+                <div>
+                    评语：
+                    <p>
+                        &nbsp; &nbsp;@comment.Substring(0, @comment.Length > 20 ? 20 : @comment.Length)...
+                    </p>
+                </div>
+                <div style="height:21px;">
+                    @using (Html.BeginForm("DeleteUser", "Account", new { Id = @item.Id, RoleName = @ViewBag.RoleName }, FormMethod.Post, new { id = "formDel" }))
+                    {
+                        <input type="submit" class="left glyphicon glyphicon-remove"  value="删除" />
+                    }
+                    <a class="right" href="http://go.microsoft.com/fwlink/?LinkId=301865"><span class=" glyphicon glyphicon-hand-right" aria-hidden="true"></span></a>
+                </div>
+            </div>
+        </div>
+}
+</div>
+    
+
+
+<div class="row">
+    <nav>
+        <ul class="pager">
+            
+            <li>
+                <a href="#">上一页</a>
+            </li>
+            <li>
+                <a href="#">下一页</a>
+            </li>
+
+            <li class="right"> 当前第2页 总共: 10页共100条记录</li>
+        </ul>
+    </nav>
+</div>
+@*<tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>*@
+<script>
+    function showSetting() {
+        if ($("#settings").hasClass("hidden")) {
+            $("#settings").removeClass("hidden");
+        } else {
+            $("#settings").addClass("hidden");
+        }
+    }
+
+    function CheckDelete() {
+        var allCheck = document.getElementById("Totalselect");
+        var check = document.getElementsByName("delId");
+        if (allCheck.checked == false) {
+            allCheck.checked = false;
+            for (var i = 0; i < check.length; i++) {
+                check[i].checked = false;
+            }
+            return;
+        }
+        else {
+            for (var i = 0; i < check.length; i++) {
+                check[i].checked = true;
+            }
+        }
+    }
+</script>

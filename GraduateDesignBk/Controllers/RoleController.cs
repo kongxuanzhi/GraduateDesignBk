@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity.Owin;
 using GraduateDesignBk.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using RecruCol;
+using System.Data.SqlClient;
 
 namespace GraduateDesignBk.Controllers
 {
@@ -15,7 +17,27 @@ namespace GraduateDesignBk.Controllers
         // GET: /Role/Index
         public ActionResult Index()
         {
-            return View(RoleManager.Roles);
+            List<ListRoleModel> roles = new List<ListRoleModel>();
+
+            string sql = "select count(*) from AspNetUserRoles as r where r.RoleId=@roleID";
+            foreach (var role in RoleManager.Roles.ToList())
+            {
+                roles.Add(new ListRoleModel() {
+                    Id = role.Id,
+                    Description = role.Description,
+                    CreateTime = role.CreateTime,
+                    WhoCreate = role.WhoCreate,
+                    Name = role.Name,
+                    RoleMemCount = (int)SqlHelper.ExecuteScalar(sql, new SqlParameter("@roleID", role.Id))
+                   //UserManager.Users.Select(m => UserManager.IsInRole(m.Id, role.Name)).Count()
+               });
+            }
+            return View(roles);
+        }
+
+        public bool IsInRole(string Id, string role)
+        {
+            return UserManager.IsInRole(Id,role);
         }
         //Get： /Role/Create 
         /// <summary>
@@ -78,6 +100,15 @@ namespace GraduateDesignBk.Controllers
             {
                 return View("Error", new string[] { "该角色不存在！" });
             }
+            List<ApplicationUser> users = new List<ApplicationUser>();
+            foreach (var user in UserManager.Users.ToList())
+            {
+                if(await UserManager.IsInRoleAsync(user.Id, role.Name))
+                {
+                    users.Add(user);
+                }
+            }
+            ViewBag.Users = users;
             return View(role);
         }
         public async Task<ActionResult> Edit(string Id)
@@ -116,8 +147,29 @@ namespace GraduateDesignBk.Controllers
             return View();
         }
 
+        public async  Task<ActionResult> RemoveUserFromRole(string Id,string roleName)
+        {
+            IdentityResult result =  await UserManager.RemoveFromRoleAsync(Id,roleName);
+            if (result.Succeeded)
+            {
+                return View("_SuccessView", new { Result = "移出成功" });
+            }
+            return View("Error", new string[] { "失败！" });
+        }
 
         #region helper
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            set
+            {
+                _userManager = value;
+            }
+        }
+
         public ApplicationRoleManager RoleManager
         {
             get
@@ -130,6 +182,7 @@ namespace GraduateDesignBk.Controllers
             }
         }
 
+        private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
         #endregion
     }

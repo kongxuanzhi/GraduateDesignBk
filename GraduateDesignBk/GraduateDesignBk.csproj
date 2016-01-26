@@ -175,9 +175,26 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\SqlHelper.cs" />
     <Compile Include="Migrations\201601220239331_init.cs" />
     <Compile Include="Migrations\201601220239331_init.Designer.cs">
       <DependentUpon>201601220239331_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601241019540_moveReaded.cs" />
+    <Compile Include="Migrations\201601241019540_moveReaded.Designer.cs">
+      <DependentUpon>201601241019540_moveReaded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601241104079_addtitleformeg.cs" />
+    <Compile Include="Migrations\201601241104079_addtitleformeg.Designer.cs">
+      <DependentUpon>201601241104079_addtitleformeg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601260201568_addlevelToStudent.cs" />
+    <Compile Include="Migrations\201601260201568_addlevelToStudent.Designer.cs">
+      <DependentUpon>201601260201568_addlevelToStudent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601260355569_StuNum.cs" />
+    <Compile Include="Migrations\201601260355569_StuNum.Designer.cs">
+      <DependentUpon>201601260355569_StuNum.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -188,8 +205,9 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MassMegModels.cs" />
     <Compile Include="Models\NoticeModels.cs" />
-    <Compile Include="Models\RoleViewModels.cs" />
+    <Compile Include="Models\ViewsModel\RoleViewModels.cs" />
     <Compile Include="Models\StuMentorModels.cs" />
+    <Compile Include="Models\ViewsModel\UserViewModel.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
@@ -262,6 +280,7 @@
     <Content Include="Content\bootstrap-admin-theme-change-size.css" />
     <Content Include="Content\bootstrap-admin-theme-small.css" />
     <Content Include="Content\bootstrap-admin-theme.css" />
+    <Content Include="Content\bootstrap-combined.min.css" />
     <Content Include="Content\bootstrap-error-page.css" />
     <Content Include="Content\bootstrap-small.css" />
     <Content Include="Content\bootstrap-switch-small.css" />
@@ -280,6 +299,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\Ubuntu-LICENSE.txt" />
     <Content Include="Global.asax" />
+    <Content Include="img\2.jpg" />
+    <Content Include="img\people.jpg" />
+    <Content Include="img\aiyin.jpg" />
     <Content Include="obj\Debug\GraduateDesignBk.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\GraduateDesignBk.dll" />
     <Content Include="obj\Debug\GraduateDesignBk.pdb" />
@@ -346,6 +368,9 @@
     <Content Include="Views\Shared\_SuccessView.cshtml" />
     <Content Include="Views\Role\Detail.cshtml" />
     <Content Include="Views\Role\Edit.cshtml" />
+    <Content Include="Views\Account\List.cshtml" />
+    <Content Include="Views\Account\UserDetail.cshtml" />
+    <Content Include="Views\Account\AddNewUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -381,6 +406,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201601220239331_init.resx">
       <DependentUpon>201601220239331_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601241019540_moveReaded.resx">
+      <DependentUpon>201601241019540_moveReaded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601241104079_addtitleformeg.resx">
+      <DependentUpon>201601241104079_addtitleformeg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601260201568_addlevelToStudent.resx">
+      <DependentUpon>201601260201568_addlevelToStudent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601260355569_StuNum.resx">
+      <DependentUpon>201601260355569_StuNum.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="obj\Debug\GraduateDesignBk.Migrations.init.resources" />
   </ItemGroup>

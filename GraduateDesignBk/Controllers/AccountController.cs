@@ -9,15 +9,21 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GraduateDesignBk.Models;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using RecruCol;
 
 namespace GraduateDesignBk.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class AccountController : Controller
     {
+        #region 初始化获得managers
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
+        private ApplicationRoleManager _roleManager;        
+    
         public AccountController()
         {
         }
@@ -52,6 +58,160 @@ namespace GraduateDesignBk.Controllers
             }
         }
 
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+
+        #endregion
+
+        public ActionResult List(string userType)
+        {
+            List<UserViewModel> Users = new List<UserViewModel>();
+            foreach (var user in UserManager.Users.ToList())
+            {
+                string role = null;
+                IList<string> roles = UserManager.GetRoles(user.Id);
+                if (roles.Count() == 0)
+                {
+                    continue;
+                }
+                role = roles.First();
+                if (!role.Equals(userType))
+                {
+                    continue;
+                }
+                Users.Add(new UserViewModel()
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Photo = user.Photo,
+                    mayjor = user.Mayjor,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    level = user.level,
+                    Comment = user.Comment,
+                    StuNum = user.StuNum
+                });
+            }
+            ViewBag.RoleName = userType;
+            return View(Users);
+        }
+
+        public ActionResult UnGroupList(string roleName)
+        {
+            List<UserViewModel> Users = new List<UserViewModel>();
+            foreach (var user in UserManager.Users.ToList())
+            {
+                IList<string> roles = UserManager.GetRoles(user.Id);
+                if (roles.Count == 0)
+                {
+                    Users.Add(new UserViewModel()
+                    {
+                        Id = user.Id,
+                        UserName = user.UserName,
+                        Photo = user.Photo,
+                        mayjor = user.Mayjor,
+                        Email = user.Email,
+                        PhoneNumber = user.PhoneNumber,
+                        level = user.level,
+                        Comment = user.Comment,
+                        StuNum = user.StuNum
+                    });
+                }
+            }
+            ViewBag.RoleName = roleName;
+            return View("List",Users);
+        }
+
+        public ActionResult AddNewUser(string roleType)
+        {
+            ViewData["RoleType"] = roleType;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddNewUser(AddNewUserModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["RoleType"] = model.RoleType;
+                return View(model);
+            }
+            string sql = "select * from AspNetUsers where StuNum=@StuNum";
+            SqlParameter p = new SqlParameter("@StuNum", model.StuNum);
+            int count = SqlHelper.ExecuteDataTable(sql, p).Rows.Count;
+            if (count > 0)
+            {
+                ModelState.AddModelError("唯一","一卡通号已经注册");
+                ViewData["RoleType"] = model.RoleType;
+                return View(model);
+            }
+            ApplicationUser user = new ApplicationUser()
+            {
+                UserName = model.UserName,
+                StuNum = model.StuNum,
+                Mayjor = model.mayjor,
+                level = model.level,
+            };
+            user.Comment = string.IsNullOrEmpty(model.Comment) ? user.Comment : model.Comment;
+            IdentityResult result1 =  await UserManager.CreateAsync(user, model.StuNum);
+            IdentityResult result2 = await UserManager.AddToRoleAsync(user.Id,model.RoleType);
+            return View();
+        }
+        public ActionResult UserDetail(string Id)
+        {
+            ApplicationUser user = UserManager.FindById(Id);
+            if (user == null)
+            {
+                return View("_Error",new string[]{ "不存在该用户"});
+            }
+            return View(new UserViewModel() {
+                Id = user.Id,
+                UserName = user.UserName,
+                Photo = user.Photo,
+                mayjor = user.Mayjor,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+            });
+        }
+
+        public async Task<ActionResult> AddUserToRole(string userId,string roleName)
+        {
+            IdentityResult result = await UserManager.AddToRoleAsync(userId,roleName);
+            if (result.Succeeded)
+            {
+                return View("_SuccessView",new string[] { "加入成功"});
+            }
+            return View("Error",new string[] { "加入失败"});
+        }
+
+
+        public async Task<ActionResult> DeleteUser(string Id, string RoleName)
+        {
+            ApplicationUser user = await UserManager.FindByIdAsync(Id);
+            if(user == null)
+            {   
+                return View("Error",new string[]{"没有该用户"});
+            }
+            IdentityResult result = await UserManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("List",new { userType = RoleName });
+            }
+            return View("Error",new string[]{"删除失败"});
+        }
+
+
+        //===========================================================
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -167,9 +327,9 @@ namespace GraduateDesignBk.Controllers
                     //creates a link containing the UserId and confirmation token.This link is then 
                     //emailed to the user, the user can click on the link in their email app to confirm
                     //their account.
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     return RedirectToAction("Index", "Home");
                 }

@@ -26,10 +26,12 @@ namespace GraduateDesignBk
                      "~/Scripts/bootstrap-admin-theme-change-size.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                       "~/Content/bootstrap.min.css",
+                    //"~/Content/bootstrap-combined.min.css",
+                    "~/Content/bootstrap.min.css",
                        "~/Content/bootstrap-theme.min.css"));
             bundles.Add(new StyleBundle("~/Content/AdminCss").Include(
                    "~/Content/bootstrap-admin-theme.css",
+                       
                      "~/Content/bootstrap-admin-theme-change-size.css"));
         }
     }

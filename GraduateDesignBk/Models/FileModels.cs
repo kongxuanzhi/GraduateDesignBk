@@ -12,14 +12,11 @@ namespace GraduateDesignBk.Models
     public class File
     {
 
-       
-
         public File()
         {
             FID = Guid.NewGuid().ToString();
             FileSeq = Guid.NewGuid().ToString();
             UploadTimes = DateTime.Now;
-            //FromUID = Http
         }
 
         [Key]

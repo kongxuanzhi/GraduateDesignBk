@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -29,5 +30,8 @@ namespace GraduateDesignBk.Models
         public string ToUID { get; set; }      //接收人ID(用户表) T_user
         [ForeignKey("ToUID")]
         public ApplicationUser User2 { get; set; }
+
+        [DefaultValue(false)]
+        public bool Readed { get; set; }
     }
 }

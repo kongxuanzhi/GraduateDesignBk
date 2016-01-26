@@ -85,60 +85,35 @@
             <div class="col-md-2 bootstrap-admin-col-left">
                 <ul id="side" class="nav navbar-collapse collapse bootstrap-admin-navbar-side">
                     <li>
-                        <a href="/Role/Index"><i class="glyphicon glyphicon-chevron-right"></i>角色管理</a>
+                        <a href="/Bar/"><i class="glyphicon glyphicon-chevron-right"></i>问题管理</a>
                     </li>
 
                     <li>
                         <a href="/Files/Index"><i class="glyphicon glyphicon-chevron-right"></i> 文件中心</a>
                     </li>
-
                     @*<li>
-                        <a href="javascript:void(0)" onclick="sideDown(this)"> <i class="glyphicon glyphicon-chevron-right"></i> Calendar</a>
+                            <a href="javascript:void(0)" onclick="sideDown(this)"> <i class="glyphicon glyphicon-chevron-right"></i> Calendar</a>
+                            <ul class="nav navbar-collapse bootstrap-admin-navbar-side">
+                                <li><a href="/Home/About"><i class="glyphicon glyphicon-chevron-right"></i> Submenu 1</a></li>
+                                <li><a href="/Home/Index"><i class="glyphicon glyphicon-chevron-right"></i> Submenu 2</a></li>
+                                <li><a href="#"><i class="glyphicon glyphicon-chevron-right"></i> Submenu 3</a></li>
+                            </ul>
+                        </li>*@
+                    <li>
+                       
+                        <a href="javascript:void(0)" onclick="sideDown(this)">   <i class="glyphicon glyphicon-chevron-right"></i> 用户管理</a>
                         <ul class="nav navbar-collapse bootstrap-admin-navbar-side">
-                            <li><a href="/Home/About"><i class="glyphicon glyphicon-chevron-right"></i> Submenu 1</a></li>
-                            <li><a href="/Home/Index"><i class="glyphicon glyphicon-chevron-right"></i> Submenu 2</a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-chevron-right"></i> Submenu 3</a></li>
+                            <li><a href="/Account/List/?userType=指导教师 "><i class="glyphicon glyphicon-chevron-right"></i> 指导老师</a></li>
+                            <li><a href="/Account/List/?userType=学生"><i class="glyphicon glyphicon-chevron-right"></i>学院学生</a></li>
                         </ul>
-                    </li>*@
-
                     <li>
-                        <a href="/Account/Login"><i class="glyphicon glyphicon-chevron-right"></i> 登 &nbsp; &nbsp; 陆</a><!-- stats.html -->
+                        <a href="/Role/Index">    <i class="glyphicon glyphicon-chevron-right"></i>角色管理</a>
                     </li>
-                    @*<li>
-                        <a href="javascript:void(0)" onclick="sideDown(this)">   <i class="glyphicon glyphicon-chevron-right"></i> 角色管理</a>
-                        <ul class="nav navbar-collapse bootstrap-admin-navbar-side">
-                            <li><a href="/Role/Index"><i class="glyphicon glyphicon-chevron-right"></i> 角色列表</a></li>
-                            <li><a href="/Role/Index"><i class="glyphicon glyphicon-chevron-right"></i> Submenu 2</a></li>
-                            <li><a href="/Role/Index"><i class="glyphicon glyphicon-chevron-right"></i> Submenu 3</a></li>
-                        </ul>
-                    </li>*@
-                    <li>
-                        <a href="/Account/Register">    <i class="glyphicon glyphicon-chevron-right"></i> Tables</a>
-                    </li>
-                    <li>
-                        <a href="/Account/ForgotPassword">   <i class="glyphicon glyphicon-chevron-right"></i> Buttons &amp; Icons</a>
-                    </li>
-                    <li>
-                        <a href="/Account/ForgotPasswordConfirmation">   <i class="glyphicon glyphicon-chevron-right"></i> WYSIWYG Editors</a>
-                    </li>
-                    <li>
-                        <a href="ui-and-interface.html">   <i class="glyphicon glyphicon-chevron-right"></i> UI &amp; Interface</a>
-                    </li>
-                    <li>
-                        <a href="error-pages.html"><i class="glyphicon glyphicon-chevron-right"></i> Error pages</a>
-                    </li>
-                    @*<li>
-                        <a href="javascript:void(0)" onclick="sideDown(this)"><i class="glyphicon glyphicon-chevron-right"></i> Submenu</a>
-                        <ul class="nav navbar-collapse bootstrap-admin-navbar-side">
-                            <li><a href="/Account/ResetPasswordConfirmation"><i class="glyphicon glyphicon-chevron-right"></i> Submenu 1</a></li>
-                            <li><a href="/Account/SendCode"><i class="glyphicon glyphicon-chevron-right"></i> Submenu 2</a></li>
-                            <li><a href="/Account/ExternalLoginCallback"><i class="glyphicon glyphicon-chevron-right"></i> Submenu 3</a></li>
-                        </ul>
-                    </li>*@
                 </ul>
             </div>
             <!-- content -->
             <div class="col-md-10">
+         
                 @RenderBody()
             </div>
         </div>
@@ -156,7 +131,6 @@
             </div>
         </div>
     </div>
-
     <span id="CurrentAction" style="display:none">  @ViewBag.Active</span>
     @*<div class="container body-content">
 
@@ -173,18 +147,18 @@
         $(function ($) {
             $.each($("#side  li"), function (i, n) {
                 var Href = $(this).children("a").attr("href").trim();  //    /Role/Index  /User/Index
-               // alert(Href); 
+                // alert(Href);
                 var CurHref = $("#CurrentAction").html().trim();  // /Home/Create
-               // alert(CurHref);
+                // alert(CurHref);
                 start = CurHref.indexOf("/");
-               // alert(start);
+                // alert(start);
                 next = CurHref.indexOf("/", start + 1);
                 //alert(next);
-                var CurrentHome = CurHref.substr(1, next - start-1);
+                var CurrentHome = CurHref.substr(1, next - start - 1);
                 //alert(CurrentHome);
-               // var CurrentList = stringObject.indexOf(searchvalue, fromindex)
+                // var CurrentList = stringObject.indexOf(searchvalue, fromindex)
                 if (Href.indexOf(CurrentHome) > 0) {
-                  //  alert("yes")
+                    //  alert("yes")
                     $(this).addClass("active");
                     var gra = $(this).children("a").children("i");
                     var uls = $(this).children("ul");
@@ -199,16 +173,16 @@
                         gra.addClass("glyphicon-chevron-right");
                     }
                 }
-            //    $(this).click(function (e) {
-            //        // alert(1);
-            //        //alert(i);
-            //        e.stopPropagation();
-            //        $("#side  li").removeClass();
-            //        $(this).addClass("active");
+                //    $(this).click(function (e) {
+                //        // alert(1);
+                //        //alert(i);
+                //        e.stopPropagation();
+                //        $("#side  li").removeClass();
+                //        $(this).addClass("active");
 
 
 
-        })
+            })
         });
         function sideDown(obj) {
 
@@ -218,14 +192,12 @@
             ////var side2 = $("a > i");
             var gra = $(obj).children("i");
             var uls = $(obj).parent().children("ul");
-            if (uls.hasClass("hidden"))
-            {
+            if (uls.hasClass("hidden")) {
                 gra.removeClass("glyphicon-chevron-right");
                 gra.addClass("glyphicon-chevron-down");
                 uls.removeClass("hidden");
             }
-            else
-            {
+            else {
                 uls.addClass("hidden");
                 gra.removeClass("glyphicon-chevron-down");
                 gra.addClass("glyphicon-chevron-right");
