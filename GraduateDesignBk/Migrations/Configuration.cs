@@ -19,6 +19,12 @@ namespace GraduateDesignBk.Migrations
 
         protected override void Seed(GraduateDesignBk.Models.ApplicationDbContext context)
         {
+            //string sql1 = "drop Index UserNameIndex on AspNetUsers";
+           // string sql2 = "create unique index UnIn_StuNum on AspNetUsers(StuNum)";
+            //context.Database.ExecuteSqlCommand(sql1);
+            //context.Database.ExecuteSqlCommand(sql2);
+            //在这里创建视图，索引，存储过程，唯一性约束等等
+            //context.Database.ExecuteSqlCommand();
             #region 示例
             //  This method will be called after migrating to the latest version.
 

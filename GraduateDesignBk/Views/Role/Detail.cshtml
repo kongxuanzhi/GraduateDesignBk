@@ -35,7 +35,7 @@
                 <td>@user.UserName</td>
                 <td>@user.Mayjor</td>
                 <td>
-                    @using (Html.BeginForm("RemoveUserFromRole", "Role", new { Id = user.Id, roleName= @Model.Name }))
+                    @using (Html.BeginForm("RemoveUserFromRole", "Role",  new { Id = user.Id, roleName= @Model.Name }, FormMethod.Post))
                     {
                         @Html.ActionLink("详 情","UserDetail", "Account", new { Id = user.Id }, new { @class = "btn btn-default" })
                         <input type="submit" name="name" value="删除" class="btn btn-danger" />

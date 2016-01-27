@@ -30,7 +30,7 @@ namespace GraduateDesignBk.Models
         public string Comment { get; set; }
        
         [StringLength(50)]
-        public string StuNum { get; set; }
+        public string RealName { get; set; }  //用户名UserName是一卡通，真是名称是RealName
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser,string> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -103,7 +103,6 @@ namespace GraduateDesignBk.Models
             return new ApplicationDbContext();
         }
 
-        //  public System.Data.Entity.DbSet<GraduateDesignBk.Models.ApplicationUser> ApplicationUsers { get; set; }
         #region 数据库初始化，行不通
         //static ApplicationDbContext()
         //{

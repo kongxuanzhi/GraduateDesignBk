@@ -8,27 +8,41 @@ using System.Threading.Tasks;
 
 namespace GraduateDesignBk.Models
 {
-    public class UserViewModel
+    public class SearchAndPage
+    {
+        public string userType { get; set; }
+        public string SearchName { get; set; }
+        public string SerachRealName { get; set; }
+        public string SearchLevel { get; set; }
+        public string SearchMayor { get; set; }
+        public int PageSize { get; set; }  //每页条数
+        public int CurIndex { get; set; }  //当前页
+        public int TotalCount { get; set; }  //一共多少条
+        public int PageNum { get; set; }  //页数
+
+        public List<UserViewModel> UserItems { get; set; }
+    }
+
+    public class UserViewModel  
     {
         public string Id { get; set; }
         public string UserName { get; set; }
-        public string StuNum { get; set; }
-        public string  Photo { get; set; }
+        public string RealName { get; set; }
+        public string Photo { get; set; }
         public Mayjor mayjor { get; set; }
         public Level level { get; set; }
         public string Comment { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
     }
 
     public  class AddNewUserModel
     {
-        [Required(ErrorMessage="姓名必填")]
-        [Display(Name = "姓名：")]
-        public string UserName { get; set; }
         [Required(ErrorMessage = "一卡通号必填")]
         [Display(Name = "一卡通号：")]
-        public string StuNum { get; set; }   //一卡通号
+        [MinLength(10,ErrorMessage = "必须为10位数字"),MaxLength(10,ErrorMessage = "必须为10位数字")]
+        public string UserName { get; set; }
+        [Required(ErrorMessage = "姓名必填")]
+        [Display(Name = "姓名：")]
+        public string RealName { get; set; }   //一卡通号
         [Display(Name = "专业：")]
         public Mayjor mayjor { get; set; }
         [Display(Name = "级别：")]

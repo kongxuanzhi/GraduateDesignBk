@@ -146,15 +146,19 @@ namespace GraduateDesignBk.Controllers
             }
             return View();
         }
-
+        [HttpPost]
         public async  Task<ActionResult> RemoveUserFromRole(string Id,string roleName)
         {
-            IdentityResult result =  await UserManager.RemoveFromRoleAsync(Id,roleName);
-            if (result.Succeeded)
+            string[] id = Id.Split(new char[] { '|' });
+            for (int i = 0; i < id.Length; i++)
             {
-                return View("_SuccessView", new { Result = "移出成功" });
+                IdentityResult result = await UserManager.RemoveFromRoleAsync(id[i], roleName);
+                if (!result.Succeeded)
+                {
+                    return View("Error", new string[] { "失败！" });
+                }
             }
-            return View("Error", new string[] { "失败！" });
+            return View("_SuccessView", new { Result = "移出成功" });
         }
 
         #region helper

@@ -196,6 +196,14 @@
     <Compile Include="Migrations\201601260355569_StuNum.Designer.cs">
       <DependentUpon>201601260355569_StuNum.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601270131051_dropIndexAndeAddStuNumIndexUnique.cs" />
+    <Compile Include="Migrations\201601270131051_dropIndexAndeAddStuNumIndexUnique.Designer.cs">
+      <DependentUpon>201601270131051_dropIndexAndeAddStuNumIndexUnique.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601270553008_ChangeUserNameToYikatong.cs" />
+    <Compile Include="Migrations\201601270553008_ChangeUserNameToYikatong.Designer.cs">
+      <DependentUpon>201601270553008_ChangeUserNameToYikatong.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BarModels.cs" />
@@ -300,7 +308,7 @@
     <Content Include="fonts\Ubuntu-LICENSE.txt" />
     <Content Include="Global.asax" />
     <Content Include="img\2.jpg" />
-    <Content Include="img\people.jpg" />
+    <Content Include="img\default.png" />
     <Content Include="img\aiyin.jpg" />
     <Content Include="obj\Debug\GraduateDesignBk.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\GraduateDesignBk.dll" />
@@ -418,6 +426,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601260355569_StuNum.resx">
       <DependentUpon>201601260355569_StuNum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601270131051_dropIndexAndeAddStuNumIndexUnique.resx">
+      <DependentUpon>201601270131051_dropIndexAndeAddStuNumIndexUnique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601270553008_ChangeUserNameToYikatong.resx">
+      <DependentUpon>201601270553008_ChangeUserNameToYikatong.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="obj\Debug\GraduateDesignBk.Migrations.init.resources" />
   </ItemGroup>

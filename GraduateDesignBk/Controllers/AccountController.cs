@@ -94,13 +94,12 @@ namespace GraduateDesignBk.Controllers
                     UserName = user.UserName,
                     Photo = user.Photo,
                     mayjor = user.Mayjor,
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber,
                     level = user.level,
                     Comment = user.Comment,
-                    StuNum = user.StuNum
+                    RealName = user.RealName
                 });
             }
+            ViewBag.Type = null;
             ViewBag.RoleName = userType;
             return View(Users);
         }
@@ -123,11 +122,12 @@ namespace GraduateDesignBk.Controllers
                         PhoneNumber = user.PhoneNumber,
                         level = user.level,
                         Comment = user.Comment,
-                        StuNum = user.StuNum
+                        RealName = user.RealName
                     });
                 }
             }
             ViewBag.RoleName = roleName;
+            ViewBag.Type = "UnGroupList";
             return View("List",Users);
         }
 
@@ -139,32 +139,33 @@ namespace GraduateDesignBk.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddNewUser(AddNewUserModel model)
+        public ActionResult AddNewUser(AddNewUserModel model)
         {
             if (!ModelState.IsValid)
             {
                 ViewData["RoleType"] = model.RoleType;
                 return View(model);
             }
-            string sql = "select * from AspNetUsers where StuNum=@StuNum";
-            SqlParameter p = new SqlParameter("@StuNum", model.StuNum);
-            int count = SqlHelper.ExecuteDataTable(sql, p).Rows.Count;
-            if (count > 0)
-            {
-                ModelState.AddModelError("唯一","一卡通号已经注册");
-                ViewData["RoleType"] = model.RoleType;
-                return View(model);
-            }
             ApplicationUser user = new ApplicationUser()
             {
                 UserName = model.UserName,
-                StuNum = model.StuNum,
+                RealName = model.RealName,
                 Mayjor = model.mayjor,
                 level = model.level,
             };
             user.Comment = string.IsNullOrEmpty(model.Comment) ? user.Comment : model.Comment;
-            IdentityResult result1 =  await UserManager.CreateAsync(user, model.StuNum);
-            IdentityResult result2 = await UserManager.AddToRoleAsync(user.Id,model.RoleType);
+            IdentityResult result1 =   UserManager.Create(user, model.UserName);
+            if (!result1.Succeeded)
+            {
+                ModelState.AddModelError("", "一卡通号已经注册");
+                ViewData["RoleType"] = model.RoleType;
+                return View(model);
+            }
+            IdentityResult result2 =  UserManager.AddToRole(user.Id,model.RoleType);
+            if (result2.Succeeded)
+            {
+                return RedirectToAction("List", new { userType =model.RoleType});
+            }
             return View();
         }
         public ActionResult UserDetail(string Id)
@@ -184,33 +185,40 @@ namespace GraduateDesignBk.Controllers
             });
         }
 
-        public async Task<ActionResult> AddUserToRole(string userId,string roleName)
+        [HttpPost]
+        public async Task<ActionResult> AddUserToRole(string userIds,string roleName)
         {
-            IdentityResult result = await UserManager.AddToRoleAsync(userId,roleName);
-            if (result.Succeeded)
+            string[] id = userIds.Split(new char[] { '|' });
+            for (int i = 0; i < id.Length; i++)
             {
-                return View("_SuccessView",new string[] { "加入成功"});
+                IdentityResult result = await UserManager.AddToRoleAsync(id[i], roleName);
+                if (!result.Succeeded)
+                {
+                    return View("Error", new string[] { "加入失败" });
+                }
             }
-            return View("Error",new string[] { "加入失败"});
+            return View("_SuccessView", new string[] { "加入成功" });
         }
 
-
-        public async Task<ActionResult> DeleteUser(string Id, string RoleName)
+        [HttpPost]
+        public async Task<ActionResult> DeleteUser(string Ids,string RoleName)
         {
-            ApplicationUser user = await UserManager.FindByIdAsync(Id);
-            if(user == null)
-            {   
-                return View("Error",new string[]{"没有该用户"});
-            }
-            IdentityResult result = await UserManager.DeleteAsync(user);
-            if (result.Succeeded)
+            string[] id = Ids.Split(new char[] { '|' });
+            for (int i = 0; i < id.Length; i++)
             {
-                return RedirectToAction("List",new { userType = RoleName });
+                ApplicationUser user = await UserManager.FindByIdAsync(id[i]);
+                if (user == null)
+                {
+                    return View("Error", new string[] { "没有该用户" });
+                }
+                IdentityResult result = await UserManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                {
+                    return View("Error", new string[] { "删除失败" });
+                }
             }
-            return View("Error",new string[]{"删除失败"});
+            return RedirectToAction("List", new { userType = RoleName });
         }
-
-
         //===========================================================
         //
         // GET: /Account/Login
