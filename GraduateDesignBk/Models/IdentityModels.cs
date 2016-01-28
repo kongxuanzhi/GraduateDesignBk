@@ -42,7 +42,7 @@ namespace GraduateDesignBk.Models
 
     public enum Level
     {
-        系2011级,
+        系2011级=1,
         系2012级,
         系2013级,
         系2014级,
@@ -52,7 +52,7 @@ namespace GraduateDesignBk.Models
 
     public enum Mayjor
     {
-        信息与计算科学,
+        信息与计算科学=1,
         数学专业,
         社体,
         电科

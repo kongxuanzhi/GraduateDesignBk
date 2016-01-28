@@ -1,5 +1,4 @@
-﻿@model IEnumerable<GraduateDesignBk.Models.UserViewModel>
-
+﻿@model GraduateDesignBk.Models.SearchAndPage
 @{
     ViewBag.Title = "List";
     int num = 0;
@@ -12,49 +11,56 @@
     .bkOnBlur{
         background-color:#8aa742;
     }
+</style>   
+@using (Html.BeginForm("List", "Account", new { userType = @Model.userType }, FormMethod.Post, new { id = "form_Search", @class = "form-inline" }))
+{
+    <input type="hidden" id="pagesize" name="PageSize"  value="@Model.PageSize" />
+    <input type="hidden" id="CurIndex" name="CurIndex" value="@Model.CurIndex" />
+    <input type="hidden" name="type" value="@Model.type" />
 
-</style>
-<form class="form-inline">
     <div class="form-group">
         <a href="javascript:void(0)" onclick="showSetting()">
             <span class="glyphicon glyphicon-cog btn-lg" aria-hidden="true"></span>
         </a>
     </div>
     <div class="form-group">
-        <input type="email" class="form-control" id="" placeholder="姓名">
+        @Html.EditorFor(model => model.SerachRealName, new { htmlAttributes = new { placeholder = "姓名", @class = "form-control" } })
     </div>
     <div class="form-group">
-        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="学号">
+        @Html.EditorFor(model => model.SearchName, new { htmlAttributes = new { placeholder = "通号", @class = "form-control" } })
     </div>
+    if (Model.userType != "教师")
+    {
+        <div class="form-group">
+            @Html.EnumDropDownListFor(model => model.SearchLevel, "--学级--", htmlAttributes: new { @class = "form-control" })
+        </div>
+    }
     <div class="form-group">
-        <select class="form-control " placeholder="Default input">
-            <option>11级</option>
-            <option>12级</option>
-            <option>13级</option>
-            <option>14级</option>
-            <option>15级</option>
-        </select>
+        @Html.EnumDropDownListFor(model => model.SearchMayor, "--专业--", htmlAttributes: new { @class = "form-control" })
     </div>
-    <div class="form-group">
-        <select class="form-control">
-            <option>信息与计算科学</option>
-            <option>电科</option>
-            <option>社体</option>
-            <option>1</option>
-            <option>15级</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜 索</button>
-</form>
+    <a href="#" onclick="getPageSize(0)" class="btn btn-default"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜 索</a>
+}
+<script>
+    function getPageSize(type) {
+        if (type == 1) {
+            $("#CurIndex").val($("#CurIndex").val() - 1);
+        } else if (type == 2)
+        {
+            $("#CurIndex").val($("#CurIndex").val() - (-1));
+        }
+        $("#pagesize").val($("#PageSize").val());
+        $("#form_Search").submit();
+    }
+</script>
 <div id="settings" class="hidden">
-    @using (Html.BeginForm("DeleteUser", "Account", new { RoleName = @ViewBag.RoleName }, FormMethod.Post, new { id = "form_DeleteUser" }))
+    @using (Html.BeginForm("DeleteUser", "Account", new { RoleName = @Model.userType }, FormMethod.Post, new { id = "form_DeleteUser" }))
     {
         <label for="Totalselect" class="btn btn-default">全 选</label>
         <input type="checkbox" id="Totalselect" onclick="CheckDelete()" />
-        @Html.ActionLink("添加", "AddNewUser", new { roleType = @ViewBag.RoleName, }, htmlAttributes: new { @class = "btn btn-default" })
+        @Html.ActionLink("添加", "AddNewUser", new { roleType = @Model.userType, }, htmlAttributes: new { @class = "btn btn-default" })
         <input type="hidden" id="DeleteUser"  name="Ids" value="" />
         <a href="javascript:Submit('DeleteUser');" onclick="return confirm('你确定要删除这些成员吗？')" class="btn btn-default" >删除</a>
-        if (@ViewBag.Type == "UnGroupList")
+        if (@Model.type == "UnGroupList")
         {
             <a href="javascript:Submit('AddUserToRole');" class="btn btn-default">添加到该角色</a>
         }
@@ -64,19 +70,19 @@
         }
     }
 
-    @using (Html.BeginForm("AddUserToRole", "Account", new { roleName = @ViewBag.RoleName }, FormMethod.Post, new { id = "form_AddUserToRole" }))
+    @using (Html.BeginForm("AddUserToRole", "Account", new { roleName = @Model.userType }, FormMethod.Post, new { id = "form_AddUserToRole" }))
     {
         <input type="hidden" id="AddUserToRole" name="userIds" value="" />
     }
 
-    @using (Html.BeginForm("RemoveUserFromRole", "Role", new { roleName = @ViewBag.RoleName }, FormMethod.Post, new { id = "form_RemoveUserFromRole" }))
+    @using (Html.BeginForm("RemoveUserFromRole", "Role", new { roleName = @Model.userType }, FormMethod.Post, new { id = "form_RemoveUserFromRole" }))
     {
         <input type="hidden" id="RemoveUserFromRole" name="Id" value="" />
     }
 </div>
 <hr />
 <div class="row">
-    @foreach (var item in Model)
+    @foreach (var item in Model.UserItems)
     {
         if (num % 4 == 0) {
           @:<div class="row"></div>
@@ -100,7 +106,7 @@
                         <b>姓名：</b>@Html.DisplayFor(modelItem => item.RealName)
                     </div>
                     <div>
-                        <b>学号：</b>@Html.DisplayFor(modelItem => item.UserName)
+                        <b>通号：</b>@Html.DisplayFor(modelItem => item.UserName)
                     </div>
                     <div>
                         <b> 年级：</b>@Html.DisplayFor(modelItem => item.level)
@@ -119,7 +125,7 @@
                     </p>
                 </div>
                 <div style="height:21px;">
-                    @using (Html.BeginForm("DeleteUser", "Account", new { Ids = @item.Id, RoleName = @ViewBag.RoleName }, FormMethod.Post, new { id = "from" + @item.Id }))
+                    @using (Html.BeginForm("DeleteUser", "Account", new { Ids = @item.Id, RoleName = @Model.userType }, FormMethod.Post, new { id = "from" + @item.Id }))
                     {
                         <a href="javascript:$('#from@(item.Id)' ).submit();"  onclick="return confirm('确定要删除该成员吗？')" class="left glyphicon glyphicon-remove"></a>
                     }
@@ -133,19 +139,30 @@
 <div class="row">
     <nav>
         <ul class="pager">
-            
-            <li>
-                <a href="#">上一页</a>
+            <li class="left">
+                @Html.EnumDropDownListFor(model => model.PageSize, htmlAttributes: new { @class = "form-control"})
             </li>
-            <li>
-                <a href="#">下一页</a>
-            </li>
-
-            <li class="right"> 当前第2页 总共: 10页共100条记录</li>
+            @if (Model.CurIndex>1)
+            {
+                <li>
+                    <a href="#" onclick="getPageSize(1)">上一页</a>
+                </li>
+            }
+            @if (Model.CurIndex < Model.PageNum)
+            {
+                <li>
+                    <a href="#" onclick="getPageSize(2)">下一页</a>
+                </li>
+            }
+            <li class="right">  当前第  @Model.CurIndex 页 总共: @Model.PageNum 页共 @Model.TotalCount 条记录</li>
         </ul>
     </nav>
 </div>
+
 <script>
+   
+    
+
     function showSetting() {
         if ($("#settings").hasClass("hidden")) {
             $("#settings").removeClass("hidden");

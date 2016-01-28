@@ -22,8 +22,9 @@ namespace GraduateDesignBk.Controllers
 
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private ApplicationRoleManager _roleManager;        
-    
+        private ApplicationRoleManager _roleManager;
+        public ApplicationDbContext _contextManger;
+
         public AccountController()
         {
         }
@@ -70,65 +71,62 @@ namespace GraduateDesignBk.Controllers
             }
         }
 
+        public ApplicationDbContext ContextManger
+        {
+            get
+            {
+                return _contextManger ?? HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            }
+            private set
+            {
+                _contextManger = value;
+            }
+        }
         #endregion
 
-        public ActionResult List(string userType)
+        public ActionResult List(SearchAndPage UsersModel)
         {
-            List<UserViewModel> Users = new List<UserViewModel>();
-            foreach (var user in UserManager.Users.ToList())
+            int pageSize = (int)UsersModel.PageSize+8;
+            //查询所有
+            UsersModel.UserItems = UserManager.Users.Select(m =>
+            new UserViewModel()
             {
-                string role = null;
-                IList<string> roles = UserManager.GetRoles(user.Id);
-                if (roles.Count() == 0)
-                {
-                    continue;
-                }
-                role = roles.First();
-                if (!role.Equals(userType))
-                {
-                    continue;
-                }
-                Users.Add(new UserViewModel()
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Photo = user.Photo,
-                    mayjor = user.Mayjor,
-                    level = user.level,
-                    Comment = user.Comment,
-                    RealName = user.RealName
-                });
+                Id = m.Id,
+                UserName = m.UserName,  //一卡通号
+                Photo = m.Photo,
+                mayjor = m.Mayjor,
+                level = m.level,
+                Comment = m.Comment,
+                RealName = m.RealName,  //真实姓名
+            }).ToList();
+            //条件筛选
+            UsersModel.UserItems = UsersModel.UserItems.Where(
+            m => m.RealName.Contains(CNTS(UsersModel.SerachRealName))
+              && m.UserName.Contains(CNTS(UsersModel.SearchName))
+            ).ToList();
+            if(UsersModel.SearchMayor!=0)
+                UsersModel.UserItems = UsersModel.UserItems.Where(m=> m.mayjor == (UsersModel.SearchMayor)).ToList();
+            if (UsersModel.SearchLevel != 0)
+                UsersModel.UserItems = UsersModel.UserItems.Where(m => m.level == (UsersModel.SearchLevel)).ToList();
+            if (UsersModel.type == "UnGroupList")
+            {
+                UsersModel.UserItems = UsersModel.UserItems.Where(s => UserManager.GetRoles(s.Id).Count() == 0).ToList();
             }
-            ViewBag.Type = null;
-            ViewBag.RoleName = userType;
-            return View(Users);
+            else
+            {
+                UsersModel.UserItems = UsersModel.UserItems.Where(s => UserManager.GetRoles(s.Id).Count() > 0).ToList();
+                UsersModel.UserItems = UsersModel.UserItems.Where(s => UserManager.GetRoles(s.Id).FirstOrDefault().Equals(UsersModel.userType)).ToList();
+            }
+            UsersModel.TotalCount = UsersModel.UserItems.Count();
+            UsersModel.PageNum = (int)Math.Ceiling((double)UsersModel.TotalCount / pageSize);
+            //分页
+            UsersModel.UserItems = UsersModel.UserItems.OrderBy(m => m.Id).Skip((UsersModel.CurIndex - 1) * pageSize).Take(pageSize).ToList();
+            return View(UsersModel);
         }
 
-        public ActionResult UnGroupList(string roleName)
+        public string CNTS(string value)
         {
-            List<UserViewModel> Users = new List<UserViewModel>();
-            foreach (var user in UserManager.Users.ToList())
-            {
-                IList<string> roles = UserManager.GetRoles(user.Id);
-                if (roles.Count == 0)
-                {
-                    Users.Add(new UserViewModel()
-                    {
-                        Id = user.Id,
-                        UserName = user.UserName,
-                        Photo = user.Photo,
-                        mayjor = user.Mayjor,
-                        Email = user.Email,
-                        PhoneNumber = user.PhoneNumber,
-                        level = user.level,
-                        Comment = user.Comment,
-                        RealName = user.RealName
-                    });
-                }
-            }
-            ViewBag.RoleName = roleName;
-            ViewBag.Type = "UnGroupList";
-            return View("List",Users);
+            return value == null ? "" : value;
         }
 
         public ActionResult AddNewUser(string roleType)
@@ -164,7 +162,7 @@ namespace GraduateDesignBk.Controllers
             IdentityResult result2 =  UserManager.AddToRole(user.Id,model.RoleType);
             if (result2.Succeeded)
             {
-                return RedirectToAction("List", new { userType =model.RoleType});
+                //return RedirectToAction("List", new { userType =model.RoleType});
             }
             return View();
         }
@@ -180,8 +178,6 @@ namespace GraduateDesignBk.Controllers
                 UserName = user.UserName,
                 Photo = user.Photo,
                 mayjor = user.Mayjor,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
             });
         }
 

@@ -29,7 +29,6 @@ namespace GraduateDesignBk.Models
     public class ChangeRoleModel
     {
         public string Id { get; set; }
-        [Required]
         [Display(Name = "角 色 名：")]
         public string RoleName { get; set; }
         [Display(Name = "角色 描述：")]

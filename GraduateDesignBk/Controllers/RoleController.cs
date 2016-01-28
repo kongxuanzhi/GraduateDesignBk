@@ -18,8 +18,8 @@ namespace GraduateDesignBk.Controllers
         public ActionResult Index()
         {
             List<ListRoleModel> roles = new List<ListRoleModel>();
-
-            string sql = "select count(*) from AspNetUserRoles as r where r.RoleId=@roleID";
+            string sql = "select count(*) from AspNetUserRoles as r where r.RoleId= @roleID";  //
+           // int RoleMemCount = ContextManger.Database.ExecuteSqlCommand(sql);
             foreach (var role in RoleManager.Roles.ToList())
             {
                 roles.Add(new ListRoleModel() {
@@ -29,8 +29,8 @@ namespace GraduateDesignBk.Controllers
                     WhoCreate = role.WhoCreate,
                     Name = role.Name,
                     RoleMemCount = (int)SqlHelper.ExecuteScalar(sql, new SqlParameter("@roleID", role.Id))
-                   //UserManager.Users.Select(m => UserManager.IsInRole(m.Id, role.Name)).Count()
-               });
+                    //UserManager.Users.Select(m => UserManager.IsInRole(m.Id, role.Name)).Count()
+                });
             }
             return View(roles);
         }
@@ -135,7 +135,6 @@ namespace GraduateDesignBk.Controllers
                 return View(role);
             }
             mroles.Id = role.Id;
-            mroles.Name = role.RoleName;
             mroles.Description = role.Description;
             mroles.WhoCreate = User.Identity.GetUserName();
 
@@ -186,6 +185,18 @@ namespace GraduateDesignBk.Controllers
             }
         }
 
+        public ApplicationDbContext ContextManger
+        {
+            get
+            {
+                return _contextManger ?? HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            }
+            private set
+            {
+                _contextManger = value;
+            }
+        }
+        public ApplicationDbContext _contextManger;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
         #endregion

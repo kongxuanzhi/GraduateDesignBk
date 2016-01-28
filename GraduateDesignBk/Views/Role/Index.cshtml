@@ -41,7 +41,10 @@ else
                             {
                                 @Html.ActionLink("编 辑", "Edit", new { Id = role.Id }, new { @class = "btn btn-default" })
                                 @Html.ActionLink("详 情", "Detail", new { Id = role.Id }, new { @class = "btn btn-default" })
-                                <input type="submit" name="name" value="删除" class="btn btn-danger" />
+                                if (User.Identity.Name == "Admin")
+                                {
+                                    <input type="submit" name="name" value="删除" class="btn btn-danger" />
+                                }
                             }
                             @*<form action="/Role/Delete" method="post">
                                         <input type="hidden"  name="Id" value="@role.Id" />
