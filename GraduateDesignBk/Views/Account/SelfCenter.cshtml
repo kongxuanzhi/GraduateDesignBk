@@ -1,0 +1,52 @@
+﻿@model GraduateDesignBk.Models.PersonInfo
+
+@{
+    ViewBag.Title = "SelfCenter";
+    ViewDataDictionary dic = new ViewDataDictionary();
+    dic.Add("Id", Model.Id);
+    dic.Add("userType", Model.userType);
+    dic.Add("self", "个人中心");
+}
+@Html.Partial("_NavSelfPartial", dic) 
+<hr />
+
+ @*public string Id { get; set; }
+    public string UserName { get; set; }
+    public string RealName { get; set; }
+    public string Photo { get; set; }
+    public string Email { get; set; }
+    public string PhoneNumber { get; set; }
+    public Mayjor mayjor { get; set; }
+    public Level level { get; set; }
+    public string Comment { get; set; }
+    public string userType { get; set; }
+
+*@
+
+
+<div class="row">
+    <div class="col-md-2">
+        <img src="@Model.Photo" style="width:100%" class="img-responsive" alt="Alternate Text" />
+    </div>
+   
+    <div class="col-md-4" style="text-align:left">
+        <p><b>@Html.DisplayNameFor(model => model.UserName)</b>   @Html.DisplayFor(model => model.UserName)</p>
+        <p><b>@Html.DisplayNameFor(model => model.RealName)</b>   @Html.DisplayFor(model => model.RealName)</p>
+        <p><b>@Html.DisplayNameFor(model => model.Email)</b>   @Html.DisplayFor(model => model.Email)</p>
+        <p><b>@Html.DisplayNameFor(model => model.PhoneNumber)</b>   @Html.DisplayFor(model => model.PhoneNumber)</p>
+        <p><b>@Html.DisplayNameFor(model => model.mayjor)</b>   @Html.DisplayFor(model => model.mayjor)</p>
+        <p><b>@Html.DisplayNameFor(model => model.level)</b>   @Html.DisplayFor(model => model.level)</p>
+        <p><b>@Html.DisplayNameFor(model => model.userType)</b>   @Html.DisplayFor(model => model.userType)</p>
+    </div>
+    <div class="col-md-5">
+        <p><i><b>@Html.DisplayNameFor(model => model.Comment)</b></i> @Html.DisplayFor(model => model.Comment)</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        反对方答复
+    </div>
+    <div class="col-md-6">
+        功夫功夫服
+    </div>
+</div>

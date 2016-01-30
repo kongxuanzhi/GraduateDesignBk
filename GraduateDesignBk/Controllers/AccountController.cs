@@ -166,19 +166,120 @@ namespace GraduateDesignBk.Controllers
             }
             return View();
         }
-        public ActionResult UserDetail(string Id)
+
+        public ActionResult SelfCenter(string Id,string userType)
         {
-            ApplicationUser user = UserManager.FindById(Id);
-            if (user == null)
+            PersonInfo personInfo = UserManager.Users.Select(m =>
+               new PersonInfo()
+               {
+                   Id = m.Id,
+                   UserName = m.UserName,
+                   RealName = m.RealName,
+                   Photo = m.Photo,
+                   Email = m.Email,
+                   PhoneNumber = m.PhoneNumber,
+                   mayjor = m.Mayjor,
+                   level = m.level,
+                   Comment = m.Comment
+               }
+            ).Where(m => m.Id == Id).First();
+            personInfo.userType = userType;
+            return View(personInfo);
+        }
+        
+        public ActionResult SelfBars(string Id, string userType)
+        {
+            
+            PersonBars personBars = new PersonBars();
+            personBars.Id = Id;    personBars.userType = userType;
+            personBars.pbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where vb.ToUID is null and vb.PBID=vb.FBID and  vb.FBID = '0'").Where(m=>m.FromId==Id).ToList();
+            personBars.fbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where  vb.PBID=vb.FBID and  vb.FBID <> '0'").ToList();
+            personBars.sbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where  vb.PBID <>vb.FBID").ToList();
+            return View(personBars);
+        }
+
+        public ActionResult SelfFiles(string Id, string userType)
+        {
+            List<File> files = ContextManger.File.Where(m => m.FromUID == Id).ToList();
+            return View(files);
+        }
+
+        public ActionResult SelfMsgs(string Id, string userType)
+        {
+            List<Notice> msgs = ContextManger.Notice.Where(m => m.FromUID == Id).ToList();
+            return View(msgs);
+        }
+
+        public ActionResult stuOrTeachers(string Id, string userType)
+        {
+            //List<string> Ids = new List<string>();
+            //if (userType.Equals("教师"))
+            //{
+            //    Ids = ContextManger.StuMentor.Where(m => m.TeacherUID == Id).Select(m => m.StudentUID).ToList();
+            //}
+            //else if (userType.Equals("学生"))
+            //{
+            //    Ids = ContextManger.StuMentor.Where(m => m.StudentUID == Id).Select(m => m.TeacherUID).ToList();
+            //}
+            //List<UserViewModel> stuOrTeaches = UserManager.Users.Select(m =>
+            //       new UserViewModel()
+            //       {
+            //           Id = m.Id,
+            //           UserName = m.UserName,  //一卡通号
+            //           Photo = m.Photo,
+            //           mayjor = m.Mayjor,
+            //           level = m.level,
+            //           Comment = m.Comment,
+            //           RealName = m.RealName,  //真实姓名
+            //       }).Where(m => Ids.Contains(m.Id)).ToList();
+            //return View(stuOrTeaches);
+            return View();
+        }
+
+        public void MyProperty(string Id, string userType) {
+            UserDetailModel userDetail = new UserDetailModel();
+            //根据id得到个人信息（AspNetUser表） 返回ApsNetUser对象
+            userDetail.personInfo = UserManager.Users.Select(m =>
+               new PersonInfo()
+               {
+                   Id = m.Id,
+                   UserName = m.UserName,
+                   RealName = m.RealName,
+                   Photo = m.Photo,
+                   Email = m.Email,
+                   PhoneNumber = m.PhoneNumber,
+                   mayjor = m.Mayjor,
+                   level = m.level,
+                   Comment = m.Comment
+               }
+           ).Where(m => m.Id == Id).First();
+            //根据Id获得发布的帖子 Bars  分页 不查询
+            userDetail.bars = ContextManger.Bars.Where(m => m.FromUID == Id).ToList();
+            //根据Id获得上传的文件//Files  分页不查询
+            userDetail.files = ContextManger.File.Where(m => m.FromUID == Id).ToList();
+            //根据Id获得消息列表    分页不查询
+            userDetail.msgs = ContextManger.Notice.Where(m => m.FromUID == Id).ToList();
+            //根据Id获得该师(生)的学生(知道老师列表)  //分页 查询
+            List<string> Ids = new List<string>();
+            if (userType.Equals("教师"))
             {
-                return View("_Error",new string[]{ "不存在该用户"});
+                Ids = ContextManger.StuMentor.Where(m => m.TeacherUID == Id).Select(m => m.StudentUID).ToList();
             }
-            return View(new UserViewModel() {
-                Id = user.Id,
-                UserName = user.UserName,
-                Photo = user.Photo,
-                mayjor = user.Mayjor,
-            });
+            else if (userType.Equals("学生"))
+            {
+                Ids = ContextManger.StuMentor.Where(m => m.StudentUID == Id).Select(m => m.TeacherUID).ToList();
+            }
+            userDetail.stuOrTeaches = UserManager.Users.Select(m =>
+                   new UserViewModel()
+                   {
+                       Id = m.Id,
+                       UserName = m.UserName,  //一卡通号
+                       Photo = m.Photo,
+                       mayjor = m.Mayjor,
+                       level = m.level,
+                       Comment = m.Comment,
+                       RealName = m.RealName,  //真实姓名
+                   }).Where(m => Ids.Contains(m.Id)).ToList();
         }
 
         [HttpPost]
@@ -195,7 +296,6 @@ namespace GraduateDesignBk.Controllers
             }
             return View("_SuccessView", new string[] { "加入成功" });
         }
-
         [HttpPost]
         public async Task<ActionResult> DeleteUser(string Ids,string RoleName)
         {
@@ -224,7 +324,6 @@ namespace GraduateDesignBk.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
         //
         // POST: /Account/Login
         [HttpPost]

@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "_NavSelfPartial";
+}
+<div class="row">
+    <ul id="nav" class="nav nav-tabs nav-justified">
+        <li role="presentation"><a href="/Account/SelfCenter/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["userType"]">个人中心</a></li>
+        <li role="presentation"><a href="/Account/SelfBars/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["userType"]">帖子</a></li>
+        <li role="presentation"><a href="/Account/SelfFiles/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["userType"]">文件</a></li>
+        <li role="presentation"><a href="/Account/SelfMsgs/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["userType"]">消息</a></li>
+        <li role="presentation"><a href="/Account/stuOrTeachers/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["userType"]">学生</a></li>
+    </ul>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+        $.each($("#nav li"), function (i, n) {
+            var title = $(this).children().html();
+            var otitle = "@Html.ViewData["self"]";
+          //  alert(title)
+            //alert(otitle)
+            if (title == otitle) {
+                $(this).addClass("active");
+            }
+        });
+</script>
+

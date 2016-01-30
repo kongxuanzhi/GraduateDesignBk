@@ -204,6 +204,18 @@
     <Compile Include="Migrations\201601270553008_ChangeUserNameToYikatong.Designer.cs">
       <DependentUpon>201601270553008_ChangeUserNameToYikatong.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601300617288_deleteFKfrpmBar.cs" />
+    <Compile Include="Migrations\201601300617288_deleteFKfrpmBar.Designer.cs">
+      <DependentUpon>201601300617288_deleteFKfrpmBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601300716093_changePublic.cs" />
+    <Compile Include="Migrations\201601300716093_changePublic.Designer.cs">
+      <DependentUpon>201601300716093_changePublic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601300730404_add-ViewForbars.cs" />
+    <Compile Include="Migrations\201601300730404_add-ViewForbars.Designer.cs">
+      <DependentUpon>201601300730404_add-ViewForbars.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BarModels.cs" />
@@ -310,6 +322,7 @@
     <Content Include="img\2.jpg" />
     <Content Include="img\default.png" />
     <Content Include="img\aiyin.jpg" />
+    <Content Include="img\hongyu.png" />
     <Content Include="obj\Debug\GraduateDesignBk.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\GraduateDesignBk.dll" />
     <Content Include="obj\Debug\GraduateDesignBk.pdb" />
@@ -379,6 +392,13 @@
     <Content Include="Views\Account\List.cshtml" />
     <Content Include="Views\Account\UserDetail.cshtml" />
     <Content Include="Views\Account\AddNewUser.cshtml" />
+    <Content Include="Views\Shared\_UsersListPartial.cshtml" />
+    <Content Include="Views\Account\SelfCenter.cshtml" />
+    <Content Include="Views\Account\SelfBars.cshtml" />
+    <Content Include="Views\Account\SelfFiles.cshtml" />
+    <Content Include="Views\Account\SelfMsgs.cshtml" />
+    <Content Include="Views\Shared\_NavSelfPartial.cshtml" />
+    <Content Include="Views\Account\stuOrTeachers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -432,6 +452,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601270553008_ChangeUserNameToYikatong.resx">
       <DependentUpon>201601270553008_ChangeUserNameToYikatong.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601300617288_deleteFKfrpmBar.resx">
+      <DependentUpon>201601300617288_deleteFKfrpmBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601300716093_changePublic.resx">
+      <DependentUpon>201601300716093_changePublic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601300730404_add-ViewForbars.resx">
+      <DependentUpon>201601300730404_add-ViewForbars.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="obj\Debug\GraduateDesignBk.Migrations.init.resources" />
   </ItemGroup>

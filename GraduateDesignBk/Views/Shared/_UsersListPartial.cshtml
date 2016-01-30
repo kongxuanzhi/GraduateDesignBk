@@ -1,0 +1,79 @@
+﻿@model IEnumerable<GraduateDesignBk.Models.UserViewModel>
+@{
+    int num = 0;
+}
+<style>
+    hr {
+        border: 1px solid #cccccc;
+        margin-bottom: 0px;
+    }
+
+    .bkOnBlur {
+        background-color: #8aa742;
+    }
+</style>   
+<div class="row">
+    @foreach (var item in Model)
+    {
+        if (num % 4 == 0)
+        {
+            @:<div class="row"></div>
+        }
+        num += 1;
+        string comment = @item.Comment;
+
+        <div class="col-md-3" style="border:ridge;">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="@item.Id">
+                        <span style="cursor:pointer;" onclick="onFouces(this)">
+                            <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
+                            <img class="img-responsive" style="width:100%;" src="@item.Photo" />
+                        </span>
+                    </label>
+                </div>
+                <input type="checkbox" style="width:16px" value="@item.Id" id="@item.Id" name="delId" />
+                <div class="col-md-6" style="padding-top:20px;padding-right:0px;font-size:smaller;padding-left:2px">
+                    <div>
+                        <b>姓名：</b>@Html.DisplayFor(modelItem => item.RealName)
+                    </div>
+                    <div>
+                        <b>通号：</b>@Html.DisplayFor(modelItem => item.UserName)
+                    </div>
+                    <div>
+                        <b> 年级：</b>@Html.DisplayFor(modelItem => item.level)
+                    </div>
+                    <div>
+                        <b>专业：</b>@Html.DisplayFor(modelItem => item.mayjor)
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div>
+                <div>
+                    <b><i>评语：</i></b>
+                    <p>
+                        &nbsp; &nbsp;@comment.Substring(0, @comment.Length > 20 ? 20 : @comment.Length)...
+                    </p>
+                </div>
+                <div style="height:21px;">
+                    @using (Html.BeginForm("DeleteUser", "Account", new { Ids = @item.Id, RoleName = Html.ViewData["userType"] }, FormMethod.Post, new { id = "from" + @item.Id }))
+                    {
+                        <a href="javascript:$('#from@(item.Id)' ).submit();" onclick="return confirm('确定要删除该成员吗？')" class="left glyphicon glyphicon-remove"></a>
+                    }
+                    <a class="right" href="/Account/SelfCenter/?Id=@item.Id&userType=@Html.ViewData["userType"]"><span class=" glyphicon glyphicon-hand-right" aria-hidden="true"></span></a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    function onFouces(obj) {
+        var block = $(obj).parent().parent().parent().parent();
+        if (block.hasClass("bkOnBlur")) {
+            block.removeClass("bkOnBlur");
+        }
+        else
+            block.addClass("bkOnBlur");
+    }
+</script>

@@ -1,0 +1,65 @@
+﻿@model  GraduateDesignBk.Models.PersonBars
+
+@{
+    ViewBag.Title = "SelfBars";
+    ViewDataDictionary dic = new ViewDataDictionary();
+    dic.Add("Id", Model.Id);
+    dic.Add("userType", Model.userType);
+    dic.Add("self", "帖子");
+}
+
+@Html.Partial("_NavSelfPartial", dic)
+<style>
+    img {
+        width: 50px;
+    }
+
+    hr {
+        margin-top: 4px;
+        margin-bottom: 13px;
+        border: 0px;
+        border-top: 1px solid #777777;
+    }
+</style>
+
+<div class="row" style="margin-top:20px">
+    @foreach (var p in Model.pbars)
+    {
+        <div style="border-radius: 26px;border: 1px solid;">
+            <div style="padding-left: 48px;padding-top: 10px;">
+                <div>
+                    <img src="@p.FromPhoto" style="width:50px;height:50px;float:left;margin-right: 13px;" alt="Alternate Text" />
+                    <div style="padding-top: 13px;">
+                        <p> <b>@p.FromUID</b> <br />@p.RaiseQuesTime.ToShortTimeString() </p>
+                    </div>
+                    <div>
+                        @p.Content
+                    </div>
+                </div>
+                <hr />
+                <div>
+                    @foreach (var f in Model.fbars)
+                    {
+                        if (f.FBID.Equals(p.BID))
+                        {
+                            <div>
+                                <img src="@f.FromPhoto" style="width:30px;height:30px;float:left;margin-right: 13px;" alt="Alternate Text" />
+                                <p><b>@f.FromUID :</b> @f.Content <br />  @f.RaiseQuesTime.ToShortTimeString()</p>
+                            </div>
+                            foreach (var s in Model.sbars)
+                            {
+                                if (s.FBID.Equals(f.BID) && s.PBID.Equals(p.BID))
+                                {
+                                    <div style="padding-left: 41px;">  
+                                        <img src="@s.FromPhoto" style="width:30px;height:30px;float:left;margin-right: 13px;" alt="Alternate Text" />
+                                        <p><b> @s.FromUID</b> 回复 <b> @s.ToUID :</b> @s.Content <br />  @s.RaiseQuesTime.ToShortTimeString()</p>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

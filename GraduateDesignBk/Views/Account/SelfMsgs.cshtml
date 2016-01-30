@@ -1,0 +1,55 @@
+﻿@model IEnumerable<GraduateDesignBk.Models.Notice>
+
+@{
+    ViewBag.Title = "SelfMsgs";
+    ViewDataDictionary dic = new ViewDataDictionary();
+    dic.Add("Id", Model.Id);
+    dic.Add("userType", Model.userType);
+    dic.Add("self", "消息");
+}
+
+@Html.Partial("_NavSelfPartial", dic)
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.User2.Photo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Detail)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.User2.Photo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreateTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Detail)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.NID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.NID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.NID })
+        </td>
+    </tr>
+}
+
+</table>

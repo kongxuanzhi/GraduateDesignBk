@@ -1,7 +1,8 @@
 ﻿@model GraduateDesignBk.Models.SearchAndPage
 @{
     ViewBag.Title = "List";
-    int num = 0;
+    ViewDataDictionary dic = new ViewDataDictionary();
+    dic.Add("userType",Model.userType);
 }
 <style>
     hr {
@@ -40,18 +41,6 @@
     </div>
     <a href="#" onclick="getPageSize(0)" class="btn btn-default"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜 索</a>
 }
-<script>
-    function getPageSize(type) {
-        if (type == 1) {
-            $("#CurIndex").val($("#CurIndex").val() - 1);
-        } else if (type == 2)
-        {
-            $("#CurIndex").val($("#CurIndex").val() - (-1));
-        }
-        $("#pagesize").val($("#PageSize").val());
-        $("#form_Search").submit();
-    }
-</script>
 <div id="settings" class="hidden">
     @using (Html.BeginForm("DeleteUser", "Account", new { RoleName = @Model.userType }, FormMethod.Post, new { id = "form_DeleteUser" }))
     {
@@ -81,61 +70,7 @@
     }
 </div>
 <hr />
-<div class="row">
-    @foreach (var item in Model.UserItems)
-    {
-        if (num % 4 == 0) {
-          @:<div class="row"></div>
-        }
-        num += 1;
-        string comment = @item.Comment;
-
-        <div class="col-md-3" style="border:ridge;">
-            <div class="row">
-                <div class="col-md-6">
-                    <label for="@item.Id" >
-                        <span style="cursor:pointer;"  onclick="onFouces(this)">
-                            <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
-                            <img class="img-responsive" style="width:100%;" src="@item.Photo" />
-                        </span>
-                    </label>
-                </div>
-                <input type="checkbox" style="width:16px" value="@item.Id" id="@item.Id" name="delId" />
-                <div class="col-md-6" style="padding-top:20px;padding-right:0px;font-size:smaller;padding-left:2px">
-                    <div>
-                        <b>姓名：</b>@Html.DisplayFor(modelItem => item.RealName)
-                    </div>
-                    <div>
-                        <b>通号：</b>@Html.DisplayFor(modelItem => item.UserName)
-                    </div>
-                    <div>
-                        <b> 年级：</b>@Html.DisplayFor(modelItem => item.level)
-                    </div>
-                    <div>
-                        <b>专业：</b>@Html.DisplayFor(modelItem => item.mayjor)
-                    </div>
-                </div>
-            </div>
-            <hr/>
-            <div>
-                <div>
-                    <b><i>评语：</i></b>
-                    <p>
-                        &nbsp; &nbsp;@comment.Substring(0, @comment.Length > 20 ? 20 : @comment.Length)...
-                    </p>
-                </div>
-                <div style="height:21px;">
-                    @using (Html.BeginForm("DeleteUser", "Account", new { Ids = @item.Id, RoleName = @Model.userType }, FormMethod.Post, new { id = "from" + @item.Id }))
-                    {
-                        <a href="javascript:$('#from@(item.Id)' ).submit();"  onclick="return confirm('确定要删除该成员吗？')" class="left glyphicon glyphicon-remove"></a>
-                    }
-                    <a class="right" href="http://go.microsoft.com/fwlink/?LinkId=301865"><span class=" glyphicon glyphicon-hand-right" aria-hidden="true"></span></a>
-                </div>
-            </div>
-        </div>
-}
-</div>
-    
+@Html.Partial("_UsersListPartial", Model.UserItems,dic);
 <div class="row">
     <nav>
         <ul class="pager">
@@ -160,9 +95,6 @@
 </div>
 
 <script>
-   
-    
-
     function showSetting() {
         if ($("#settings").hasClass("hidden")) {
             $("#settings").removeClass("hidden");
@@ -188,15 +120,6 @@
         }
     }
 
-    function onFouces(obj) {
-        var block = $(obj).parent().parent().parent().parent();
-        if (block.hasClass("bkOnBlur")) {
-            block.removeClass("bkOnBlur");
-        }
-        else
-            block.addClass("bkOnBlur");
-    }
-
     function getIds() {
         var ids = "";
         var check = document.getElementsByName("delId");
@@ -216,7 +139,13 @@
             alert("你未选中任何选项！");
         }
     }
-
-
-
+    function getPageSize(type) {
+        if (type == 1) {
+            $("#CurIndex").val($("#CurIndex").val() - 1);
+        } else if (type == 2) {
+            $("#CurIndex").val($("#CurIndex").val() - (-1));
+        }
+        $("#pagesize").val($("#PageSize").val());
+        $("#form_Search").submit();
+    }
 </script>

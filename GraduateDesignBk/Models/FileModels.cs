@@ -31,7 +31,7 @@ namespace GraduateDesignBk.Models
         public string Name { get; set; }
 
         [DefaultValue(false)]
-        public bool Public { get; set; }
+        public bool Pub { get; set; }
 
         public DateTime UploadTimes { get; set; }
 
