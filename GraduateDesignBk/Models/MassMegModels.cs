@@ -31,7 +31,6 @@ namespace GraduateDesignBk.Models
         [ForeignKey("ToUID")]
         public ApplicationUser User2 { get; set; }
 
-        [DefaultValue(false)]
-        public bool Readed { get; set; }
+        public ReadState Readstate { get; set; }
     }
 }

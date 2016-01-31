@@ -5,9 +5,11 @@
     ViewDataDictionary dic = new ViewDataDictionary();
     dic.Add("Id", Model.Id);
     dic.Add("userType", Model.userType);
-    dic.Add("self", "个人中心");
+    dic.Add("self", Model.userType);
+    dic.Add("nav_title", "个人中心");
+
 }
-@Html.Partial("_NavSelfPartial", dic) 
+@Html.Partial("_NavSelfPartial",Model.counts, dic) 
 <hr />
 
  @*public string Id { get; set; }

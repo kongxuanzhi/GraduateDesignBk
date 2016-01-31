@@ -84,6 +84,8 @@ namespace GraduateDesignBk.Controllers
         }
         #endregion
 
+       
+
         public ActionResult List(SearchAndPage UsersModel)
         {
             int pageSize = (int)UsersModel.PageSize+8;
@@ -104,19 +106,50 @@ namespace GraduateDesignBk.Controllers
             m => m.RealName.Contains(CNTS(UsersModel.SerachRealName))
               && m.UserName.Contains(CNTS(UsersModel.SearchName))
             ).ToList();
-            if(UsersModel.SearchMayor!=0)
+
+            if (UsersModel.SearchMayor!=0)
                 UsersModel.UserItems = UsersModel.UserItems.Where(m=> m.mayjor == (UsersModel.SearchMayor)).ToList();
             if (UsersModel.SearchLevel != 0)
                 UsersModel.UserItems = UsersModel.UserItems.Where(m => m.level == (UsersModel.SearchLevel)).ToList();
+            
             if (UsersModel.type == "UnGroupList")
-            {
+            { 
                 UsersModel.UserItems = UsersModel.UserItems.Where(s => UserManager.GetRoles(s.Id).Count() == 0).ToList();
             }
             else
             {
                 UsersModel.UserItems = UsersModel.UserItems.Where(s => UserManager.GetRoles(s.Id).Count() > 0).ToList();
                 UsersModel.UserItems = UsersModel.UserItems.Where(s => UserManager.GetRoles(s.Id).FirstOrDefault().Equals(UsersModel.userType)).ToList();
+                if (UsersModel.subtype == ("unSorT"))
+                {
+                    if (UsersModel.userType.Equals("学生"))
+                    {
+                        List<string> stusIds = ContextManger.StuMentor.Select(m =>
+                         new SutAndMent()
+                         {
+                             StuID = m.StudentUID,
+                             MenId = m.TeacherUID
+                         }).Where(m => m.MenId == UsersModel.Id).Select(m => m.StuID).ToList();
+                        UsersModel.UserItems = UsersModel.UserItems.Where(m => !stusIds.Contains(m.Id)).ToList();
+                    }
+                    else if (UsersModel.userType.Equals("教师"))
+                    {
+                        List<string> TeIds = ContextManger.StuMentor.Select(m =>
+                          new SutAndMent()
+                          {
+                              StuID = m.StudentUID,
+                              MenId = m.TeacherUID
+                          }).ToList()
+                           .Where(m => m.StuID == UsersModel.Id)
+                           .Select(m => m.MenId).ToList();
+                        UsersModel.UserItems = UsersModel.UserItems.Where(m => !TeIds.Contains(m.Id)).ToList();
+                    }
+                    //列出所有该UsersModel.Id未添加的学生
+                    //1、判断该Id的身份 根据UsersModel.userType
+                    // UsersModel.UserItems = UsersModel.UserItems.Where(s => UserManager.GetRoles(s.Id).FirstOrDefault().Equals(UsersModel.userType)).ToList();
+                }
             }
+
             UsersModel.TotalCount = UsersModel.UserItems.Count();
             UsersModel.PageNum = (int)Math.Ceiling((double)UsersModel.TotalCount / pageSize);
             //分页
@@ -166,9 +199,10 @@ namespace GraduateDesignBk.Controllers
             }
             return View();
         }
-
+        //===================================================================
         public ActionResult SelfCenter(string Id,string userType)
         {
+       
             PersonInfo personInfo = UserManager.Users.Select(m =>
                new PersonInfo()
                {
@@ -184,56 +218,136 @@ namespace GraduateDesignBk.Controllers
                }
             ).Where(m => m.Id == Id).First();
             personInfo.userType = userType;
+            personInfo.counts = count(Id, userType);
             return View(personInfo);
         }
         
         public ActionResult SelfBars(string Id, string userType)
         {
-            
             PersonBars personBars = new PersonBars();
             personBars.Id = Id;    personBars.userType = userType;
             personBars.pbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where vb.ToUID is null and vb.PBID=vb.FBID and  vb.FBID = '0'").Where(m=>m.FromId==Id).ToList();
             personBars.fbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where  vb.PBID=vb.FBID and  vb.FBID <> '0'").ToList();
             personBars.sbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where  vb.PBID <>vb.FBID").ToList();
+            personBars.counts = count(Id, userType);
             return View(personBars);
         }
 
         public ActionResult SelfFiles(string Id, string userType)
         {
-            List<File> files = ContextManger.File.Where(m => m.FromUID == Id).ToList();
-            return View(files);
+            PersonFiles fileD = new PersonFiles();
+            fileD.Id = Id; fileD.userType = userType;
+            fileD.sfile = ContextManger.File.Where(m=>m.FromUID==Id).ToList();
+            fileD.downup = ContextManger.DownUpload.ToList().Select(m =>
+                new DownUpDetail()
+                {
+                    DID = m.DID,
+                    Time = m.Time,
+                    ToId = m.ToUID,
+                    FID = m.FID,
+                    Readstate = m.Readstate,
+                    ToUID = UserManager.FindById(m.ToUID).RealName
+                }).ToList();
+            fileD.counts = count(Id, userType);
+            return View(fileD);
         }
 
         public ActionResult SelfMsgs(string Id, string userType)
         {
-            List<Notice> msgs = ContextManger.Notice.Where(m => m.FromUID == Id).ToList();
-            return View(msgs);
+            PersonNotice NoticeD = new PersonNotice();
+            NoticeD.Id = Id; NoticeD.userType = userType;
+            NoticeD.msgs = ContextManger.Notice.Where(m => m.FromUID == Id).ToList();
+            NoticeD.massMsg = ContextManger.MassMeg.ToList().Select(m =>
+                new MassMegDetail()
+                {
+                    MID = m.MID,
+                    NID = m.NID,
+                    ToId = m.ToUID,
+                    Readstate = m.Readstate,
+                    ToUID = UserManager.FindById(m.ToUID).RealName
+                }).ToList();
+            NoticeD.counts = count(Id, userType);
+            return View(NoticeD);
+        }
+        public ActionResult stuOrTeachers(string Id,string userType, string subType)
+        {
+            List<string> Ids = new List<string>();
+            if (subType == ("学生"))
+            {
+                Ids = ContextManger.StuMentor.Where(m => m.TeacherUID == Id).Select(m => m.StudentUID).ToList();
+            }
+            else if (subType == ("教师"))
+            {
+                Ids = ContextManger.StuMentor.Where(m => m.StudentUID == Id).Select(m => m.TeacherUID).ToList();
+            }
+            PersonStuOrMentor psm = new PersonStuOrMentor();
+            psm.Id = Id;psm.userType = userType;
+            psm.subType = subType;
+            psm.userItems = UserManager.Users.Select(m =>
+                   new UserViewModel()
+                   {
+                       Id = m.Id,
+                       UserName = m.UserName,  //一卡通号
+                       Photo = m.Photo,
+                       mayjor = m.Mayjor,
+                       level = m.level,
+                       Comment = m.Comment,
+                       RealName = m.RealName,  //真实姓名
+                   }).Where(m => Ids.Contains(m.Id)).ToList();
+
+            psm.counts = count(Id, userType);
+            return View(psm);
         }
 
-        public ActionResult stuOrTeachers(string Id, string userType)
+        [HttpPost]
+        public void AddStuOrTe(AddStuOrTe Aso)
         {
-            //List<string> Ids = new List<string>();
-            //if (userType.Equals("教师"))
-            //{
-            //    Ids = ContextManger.StuMentor.Where(m => m.TeacherUID == Id).Select(m => m.StudentUID).ToList();
-            //}
-            //else if (userType.Equals("学生"))
-            //{
-            //    Ids = ContextManger.StuMentor.Where(m => m.StudentUID == Id).Select(m => m.TeacherUID).ToList();
-            //}
-            //List<UserViewModel> stuOrTeaches = UserManager.Users.Select(m =>
-            //       new UserViewModel()
-            //       {
-            //           Id = m.Id,
-            //           UserName = m.UserName,  //一卡通号
-            //           Photo = m.Photo,
-            //           mayjor = m.Mayjor,
-            //           level = m.level,
-            //           Comment = m.Comment,
-            //           RealName = m.RealName,  //真实姓名
-            //       }).Where(m => Ids.Contains(m.Id)).ToList();
-            //return View(stuOrTeaches);
-            return View();
+            string[] ids = Aso.Ids.Split(new char[]{ '|'});
+            if (Aso.userType ==("教师"))
+            {
+                AddMentors(Aso.Id, ids);
+            }
+            else if(Aso.userType==("学生"))
+            {
+                AddStudents(Aso.Id, ids);
+            }   
+        }
+
+        //为老师增加学生
+        public void AddStudents(string MentorId,string[] StuIds)
+        {
+            foreach(string id in StuIds)
+            {
+               ContextManger.StuMentor.Add(new StuMentor() {
+                    TeacherUID = MentorId,
+                    StudentUID = id
+                });
+                ContextManger.SaveChanges();
+            }
+        }
+        //为学生增加老师
+        public void AddMentors(string StuId, string[] MentorIds)
+        {
+            foreach (string id in MentorIds)
+            {
+                ContextManger.StuMentor.Add(new StuMentor()
+                {
+                    TeacherUID = id,
+                    StudentUID = StuId
+                });
+            }
+            ContextManger.SaveChanges();
+        }
+
+        public Counts count(string Id, string userType)
+        {
+            userType = userType == "教师" ? "teacher" : "student";
+            string usp = "EXEC   [dbo].[usp_Count] @Id = @id,@userType =@ut";
+            SqlParameter[] pms = new SqlParameter[2];
+            pms[0] = new SqlParameter("@id",Id);
+            pms[1] = new SqlParameter("@ut",userType);
+            Counts c =  ContextManger.Database.SqlQuery<Counts>(usp, pms).First();
+            return c;
         }
 
         public void MyProperty(string Id, string userType) {

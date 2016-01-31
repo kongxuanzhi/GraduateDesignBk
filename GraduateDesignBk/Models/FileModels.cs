@@ -16,7 +16,7 @@ namespace GraduateDesignBk.Models
         {
             FID = Guid.NewGuid().ToString();
             FileSeq = Guid.NewGuid().ToString();
-            UploadTimes = DateTime.Now;
+            UploadTime = DateTime.Now;
         }
 
         [Key]
@@ -33,7 +33,7 @@ namespace GraduateDesignBk.Models
         [DefaultValue(false)]
         public bool Pub { get; set; }
 
-        public DateTime UploadTimes { get; set; }
+        public DateTime UploadTime { get; set; }
 
         [DefaultValue("0")]
         [StringLength(120)]

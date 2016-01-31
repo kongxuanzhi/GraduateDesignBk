@@ -57,6 +57,10 @@
         {
             <a href="javascript:Submit('RemoveUserFromRole');" onclick="return confirm('你确定要移除这些成员吗？')" class="btn btn-default">移除</a>
         }
+        if (@Model.subtype == "unSorT")
+        {
+            <a href="javascript:Submit('AddStuOrTe');" class="btn btn-default">添加 @Model.userType</a>
+        }
     }
 
     @using (Html.BeginForm("AddUserToRole", "Account", new { roleName = @Model.userType }, FormMethod.Post, new { id = "form_AddUserToRole" }))
@@ -67,6 +71,10 @@
     @using (Html.BeginForm("RemoveUserFromRole", "Role", new { roleName = @Model.userType }, FormMethod.Post, new { id = "form_RemoveUserFromRole" }))
     {
         <input type="hidden" id="RemoveUserFromRole" name="Id" value="" />
+    }
+    @using (Html.BeginForm("AddStuOrTe", "Account", new { Id = Model.Id,userType = Model.userType }, FormMethod.Post, new { id = "form_AddStuOrTe" }))
+    {
+        <input type="hidden" id="AddStuOrTe" name="Ids" value="" />
     }
 </div>
 <hr />

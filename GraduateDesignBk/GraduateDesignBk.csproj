@@ -216,6 +216,14 @@
     <Compile Include="Migrations\201601300730404_add-ViewForbars.Designer.cs">
       <DependentUpon>201601300730404_add-ViewForbars.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601301554242_changeUploadTime.cs" />
+    <Compile Include="Migrations\201601301554242_changeUploadTime.Designer.cs">
+      <DependentUpon>201601301554242_changeUploadTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601310406302_addReadStateEnumforread.cs" />
+    <Compile Include="Migrations\201601310406302_addReadStateEnumforread.Designer.cs">
+      <DependentUpon>201601310406302_addReadStateEnumforread.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BarModels.cs" />
@@ -461,6 +469,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601300730404_add-ViewForbars.resx">
       <DependentUpon>201601300730404_add-ViewForbars.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601301554242_changeUploadTime.resx">
+      <DependentUpon>201601301554242_changeUploadTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601310406302_addReadStateEnumforread.resx">
+      <DependentUpon>201601310406302_addReadStateEnumforread.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="obj\Debug\GraduateDesignBk.Migrations.init.resources" />
   </ItemGroup>

@@ -1,13 +1,27 @@
-﻿@{
+﻿@model GraduateDesignBk.Models.Counts
+@{
     ViewBag.Title = "_NavSelfPartial";
+    string subType = "";
+    if (Html.ViewData["self"].ToString() == "教师")
+    {
+        subType = "学生";
+    }
+    else
+    {
+        subType = "教师";
+    }
 }
+
 <div class="row">
     <ul id="nav" class="nav nav-tabs nav-justified">
-        <li role="presentation"><a href="/Account/SelfCenter/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["userType"]">个人中心</a></li>
-        <li role="presentation"><a href="/Account/SelfBars/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["userType"]">帖子</a></li>
-        <li role="presentation"><a href="/Account/SelfFiles/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["userType"]">文件</a></li>
-        <li role="presentation"><a href="/Account/SelfMsgs/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["userType"]">消息</a></li>
-        <li role="presentation"><a href="/Account/stuOrTeachers/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["userType"]">学生</a></li>
+        <li role="presentation"><a href="/Account/SelfCenter/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["self"]">个人中心</a></li>
+        <li role="presentation"><a href="/Account/SelfBars/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["self"]">帖子(@Model.bars)</a></li>
+        <li role="presentation"><a href="/Account/SelfFiles/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["self"]">文件(@Model.files)</a></li>
+        <li role="presentation"><a href="/Account/SelfMsgs/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["self"]">消息(@Model.msgs)</a></li>
+        <li role="presentation"><a href="/Account/stuOrTeachers/?Id=@Html.ViewData["Id"]&userType=@Html.ViewData["self"]&subType=@subType">
+           @subType (@Model.stuOrNum)
+           </a>
+        </li>
     </ul>
 </div>
 
@@ -16,10 +30,10 @@
 <script>
         $.each($("#nav li"), function (i, n) {
             var title = $(this).children().html();
-            var otitle = "@Html.ViewData["self"]";
+            var otitle = "@Html.ViewData["nav_title"]";
           //  alert(title)
             //alert(otitle)
-            if (title == otitle) {
+            if (title.trim() == otitle) {
                 $(this).addClass("active");
             }
         });

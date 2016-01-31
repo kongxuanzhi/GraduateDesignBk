@@ -34,7 +34,13 @@ namespace GraduateDesignBk.Models
        [ForeignKey("FID")]
         public File Files { get; set; }  //外键 到FileModel表
 
-        [DefaultValue(false)]
-        public bool Readed { get; set; }      //是否接收文件
+        public ReadState Readstate { get; set; }      //是否接收文件
     }
+
+    public enum ReadState
+    {
+        未读,
+        已读
+    }
+
 }   

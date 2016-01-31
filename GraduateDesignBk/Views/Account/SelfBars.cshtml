@@ -5,10 +5,12 @@
     ViewDataDictionary dic = new ViewDataDictionary();
     dic.Add("Id", Model.Id);
     dic.Add("userType", Model.userType);
-    dic.Add("self", "帖子");
+    dic.Add("self", Model.userType);
+    dic.Add("nav_title", "帖子");
 }
 
-@Html.Partial("_NavSelfPartial", dic)
+@Html.Partial("_NavSelfPartial", Model.counts, dic)
+
 <style>
     img {
         width: 50px;
@@ -20,17 +22,53 @@
         border: 0px;
         border-top: 1px solid #777777;
     }
+
+    a:link {
+        color: black;
+    }
+
+    a:visited {
+        color: black;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: black;
+    }
+
+    a:active {
+        color: black;
+        text-decoration: none;
+    }
 </style>
 
 <div class="row" style="margin-top:20px">
     @foreach (var p in Model.pbars)
     {
         <div style="border-radius: 26px;border: 1px solid;">
-            <div style="padding-left: 48px;padding-top: 10px;">
+            <div style="padding:10px 48px;">
                 <div>
-                    <img src="@p.FromPhoto" style="width:50px;height:50px;float:left;margin-right: 13px;" alt="Alternate Text" />
+                    <a href="/Account/SelfCenter/?Id=@p.FromId&userType=@Model.userType">
+                        <img src="@p.FromPhoto" style="width:50px;height:50px;float:left;margin-right: 13px;" />
+                    </a>
                     <div style="padding-top: 13px;">
-                        <p> <b>@p.FromUID</b> <br />@p.RaiseQuesTime.ToShortTimeString() </p>
+                        <p>
+                            <a href="/Account/SelfCenter/?Id=@p.FromId&userType=@Model.userType">
+                                <span>@p.FromUID</span> 
+                            </a>
+                            <a href="#">
+                                <span class="glyphicon glyphicon-remove" onmouseover="Show(this)" onmouseout="hide(this)"></span>
+                            </a>
+                            <br/>
+                            @if (p.RaiseQuesTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString()))
+                            {
+                                @p.RaiseQuesTime.ToShortTimeString()
+                            }
+                            else
+                            {
+                                @p.RaiseQuesTime
+                            }
+                        </p>
                     </div>
                     <div>
                         @p.Content
@@ -43,16 +81,40 @@
                         if (f.FBID.Equals(p.BID))
                         {
                             <div>
-                                <img src="@f.FromPhoto" style="width:30px;height:30px;float:left;margin-right: 13px;" alt="Alternate Text" />
-                                <p><b>@f.FromUID :</b> @f.Content <br />  @f.RaiseQuesTime.ToShortTimeString()</p>
+                                <a href="/Account/SelfCenter/?Id=@f.FromId&userType=@Model.userType">
+                                    <img src="@f.FromPhoto" style="width:30px;height:30px;float:left;margin-right: 13px;" />
+                                </a>
+                                <p>
+                                    <a href="/Account/SelfCenter/?Id=@f.FromId&userType=@Model.userType">
+                                        <b>@f.FromUID :</b>
+                                    </a> @f.Content
+                                   
+                                    <br />@f.RaiseQuesTime.ToShortTimeString()
+                                    <a href="#">
+                                        <span class="glyphicon glyphicon-remove" onmouseover="Show(this)" onmouseout="hide(this)"></span>
+                                    </a>
+                                </p>
                             </div>
                             foreach (var s in Model.sbars)
                             {
                                 if (s.FBID.Equals(f.BID) && s.PBID.Equals(p.BID))
                                 {
-                                    <div style="padding-left: 41px;">  
-                                        <img src="@s.FromPhoto" style="width:30px;height:30px;float:left;margin-right: 13px;" alt="Alternate Text" />
-                                        <p><b> @s.FromUID</b> 回复 <b> @s.ToUID :</b> @s.Content <br />  @s.RaiseQuesTime.ToShortTimeString()</p>
+                                    <div style="padding-left: 41px;">
+                                        <a href="/Account/SelfCenter/?Id=@s.FromId&userType=@Model.userType">
+                                            <img src="@s.FromPhoto" style="width:30px;height:30px;float:left;margin-right: 13px;" />
+                                        </a>
+                                        <p>
+                                            <a href="/Account/SelfCenter/?Id=@s.FromId&userType=@Model.userType">
+                                                <b> @s.FromUID</b>
+                                            </a> 回复
+                                            <a href="/Account/SelfCenter/?Id=@s.ToId&userType=@Model.userType">
+                                                <b> @s.ToUID :</b>
+                                            </a>  @s.Content
+                                            <br />  @s.RaiseQuesTime.ToShortTimeString()
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-remove" onmouseover="Show(this)" onmouseout="hide(this)"></span>
+                                            </a>
+                                        </p>
                                     </div>
                                 }
                             }
@@ -63,3 +125,16 @@
         </div>
     }
 </div>
+
+
+<script>
+    function Show(obj) {
+       // aler(1)
+      // $(obj).removeClass("hidden");
+    }
+    function hide(obj) {
+        //alert(2)
+       // $(obj).addClass("hidden");
+    }
+
+</script>
