@@ -226,7 +226,8 @@ namespace GraduateDesignBk.Controllers
         {
             PersonBars personBars = new PersonBars();
             personBars.Id = Id;    personBars.userType = userType;
-            personBars.pbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where vb.ToUID is null and vb.PBID=vb.FBID and  vb.FBID = '0'").Where(m=>m.FromId==Id).ToList();
+            personBars.pbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where vb.ToUID is null and vb.PBID=vb.FBID and  vb.FBID = '0'")
+                .Where(m=>m.FromId==Id).OrderBy(m=>m.RaiseQuesTime).ToList();
             personBars.fbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where  vb.PBID=vb.FBID and  vb.FBID <> '0'").ToList();
             personBars.sbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where  vb.PBID <>vb.FBID").ToList();
             personBars.counts = count(Id, userType);
@@ -300,17 +301,21 @@ namespace GraduateDesignBk.Controllers
         }
 
         [HttpPost]
-        public void AddStuOrTe(AddStuOrTe Aso)
+        public ActionResult AddStuOrTe(AddStuOrTe Aso)
         {
             string[] ids = Aso.Ids.Split(new char[]{ '|'});
+            string userType = "";
             if (Aso.userType ==("教师"))
             {
+                userType = "学生";
                 AddMentors(Aso.Id, ids);
             }
             else if(Aso.userType==("学生"))
             {
+                userType = "教师";
                 AddStudents(Aso.Id, ids);
-            }   
+            }
+            return RedirectToAction("stuOrTeachers", new { Id = Aso.Id, userType = userType, subType = Aso.userType });
         }
 
         //为老师增加学生
@@ -322,8 +327,8 @@ namespace GraduateDesignBk.Controllers
                     TeacherUID = MentorId,
                     StudentUID = id
                 });
-                ContextManger.SaveChanges();
             }
+            ContextManger.SaveChanges();
         }
         //为学生增加老师
         public void AddMentors(string StuId, string[] MentorIds)
@@ -348,52 +353,6 @@ namespace GraduateDesignBk.Controllers
             pms[1] = new SqlParameter("@ut",userType);
             Counts c =  ContextManger.Database.SqlQuery<Counts>(usp, pms).First();
             return c;
-        }
-
-        public void MyProperty(string Id, string userType) {
-            UserDetailModel userDetail = new UserDetailModel();
-            //根据id得到个人信息（AspNetUser表） 返回ApsNetUser对象
-            userDetail.personInfo = UserManager.Users.Select(m =>
-               new PersonInfo()
-               {
-                   Id = m.Id,
-                   UserName = m.UserName,
-                   RealName = m.RealName,
-                   Photo = m.Photo,
-                   Email = m.Email,
-                   PhoneNumber = m.PhoneNumber,
-                   mayjor = m.Mayjor,
-                   level = m.level,
-                   Comment = m.Comment
-               }
-           ).Where(m => m.Id == Id).First();
-            //根据Id获得发布的帖子 Bars  分页 不查询
-            userDetail.bars = ContextManger.Bars.Where(m => m.FromUID == Id).ToList();
-            //根据Id获得上传的文件//Files  分页不查询
-            userDetail.files = ContextManger.File.Where(m => m.FromUID == Id).ToList();
-            //根据Id获得消息列表    分页不查询
-            userDetail.msgs = ContextManger.Notice.Where(m => m.FromUID == Id).ToList();
-            //根据Id获得该师(生)的学生(知道老师列表)  //分页 查询
-            List<string> Ids = new List<string>();
-            if (userType.Equals("教师"))
-            {
-                Ids = ContextManger.StuMentor.Where(m => m.TeacherUID == Id).Select(m => m.StudentUID).ToList();
-            }
-            else if (userType.Equals("学生"))
-            {
-                Ids = ContextManger.StuMentor.Where(m => m.StudentUID == Id).Select(m => m.TeacherUID).ToList();
-            }
-            userDetail.stuOrTeaches = UserManager.Users.Select(m =>
-                   new UserViewModel()
-                   {
-                       Id = m.Id,
-                       UserName = m.UserName,  //一卡通号
-                       Photo = m.Photo,
-                       mayjor = m.Mayjor,
-                       level = m.level,
-                       Comment = m.Comment,
-                       RealName = m.RealName,  //真实姓名
-                   }).Where(m => Ids.Contains(m.Id)).ToList();
         }
 
         [HttpPost]
@@ -428,6 +387,51 @@ namespace GraduateDesignBk.Controllers
                 }
             }
             return RedirectToAction("List", new { userType = RoleName });
+        }
+
+        [HttpPost]
+        public ActionResult RemoveFromRelation(AddStuOrTe Aso)
+        {
+            string[] ids = Aso.Ids.Split(new char[] { '|'});
+            string subType = "";
+            if (Aso.userType == "教师")
+            {
+                subType = "学生";
+                RemoveStudents(Aso.Id, ids);
+            }else if (Aso.userType == "学生")
+            {
+                subType = "教师";
+                RemoveMentor(Aso.Id, ids);
+            }
+            return  RedirectToAction("stuOrTeachers", new { Id= Aso.Id, userType= Aso.userType , subType= subType });
+        }
+        public void RemoveStudents(string MentorId, string[] StudentIds)
+        {
+            foreach(string id in StudentIds)
+            {
+
+                StuMentor stum = ContextManger.StuMentor.Where(m=>m.StudentUID == id && m.TeacherUID == MentorId)?.First();
+                if (stum != null)
+                {
+
+                    ContextManger.StuMentor.Remove(stum);
+                }
+            }
+            ContextManger.SaveChanges();
+        }
+
+        public void RemoveMentor(string StudentId, string[] mentorIds)
+        {
+            foreach (string id in mentorIds)
+            {
+                StuMentor stum = ContextManger.StuMentor.Where(m => m.StudentUID == StudentId && m.TeacherUID == id)?.First();
+                if (stum != null)
+                {
+                    ContextManger.StuMentor.Remove(stum);
+                }
+            }
+            ContextManger.SaveChanges();
+
         }
         //===========================================================
         //

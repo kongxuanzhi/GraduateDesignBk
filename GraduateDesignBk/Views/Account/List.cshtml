@@ -48,14 +48,14 @@
         <input type="checkbox" id="Totalselect" onclick="CheckDelete()" />
         @Html.ActionLink("添加", "AddNewUser", new { roleType = @Model.userType, }, htmlAttributes: new { @class = "btn btn-default" })
         <input type="hidden" id="DeleteUser"  name="Ids" value="" />
-        <a href="javascript:Submit('DeleteUser');" onclick="return confirm('你确定要删除这些成员吗？')" class="btn btn-default" >删除</a>
+        <a href="javascript:Submit('DeleteUser');" onclick="return confirm('你确定要删除这些成员吗？关于该成员的所有信息都将被删除，请慎重！')" class="btn btn-default" >删除</a>
         if (@Model.type == "UnGroupList")
         {
             <a href="javascript:Submit('AddUserToRole');" class="btn btn-default">添加到该角色</a>
         }
         else
         {
-            <a href="javascript:Submit('RemoveUserFromRole');" onclick="return confirm('你确定要移除这些成员吗？')" class="btn btn-default">移除</a>
+            <a href="javascript:Submit('RemoveUserFromRole');" onclick="return confirm('你确定要移除这些成员吗？该成员的师生关系将被移出，请慎重！')" class="btn btn-default">移除</a>
         }
         if (@Model.subtype == "unSorT")
         {
