@@ -49,13 +49,43 @@ namespace Graduatedesignbk.Controllers
         //    barv.Bars.sbars = db.Database.SqlQuery<bardetail>("select * from v_bars_users vb Where  vb.pbid <>vb.fbid").OrderBy(m => m.raisequestime).ToList();
         //    return View(barv);
         //}
-
         public ActionResult Statisics()
         {
             return View();
         }
         #endregion
+        
+        #region 前台显示
+        public JsonResult Latest(int currentIndex = 1)
+        {
+            int pagesize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["pagesize"]);
+            List<QestDetail> LatestQues = new List<QestDetail>();
+            LatestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail").ToList();
+            LatestQues = LatestQues.Where(m=>m.RaiseQuesTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString())).ToList();
+            LatestQues = LatestQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            return Json(LatestQues);
+        }
+        public JsonResult Hotest(int currentIndex = 1)
+        {
+            int pagesize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["pagesize"]);
+            List<QestDetail> LatestQues = new List<QestDetail>();
+            LatestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where CommentNum+Likes>10").ToList();
+            LatestQues = LatestQues.Where(m => m.RaiseQuesTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString())).ToList();
+            LatestQues = LatestQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            return Json(LatestQues);
+        }
 
+        public JsonResult UnAns(int currentIndex = 1)
+        {
+            int pagesize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["pagesize"]);
+            List<QestDetail> LatestQues = new List<QestDetail>();
+            LatestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where CommentNum=0").ToList();
+            LatestQues = LatestQues.Where(m => m.RaiseQuesTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString())).ToList();
+            LatestQues = LatestQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            return Json(LatestQues);
+        }
+       
+        #endregion
         #region 发表、私信、评论、追问 删除问题，评论，追问
         //发表提问
         [HttpPost]
@@ -175,48 +205,38 @@ namespace Graduatedesignbk.Controllers
         #endregion
 
         #region 为问题、回答点赞 ，设置为问题已解决设置为公开或私密
+
         //ajax为问题点赞
-        public string AddQuestLike(string QID)
+        [HttpPost]
+        [LoginAuthorize]
+        public JsonResult QuestLike(string QID)
         {
             Question ques = db.Questions.Find(QID);
             if (ques != null)
             {
-                var search = new { BID = QID, FromUID = User.Identity.GetUserId() };
-                likeOnce lo = db.LikeOnce.Find(search);
-                if (lo == null)
+                int count = db.LikeOnce.ToList().Where(m => m.BID == QID && m.FromUID == User.Identity.GetUserId()).Count();
+                if (count==0)
                 {
                     //增加点赞记录
                     db.LikeOnce.Add(new likeOnce() { BID = QID, FromUID = User.Identity.GetUserId() });
                     ques.Likes += 1;
                     TryUpdateModel(ques);
                     db.SaveChanges();
-                    return "success";
-                }
-                 return "error_exist";
-            }
-            return "error";
-        }
-        //取消问题赞
-        public string DeleteQuesLike(string QID)
-        {
-            Question ques = db.Questions.Find(QID);
-            if (ques != null)
-            {
-                var search = new { BID = QID, FromUID = User.Identity.GetUserId() };
-                likeOnce lo = db.LikeOnce.Find(search);
-                if (lo != null)
+                    return Json("addsuccess");
+                }else if (count==1)
                 {
+                    likeOnce lo = db.LikeOnce.ToList().Where(m => m.BID == QID && m.FromUID == User.Identity.GetUserId()).First();
                     //增加点赞记录
                     db.LikeOnce.Remove(lo);
                     ques.Likes -= 1;
                     TryUpdateModel(ques);
                     db.SaveChanges();
-                    return "success";
+                    return Json("delsuccess");
                 }
-                return "error_exist";
             }
-            return "error";
+            return Json("error");
         }
+       
         //ajax为问题点赞
         public string AddAnsLike(string AID)
         {

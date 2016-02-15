@@ -51,7 +51,6 @@ namespace GraduateDesignBk.Models
         public string SAuthor { get; set; }
         public string SQue { get; set; }
         public IsPub isPub { get; set; }
-
         public Paging page { get; set; }
         public BarDetailModel Bars { get; set; }
     }

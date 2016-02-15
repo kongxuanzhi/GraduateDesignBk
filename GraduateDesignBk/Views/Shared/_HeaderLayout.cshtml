@@ -45,7 +45,7 @@
         <div class="col-md-6">
             <div class="notice" style="width:100%; float:left">
                 <marquee behavior="scroll" onstart="this.firstChild.innerHTML+=this.firstChild.innerHTML;" scrollamount="5" onmouseover="this.stop();" onmouseout="this.start();">
-                    <i><b><span id="Note">通知：请各位同学在下周一之前上交毕业设计文件</span></b></i>
+                    <span id="Note">通知：请各位同学在下周一之前上交毕业设计文件</span>
                 </marquee>
             </div>
         </div>
@@ -87,7 +87,7 @@
                 success: function (data) {
                     if (data != "error") {
                      //   alert(data)
-                        $("#Note").html("通知:"+data);
+                        $("#Note").html("通知："+data);
                     }
                 }
             });
