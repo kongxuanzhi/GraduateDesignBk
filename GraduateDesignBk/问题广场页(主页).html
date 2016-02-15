@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="gbk">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--link href="http://cdn.bootcss.com/bootstrap/2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet"-->
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<meta name="renderer" content="webkit"><!-- 可以让部分国产浏览器默认采用高速模式渲染页面：http://v3.bootcss.com/getting-started/ -->
+    <link rel="shortcut icon" href="iconfont-daxue.png">
+
+    <title>江西理工大学理学院毕业指导网站</title>
+	
+	
+
+    <!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="bootstrap(3.3.5).min.css">
+	<!--link rel="stylesheet" href="demo.css">
+    <!-- Custom styles for this template -->
+    
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	<link rel="stylesheet" href="mycss.css">
+	
+    <style>
+	
+	.mynavbar{padding-left:0;margin-bottom:0;list-style:none}.mynavbar>li{position:relative;display:block}.mynavbar>li>a{position:relative;display:block}.mynavbar>li>a:hover,.mynavbar>li>a:focus{text-decoration:none;background-color:#eee}.mynavbar>li.disabled>a{color:#999}.mynavbar>li.disabled>a:hover,.mynavbar>li.disabled>a:focus{color:#999;text-decoration:none;cursor:not-allowed;background-color:transparent}.mynavbar .open>a,.mynavbar .open>a:hover,.mynavbar .open>a:focus{background-color:#eee;border-color:#428bca}.mynavbar .mynavbar-divider{height:1px;margin:9px 0;overflow:hidden;background-color:#e5e5e5}.mynavbar>li>a>img{max-width:none}
+	
+	.zhu {
+		background-color: #44546A;
+		color: #FFF;
+		padding-bottom: 45px;
+	}
+	
+	.jz{
+		width=1000px; 
+		margin:0 auto;
+		text-align:center;
+	}
+	
+	.round {
+		padding:10px; width:100%; height:50px;
+		border: 2px solid #000;
+		-moz-border-radius: 15px;      /* Gecko browsers */
+		-webkit-border-radius: 15px;   /* Webkit browsers */
+		border-radius:15px;            /* W3C syntax */
+		margin:5px 0px;
+	}
+	
+	.changescsale{
+	transform:scale(0.7);
+	}
+	
+	
+	@media screen and (min-width: 768px){
+		.changescsale{
+			transform:scale(0.8);
+		}
+		.mynavbar {
+			margin: 0;
+			float: left;
+		}
+		.mynavbar>li>a {
+			padding-top: 15px;
+			padding-bottom: 15px;
+		}
+	}
+	
+	
+	.titlejz{
+		width:56%;
+		height:22px;
+		margin-left:auto;
+		margin-right:auto;
+		margin-top: 3.5%;
+		font-size: 16px;
+		color: white;
+		text-align:center;
+	}
+	@media screen and (max-width: 1021px){
+		.titlejz{
+			width:42%;
+		}
+	}
+	.mystyle{
+		margin-top: 23px;
+	}
+	
+	@media screen and (max-width: 768px){
+		.titlejz{
+			margin-top: 0px;
+			margin-bottom: 6px;
+		}
+		.mystyle{
+			margin-top: 4px;
+		}
+	}
+	
+	.notice {
+		color: #3C1937;
+		background: url(iconfont-tongzhi.png) left center no-repeat;
+		padding: 12px 5px 4px 25px;
+		margin: 3px;
+	}
+	
+	.question-list {
+		margin-top: 5px;
+		padding: 10px 0;
+		border-bottom: 1px #ddd solid;
+	}
+	
+	.question-list-bar {
+		color: #999;
+		font-size: 12px;
+		font-weight: 400;
+		margin-top: 34px;
+	}
+	
+	
+	
+	.faa {
+		position: absolute;
+		right: 25px;
+		top: 9px;
+		color: #2B303E;
+		font-size: 18px;
+	}
+	
+	
+	
+	.mynavbar{
+		width: 100%;
+		margin-top: 5%;
+	}
+	.mynavbar>li {
+		float: left;
+		width: 33.333%;
+	}
+	
+	.mynavbar a {
+		text-transform: uppercase;
+		font-size: 14px;
+	}
+	.mynav>li>a {
+		position: relative;
+		display: block;
+		padding-right: 0px;
+		padding-left: 0px;
+	}
+	
+	.my-btn-primary {
+		background-color: #2B303E;
+		border-color: #FFFFFF;
+		color: #FFFFFF;
+		padding: 4px 10px;
+	}
+	.my-btn-primary:hover,.my-btn-primary:focus,.my-btn-primary:active,.my-btn-primary.active,.open .dropdown-toggle.my-btn-primary{
+		background-color: #287EBB;
+		color: #FFFFFF;
+		border-color: #287EBB;
+	}
+	.signinbtn{
+		float: right;
+		margin-top: 3%;
+		margin-right: 8.8%;
+	}
+	@media screen and (max-width: 991px){
+		.signinbtn{
+			margin-right: 0;
+		}
+	}
+	@media screen and (max-width: 768px){
+		.signinbtn{
+			margin-top: 2%;
+		}
+	}
+	.navbar-brand-background{
+		margin-top: 7%;
+	}
+	@media screen and (max-width: 1021px){
+		.navbar-brand-background{
+			margin-top: 5%;
+			margin-bottom: 8px;
+		}
+	}
+	@media screen and (max-width: 768px){
+		.navbar-brand-background{
+			margin-top: 2%;
+			margin-bottom: 0;
+		}
+	}
+	</style>
+	
+  </head>
+
+  <body style="background: #EEE">
+    <!-- Modal 用来响应下面button点击所弹出的模态框 -->
+	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	  <div class="modal-dialog modal-sm">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="exampleModalLabel">欢迎</h4>
+		  </div>
+		  <div class="modal-body">
+			<form class="form-signin">
+				<label for="inputEmail" class="sr-only">账号</label>
+				<input type="email" id="inputEmail" class="form-control" placeholder="账号" required autofocus>
+				<label for="inputPassword" class="sr-only">密码</label>
+				<input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
+				<div style="padding-top:10px;padding-bottom:10px">
+				  <label>
+					<input type="checkbox" value="remember-me"> 记住密码
+				  </label>
+				</div>
+				<button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+			</form>
+		  </div>
+		  <div class="modal-footer">
+			<a href="#">忘记密码？</a>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation" style="background-color: #2b303e;border-color: #2b303e;">
+      <div class="container"><button type="button" class="btn my-btn-primary signinbtn" data-toggle="modal" data-target=".bs-example-modal-sm">登录</button>
+        <div class="navbar-header">
+		  <a class="navbar-brand navbar-brand-background" href="#"></a>
+        </div>
+		<div class="titlejz navbar-header">理学院毕业指导网站</div>
+        
+      </div>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+   
+
+ 
+    <div class="container" style="background-color:#eee;padding-bottom: 24px;margin-bottom: 30px">
+      
+    </div> <!-- /container -->
+	<footer>
+        <p class="jz">&copy; Horizon 2016</p>
+    </footer>
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  </body>
+</html>

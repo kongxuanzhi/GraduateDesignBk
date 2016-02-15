@@ -1,0 +1,88 @@
+﻿@model IEnumerable<GraduateDesignBk.Models.Note>
+
+@{
+    ViewBag.Title = "Index";
+}
+<p>
+    @Html.ActionLink("发布新公告", "Create",null,new  { @class="btn btn-default"})
+    <a href="javascript:Submit('DeleteMany')" class="btn btn-default">删除</a>
+</p>
+
+
+@using (Html.BeginForm("DeleteMany", "Note", null, FormMethod.Post, new { id = "form_DeleteMany" }))
+{
+    <input type="hidden" id="DeleteMany" name="Id" value="" />
+}
+<i><b>历史公告</b></i>  <i>点击公告内容选中</i>
+<table class="table table-striped table-bordered table-hover table-condensed" style="text-align:center">
+    <tr>
+        <th>
+            <label for="Totalselect" class="btn btn-default">全 选</label>
+            <input type="checkbox" id="Totalselect" onclick="CheckDelete()" />
+        </th>
+        <th>
+            公告内容
+            </th>
+        <th>
+            发布人
+        </th>
+        <th>发布时间</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td style="width:100px">
+            <input type="checkbox" id="@item.NTID"  name="delId" value="@item.NTID" />
+        </td>
+        <td style="max-width:100px">
+            <label for="@item.NTID">
+                @Html.DisplayFor(modelItem => item.Content)
+            </label>
+        </td>
+        <td style="max-width:40px">
+            @Html.DisplayFor(modelItem => item.FromUID)
+        </td>
+        <td style="width:170px">
+            @Html.DisplayFor(modelItem => item.Time)
+        </td>
+    </tr>
+}
+</table>
+
+<script>
+    //function getIds() {
+    //    var ids = "";
+    //    var check = document.getElementsByName("delId");
+    //    for (var i = 0; i < check.length; i++) {
+    //        if (check[i].checked == true) {
+    //            ids += check[i].value + "|";
+    //        }
+    //    }
+    //    return ids.substring(0, ids.length - 1);
+    //}
+    //function Submit(name) {
+    //    var ids = getIds();
+    //    if (ids != "") {
+    //        $("#" + name).val(ids);
+    //        $('#form_' + name).submit();
+    //    } else {
+    //        alert("你未选中任何选项！");
+    //    }
+    //}
+    //function CheckDelete() {
+    //    var allCheck = document.getElementById("Totalselect");
+    //    var check = document.getElementsByName("delId");
+    //    if (allCheck.checked == false) {
+    //        allCheck.checked = false;
+    //        for (var i = 0; i < check.length; i++) {
+    //            check[i].checked = false;
+    //        }
+    //        return;
+    //    }
+    //    else {
+    //        for (var i = 0; i < check.length; i++) {
+    //            check[i].checked = true;
+    //        }
+    //    }
+    //}
+</script>

@@ -57,10 +57,10 @@
                     </p>
                 </div>
                 <div style="height:21px;">
-                    @using (Html.BeginForm("DeleteUser", "Account", new { Ids = @item.Id, RoleName = Html.ViewData["userType"] }, FormMethod.Post, new { id = "from" + @item.Id }))
+                    @*@using (Html.BeginForm("DeleteUser", "Account", new { Ids = @item.Id, RoleName = Html.ViewData["userType"] }, FormMethod.Post, new { id = "from" + @item.Id }))
                     {
                         <a href="javascript:$('#from@(item.Id)' ).submit();" onclick="return confirm('确定要删除该成员吗？')" class="left glyphicon glyphicon-remove"></a>
-                    }
+                    }*@
                     <a class="right" href="/Account/SelfCenter/?Id=@item.Id&userType=@Html.ViewData["userType"]"><span class=" glyphicon glyphicon-hand-right" aria-hidden="true"></span></a>
                 </div>
             </div>

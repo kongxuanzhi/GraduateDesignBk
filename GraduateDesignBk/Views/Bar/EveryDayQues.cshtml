@@ -1,0 +1,26 @@
+﻿@model GraduateDesignBk.Models.BarViewModel
+@{
+    ViewBag.Title = "TodayQues";
+}
+<div class="row">
+    <ul id="nav" class="nav nav-tabs nav-justified">
+        <li role="presentation">
+            <a href="/Bar/Index"><span>问题</span>   </a>
+        </li>
+        <li class="active" role="presentation">
+            <a href="/Bar/EveryDayQues"><span>今日问题(@Model.PubBars.pbars.Count)</span></a>
+        </li>
+        <li role="presentation">
+            <a href="/Bar/Statisics"><span>问题答疑统计</span></a>
+        </li>
+    </ul>
+</div>
+
+@if (Model.PubBars.pbars.Count == 0)
+{
+    <h1>今日暂无问题</h1>
+}
+else
+{
+    @Html.Partial("_BarsDetailsPartial", Model.PubBars)
+}

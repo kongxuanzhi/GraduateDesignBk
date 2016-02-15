@@ -1,31 +1,197 @@
 ﻿@{
+    Layout = "~/Views/Shared/_HeaderLayout.cshtml";
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    
+    <div class="col-md-11">
+        <hr style="border-top:1px solid #ccc;margin-top:0px;"  width="100%" SIZE="3">
+    </div>
+    <div class="col-md-6">
+
+        <form name="Post">
+            <div class="form-group">
+                <label for="Title"></label>
+                <input type="text" name="Title" class="form-control" id="Title" placeholder="标题">
+            </div>
+            <div class="form-group">
+                <label for="Description"></label>
+                <textarea style="width:100%;height:125px"  name="Description" id="Description" class="form-control"  placeholder="描述"></textarea>
+            </div>
+            <div style="margin-bottom:57px">
+                <a  href="javascript:Post()" class="btn btn-default" style="float:right;margin:10px 0px;background-color: #44546A; color:#FFF">提问</a>
+            </div>
+        </form>
+        <div class="_ask-box" style="/*margin-left:-15px;margin-right:-15px*/">
+            <div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
+                <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#latest" id="latest-tab" role="tab" data-toggle="tab" aria-controls="latest" aria-expanded="true">最新问题</a></li>
+                    <li role="presentation" class=""><a href="#hotest" role="tab" id="hotest-tab" data-toggle="tab" aria-controls="hotest" aria-expanded="false">热门问题</a></li>
+                    <li role="presentation" class=""><a href="#unAnswer" role="tab" id="unAnswer-tab" data-toggle="tab" aria-controls="unAnswer" aria-expanded="false">未回答问题</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade active in" id="latest" aria-labelledby="latest-tab">
+                        <div class="question-list media clearfix">
+                            <div class="pull-left question-list-action">
+                                <img src="https://oss.aliyuncs.com/yqfiles/img_1e7ba63ad46666295f8b0b763d268336.jpg" width="50" height="50" alt="肠包" class="img-user">
+                                <div style="text-align:center;font-size: 12px;margin-top:5px">朱&nbsp;&nbsp发</div>
+                            </div>
+                            <div class="media-body">
+                                <a href="/ask/955" class="question-list-title">就快毕业了，大家有什么打算么？</a>
+                                <div class="pull-right">
+                                    <div class="action-top clearfix no-answer">
+                                        <span class="pull-left">5&nbsp</span>
+                                        <span class="pull-right glyphicon glyphicon-comment"></span>
+                                    </div>
+                                    <div class="action-bottom clearfix">
+                                        <span class="pull-left">2&nbsp</span>
+                                        <span class="pull-right glyphicon glyphicon-thumbs-up"></span>
+                                    </div>
+                                </div>
+                                <div class="question-list-bar">
+                                    <span><span class="glyphicon glyphicon-plus"></span> 7次浏览</span>
+                                    <span><span class="glyphicon glyphicon-tags"></span> 5人收藏</span>
+                                    <span><span class="glyphicon glyphicon-time"></span> 2小时前</span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="question-list media clearfix">
+                            <div class="pull-left question-list-action">
+                                <img src="https://oss.aliyuncs.com/yqfiles/avatar2.jpg" width="50" height="50" alt="肠包" class="img-user">
+                                <div style="text-align:center;font-size: 12px;margin-top:5px">杨雨欣</div>
+                            </div>
+                            <div class="media-body">
+                                <a href="/ask/955" class="question-list-title">这是一个很长很长很长很长很长很长很长很长的问题？</a>
+                                <div class="pull-right">
+                                    <div class="action-top clearfix no-answer">
+                                        <span class="pull-left">4&nbsp</span>
+                                        <span class="pull-right glyphicon glyphicon-comment"></span>
+                                    </div>
+                                    <div class="action-bottom clearfix">
+                                        <span class="pull-left">1&nbsp</span>
+                                        <span class="pull-right glyphicon glyphicon-thumbs-up"></span>
+                                    </div>
+                                </div>
+                                <div class="question-list-bar">
+                                    <span><span class="glyphicon glyphicon-plus"></span> 7次浏览</span>
+                                    <span><span class="glyphicon glyphicon-tags"></span> 1人收藏</span>
+                                    <span><span class="glyphicon glyphicon-time"></span> 2小时前</span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="question-list media clearfix">
+                            <div class="pull-left question-list-action">
+                                <img src="https://oss.aliyuncs.com/yqfiles/avatar.jpg" width="50" height="50" alt="肠包" class="img-user">
+                                <div style="text-align:center;font-size: 12px;margin-top:5px">孔龙飞</div>
+                            </div>
+                            <div class="media-body">
+                                <a href="/ask/955" class="question-list-title">就快毕业了，大家有什么打算么？</a>
+                                <div class="pull-right">
+                                    <div class="action-top clearfix no-answer">
+                                        <span class="pull-left">12&nbsp</span>
+                                        <span class="pull-right glyphicon glyphicon-comment"></span>
+                                    </div>
+                                    <div class="action-bottom clearfix">
+                                        <span class="pull-left">9&nbsp</span>
+                                        <span class="pull-right glyphicon glyphicon-thumbs-up"></span>
+                                    </div>
+                                </div>
+                                <div class="question-list-bar">
+                                    <span><span class="glyphicon glyphicon-plus"></span> 7次浏览</span>
+                                    <span><span class="glyphicon glyphicon-tags"></span> 9人收藏</span>
+                                    <span><span class="glyphicon glyphicon-time"></span> 21:42</span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <nav style="text-align">
+                            <ul class="pagination">
+                                <li>
+                                    <a href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    
+                    <div role="tabpanel" class="tab-pane fade" id="hotest" aria-labelledby="hotest-tab">
+                       Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="unAnswer" aria-labelledby="unAnswer-tab">
+                        <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-1">
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <form class="" role="search">
+            <div class="form-group">
+                <input type="text" class="form-control search clearable" placeholder="搜索问题，文件">
+                <i class="faa glyphicon glyphicon-search"></i>
+            </div>
+        </form>
+
+        <p style="margin-bottom: 10px;margin-top: 25px;margin-left: 10px;font-size: 12px;">精选答疑：</p>
+        <hr style="border-top:1px solid #ccc; margin-top: 5px" width="100%" SIZE="3">
+        <div class="row">
+            <div class="pagination">
+                <ul>
+                    <li><a href="https://www.baidu.com/">毕业设计高分攻略</a></li>
+                    <li><a href="#">毕业设计到底怎么写？</a></li>
+                    <li><a href="#">毕业设计格式是怎样的？</a></li>
+                    <li><a href="#">毕业设计至少写多少字？</a></li>
+                </ul>
+            </div>
+        </div>
+        <ul class="nav" data-spm="yqask2">
+            <li><a href="#modal-login" data-toggle="modal"><span class="glyphicon glyphicon-pencil"></span>我提出的问题</a></li>
+            <li><a href="#modal-login" data-toggle="modal"><span class="glyphicon glyphicon-star-empty"></span>我收藏的问题</a></li>
+        </ul>
     </div>
 </div>
+<script>
+    function Post() {
+        var form = document.forms["Post"];
+        alert("发表提问");
+        $.ajax({
+            url: "/Bar/Post",
+            type: "POST",
+            data: {
+                "Title": form.Title.value,
+                "Description": form.Description.value
+            },
+            success: function (data) {
+                var str = data.split('|');
+                if (str[0] == "logined") {
+                    alert(str[1]);
+                    if (str[1] == "发表成功!") {
+                        $("#Title").val(null)
+                        $("#Description").val(null)
+                    }
+                }
+                else {
+                    eval(data)
+                }
+            }
+        });
+    }
+</script>
+

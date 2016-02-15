@@ -1,4 +1,4 @@
-﻿@model  GraduateDesignBk.Models.PersonBars
+﻿@*@*@model  GraduateDesignBk.Models.PersonBars*@
 
 @{
     ViewBag.Title = "SelfBars";
@@ -22,8 +22,7 @@
         border: 0px;
         border-top: 1px solid #777777;
     }
-
-    a:link {
+    /*a:link {
         color: black;
     }
 
@@ -39,7 +38,7 @@
     a:active {
         color: black;
         text-decoration: none;
-    }
+    }*/
 </style>
 
 <div class="row" style="margin-top:20px">
@@ -54,12 +53,9 @@
                     <div style="padding-top: 13px;">
                         <p>
                             <a href="/Account/SelfCenter/?Id=@p.FromId&userType=@Model.userType">
-                                <span>@p.FromUID</span> 
+                                <span>@p.FromUID</span>
                             </a>
-                            <a href="#">
-                                <span class="glyphicon glyphicon-remove" onmouseover="Show(this)" onmouseout="hide(this)"></span>
-                            </a>
-                            <br/>
+                            <br />
                             @if (p.RaiseQuesTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString()))
                             {
                                 @p.RaiseQuesTime.ToShortTimeString()
@@ -71,7 +67,7 @@
                         </p>
                     </div>
                     <div>
-                        @p.Content
+                        @p.Description
                     </div>
                 </div>
                 <hr />
@@ -87,8 +83,8 @@
                                 <p>
                                     <a href="/Account/SelfCenter/?Id=@f.FromId&userType=@Model.userType">
                                         <b>@f.FromUID :</b>
-                                    </a> @f.Content
-                                   
+                                    </a> @f.Description
+
                                     <br />@f.RaiseQuesTime.ToShortTimeString()
                                     <a href="#">
                                         <span class="glyphicon glyphicon-remove" onmouseover="Show(this)" onmouseout="hide(this)"></span>
@@ -109,7 +105,7 @@
                                             </a> 回复
                                             <a href="/Account/SelfCenter/?Id=@s.ToId&userType=@Model.userType">
                                                 <b> @s.ToUID :</b>
-                                            </a>  @s.Content
+                                            </a>  @s.Description
                                             <br />  @s.RaiseQuesTime.ToShortTimeString()
                                             <a href="#">
                                                 <span class="glyphicon glyphicon-remove" onmouseover="Show(this)" onmouseout="hide(this)"></span>
@@ -126,15 +122,13 @@
     }
 </div>
 
-
 <script>
     function Show(obj) {
-       // aler(1)
-      // $(obj).removeClass("hidden");
+        // aler(1)
+        // $(obj).removeClass("hidden");
     }
     function hide(obj) {
         //alert(2)
-       // $(obj).addClass("hidden");
+        // $(obj).addClass("hidden");
     }
-
-</script>
+</script>*@

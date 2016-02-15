@@ -8,6 +8,9 @@ namespace GraduateDesignBk
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/bundles/customMutiplySelect").Include(
+                "~/Scripts/mutilplySelectSubmitForm.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                          "~/Scripts/jquery-2.0.3.min.js"));
 
@@ -31,8 +34,19 @@ namespace GraduateDesignBk
                        "~/Content/bootstrap-theme.min.css"));
             bundles.Add(new StyleBundle("~/Content/AdminCss").Include(
                    "~/Content/bootstrap-admin-theme.css",
-                       
                      "~/Content/bootstrap-admin-theme-change-size.css"));
+            bundles.Add(new StyleBundle("~/Content/HeadCss").Include(
+                   "~/Content/bootstrap(3.3.5).min.css",
+                  "~/Content/mycss.css"
+                ));
+            bundles.Add(new ScriptBundle("~/Content/HeadJs").Include(
+                 "~/Scripts/jquery-1.10.2.min.js",
+                  "~/Scripts/bootstrap.min.js",
+                  "~/Scripts/respond.js"
+                ));
+            bundles.Add(new ScriptBundle("~/Script/js").Include(
+                 "~/Scripts/jquery-1.10.2.min.js"
+                ));
         }
     }
 }

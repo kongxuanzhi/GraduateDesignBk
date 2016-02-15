@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -11,11 +9,9 @@ using Microsoft.Owin.Security;
 using GraduateDesignBk.Models;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using RecruCol;
 
 namespace GraduateDesignBk.Controllers
 {
-    //[Authorize]
     public class AccountController : Controller
     {
         #region 初始化获得managers
@@ -84,11 +80,9 @@ namespace GraduateDesignBk.Controllers
         }
         #endregion
 
-       
-
         public ActionResult List(SearchAndPage UsersModel)
         {
-            int pageSize = (int)UsersModel.PageSize+8;
+            int pageSize = (int)UsersModel.page.PageSize+8;
             //查询所有
             UsersModel.UserItems = UserManager.Users.Select(m =>
             new UserViewModel()
@@ -150,10 +144,10 @@ namespace GraduateDesignBk.Controllers
                 }
             }
 
-            UsersModel.TotalCount = UsersModel.UserItems.Count();
-            UsersModel.PageNum = (int)Math.Ceiling((double)UsersModel.TotalCount / pageSize);
+            UsersModel.page.TotalCount = UsersModel.UserItems.Count();
+            UsersModel.page.PageNum = (int)Math.Ceiling((double)UsersModel.page.TotalCount / pageSize);
             //分页
-            UsersModel.UserItems = UsersModel.UserItems.OrderBy(m => m.Id).Skip((UsersModel.CurIndex - 1) * pageSize).Take(pageSize).ToList();
+            UsersModel.UserItems = UsersModel.UserItems.OrderBy(m => m.Id).Skip((UsersModel.page.CurIndex - 1) * pageSize).Take(pageSize).ToList();
             return View(UsersModel);
         }
 
@@ -222,17 +216,17 @@ namespace GraduateDesignBk.Controllers
             return View(personInfo);
         }
         
-        public ActionResult SelfBars(string Id, string userType)
-        {
-            PersonBars personBars = new PersonBars();
-            personBars.Id = Id;    personBars.userType = userType;
-            personBars.pbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where vb.ToUID is null and vb.PBID=vb.FBID and  vb.FBID = '0'")
-                .Where(m=>m.FromId==Id).OrderBy(m=>m.RaiseQuesTime).ToList();
-            personBars.fbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where  vb.PBID=vb.FBID and  vb.FBID <> '0'").ToList();
-            personBars.sbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where  vb.PBID <>vb.FBID").ToList();
-            personBars.counts = count(Id, userType);
-            return View(personBars);
-        }
+        //public ActionResult SelfBars(string Id, string userType)
+        //{
+        //    //PersonBars personBars = new PersonBars();
+        //    //personBars.Id = Id;    personBars.userType = userType;
+        //    //personBars.pbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where vb.ToUID is null and vb.PBID=vb.FBID and  vb.FBID = '0'")
+        //    //    .Where(m=>m.FromId==Id).OrderBy(m=>m.RaiseQuesTime).ToList();
+        //    ////personBars.fbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where  vb.PBID=vb.FBID and  vb.FBID <> '0'").ToList();
+        //    ////personBars.sbars = ContextManger.Database.SqlQuery<BarDetail>("Select * from V_Bars_Users vb where  vb.PBID <>vb.FBID").ToList();
+        //    //personBars.counts = count(Id, userType);
+        //    //return View(personBars);
+        //}
 
         public ActionResult SelfFiles(string Id, string userType)
         {
@@ -299,7 +293,6 @@ namespace GraduateDesignBk.Controllers
             psm.counts = count(Id, userType);
             return View(psm);
         }
-
         [HttpPost]
         public ActionResult AddStuOrTe(AddStuOrTe Aso)
         {
@@ -433,6 +426,48 @@ namespace GraduateDesignBk.Controllers
             ContextManger.SaveChanges();
 
         }
+
+        public ActionResult SendMsg(string roleName,string IdS)
+        {
+            SendMsg sm = new Models.SendMsg();
+            sm.roleName = roleName;
+            sm.Ids = IdS;
+            return View(sm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SendMsg(SendMsg msg)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(msg);
+            }
+            string[] ids = msg.Ids.Split(new char[] {'|'});
+            Notice notice = new Notice()
+            {
+                Title = msg.Title,
+                Detail = msg.Detail,
+                FromUID = User.Identity.GetUserId()
+            };
+            ContextManger.Notice.Add(notice);
+            foreach (string id in ids)
+            {
+                ApplicationUser user = UserManager.FindById(id);
+                if (user != null)
+                {
+                    MassMeg massMsg = new MassMeg()
+                    {
+                        NID = notice.NID,
+                        ToUID = id,
+                    };
+                    ContextManger.MassMeg.Add(massMsg);
+                }
+            }
+            ContextManger.SaveChanges();
+            return RedirectToAction("List",new  { userType = msg.roleName});
+        }
+        
         //===========================================================
         //
         // GET: /Account/Login
@@ -446,34 +481,25 @@ namespace GraduateDesignBk.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public JsonResult Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            if (model.UserName == null) return Json("用户名不能为空");
+            if (model.PassWord == null) return Json("密码不能为空");
+            var result =  SignInManager.PasswordSignIn(model.UserName, model.PassWord, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return Json("success"+"|" + model.returnURL);
                 case SignInStatus.LockedOut:
-                    return View("Lockout");
-               // case SignInStatus.InvalidEmail:
-
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return Json("登陆错误次数过多，账户已锁定！");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                    string failure = "登录失败，用户名或密码错误";
+                    return Json(failure);
             }
         }
-
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -486,7 +512,6 @@ namespace GraduateDesignBk.Controllers
             }
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
-
         //
         // POST: /Account/VerifyCode
         [HttpPost]
@@ -539,7 +564,7 @@ namespace GraduateDesignBk.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-
+                    
                     //For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     //Send an email with this link
 

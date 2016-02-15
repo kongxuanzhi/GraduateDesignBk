@@ -2,27 +2,93 @@
 
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
     {
-    @Html.AntiForgeryToken()
-    <ul class="nav navbar-nav navbar-right">
-          <li>
-                <a href="#" role="button" , class="dropdown-toggle" data-hover="dropdown"> <i class="glyphicon glyphicon-user"></i> Hello,@User.Identity.GetUserName() </a>
+        @Html.AntiForgeryToken()
+        <ul class="nav navbar-nav navbar-right">
+            <li id="fat-menu" class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Hello,@User.Identity.GetUserName() </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">个人信息</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
+                    <li>
+                        <a href="#">个人信息</a>
+                    </li>
+                    <li>
+                        <a href="#">Another action</a>
+                    </li>
+                    <li>
+                        <a href="#">Something else here</a>
+                    </li>
                     <li role="presentation" class="divider"></li>
                     <li> </li>
-                    <li><a href="javascript:document.getElementById('logoutForm').submit()">登 出</a></li>
+                    <li>
+                        <a href="javascript:document.getElementById('logoutForm').submit()">登 出</a>
+                    </li>
                 </ul>
-          </li>
-    </ul>
+            </li>
+        </ul>
     }
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-    </ul>
+    <button id="LoginModelBtn" type="button" class="btn my-btn-primary signinbtn" data-toggle="modal" data-target=".bs-example-modal-sm">登录</button>
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">欢迎</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-signin" name="Login">
+                        <input type="hidden" name="returnURL" value="@HttpContext.Current.Request.Path" />
+                        <label for="inputUserName" class="sr-only">账号</label>
+                        <input type="text" id="UserName" name="UserName" class="form-control" placeholder="账号" required autofocus>
+                        <label for="inputPassword" class="sr-only">密码</label>
+                        <input type="password" id="inputPassword" name="PassWord" class="form-control" placeholder="密码" required>
+                        <div style="padding-top:10px;padding-bottom:10px">
+                            <label>
+                                <input type="checkbox" id="RememberMe" name="RememberMe" value=" " />记住密码
+                            </label>
+                        </div>
+                        <a class="btn btn-lg btn-primary btn-block" href="javascript:Login()">登录</a>
+                        <div class="text-danger">
+                            <ul id="LoginFail"></ul>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="#">忘记密码？</a>
+                </div>
+            </div>
+        </div>
+    </div>
 }
+@Scripts.Render("~/Script/js")
+<script>
+    function Login() {
+        $("#LoginFail").empty()
+        var form = document.forms["Login"];
+        // alert(document.getElementById("RememberMe").checked)
+        $.ajax({
+            url: "/Account/Login",
+            data: {
+                "UserName": form.UserName.value,
+                "PassWord": form.PassWord.value,
+                "RememberMe": document.getElementById("RememberMe").checked,
+                "returnURL": form.returnURL.value
+            },
+            type: "POST",
+            success: function (data) {
+                alert("登录")
+                var result = data.split('|');
+                if (result[0] == "success") {
+                    alert("登陆成功");
+                    window.location.href = result[1];
+                }
+                else {
+                    $("#LoginFail").append("<li>" + result[0] + "</li>")
+                }
+            }
+        });
+    }
+</script>

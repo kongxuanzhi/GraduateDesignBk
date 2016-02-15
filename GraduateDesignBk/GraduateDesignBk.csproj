@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -165,12 +166,18 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\LoginAuthorize.cs" />
     <Compile Include="App_Start\MailConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BarController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LikeOnce.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MsgController.cs" />
+    <Compile Include="Controllers\NoteController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -224,15 +231,78 @@
     <Compile Include="Migrations\201601310406302_addReadStateEnumforread.Designer.cs">
       <DependentUpon>201601310406302_addReadStateEnumforread.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602010837311_addfileSizeAndType.cs" />
+    <Compile Include="Migrations\201602010837311_addfileSizeAndType.Designer.cs">
+      <DependentUpon>201602010837311_addfileSizeAndType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602030703077_chengefileclass.cs" />
+    <Compile Include="Migrations\201602030703077_chengefileclass.Designer.cs">
+      <DependentUpon>201602030703077_chengefileclass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602030705132_addfileType.cs" />
+    <Compile Include="Migrations\201602030705132_addfileType.Designer.cs">
+      <DependentUpon>201602030705132_addfileType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602030710065_addfileSizeToInt.cs" />
+    <Compile Include="Migrations\201602030710065_addfileSizeToInt.Designer.cs">
+      <DependentUpon>201602030710065_addfileSizeToInt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602030818445_changeFileSizeType.cs" />
+    <Compile Include="Migrations\201602030818445_changeFileSizeType.Designer.cs">
+      <DependentUpon>201602030818445_changeFileSizeType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602030819265_changeFileSizeType1.cs" />
+    <Compile Include="Migrations\201602030819265_changeFileSizeType1.Designer.cs">
+      <DependentUpon>201602030819265_changeFileSizeType1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602040618411_增加公告类.cs" />
+    <Compile Include="Migrations\201602040618411_增加公告类.Designer.cs">
+      <DependentUpon>201602040618411_增加公告类.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602040621344_增加公告类发布时间.cs" />
+    <Compile Include="Migrations\201602040621344_增加公告类发布时间.Designer.cs">
+      <DependentUpon>201602040621344_增加公告类发布时间.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602050547308_为问题增加标题和描述赞和评论数目.cs" />
+    <Compile Include="Migrations\201602050547308_为问题增加标题和描述赞和评论数目.Designer.cs">
+      <DependentUpon>201602050547308_为问题增加标题和描述赞和评论数目.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602050553160_去掉问题的评论数.cs" />
+    <Compile Include="Migrations\201602050553160_去掉问题的评论数.Designer.cs">
+      <DependentUpon>201602050553160_去掉问题的评论数.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602050557366_修改赞的Likes.cs" />
+    <Compile Include="Migrations\201602050557366_修改赞的Likes.Designer.cs">
+      <DependentUpon>201602050557366_修改赞的Likes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602050724155_增加一个只能给问题点赞一次的表.cs" />
+    <Compile Include="Migrations\201602050724155_增加一个只能给问题点赞一次的表.Designer.cs">
+      <DependentUpon>201602050724155_增加一个只能给问题点赞一次的表.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602110413281_changeQuesTable.cs" />
+    <Compile Include="Migrations\201602110413281_changeQuesTable.Designer.cs">
+      <DependentUpon>201602110413281_changeQuesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602110739484_将问题表和评论表分开成两个表.cs" />
+    <Compile Include="Migrations\201602110739484_将问题表和评论表分开成两个表.Designer.cs">
+      <DependentUpon>201602110739484_将问题表和评论表分开成两个表.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\BarModels.cs" />
+    <Compile Include="Models\AnswerModel.cs" />
+    <Compile Include="Models\QuestionModels.cs" />
     <Compile Include="Models\DownUploadModels.cs" />
     <Compile Include="Models\FileModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\likeOnce.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MassMegModels.cs" />
+    <Compile Include="Models\Note.cs" />
     <Compile Include="Models\NoticeModels.cs" />
+    <Compile Include="Models\Paging.cs" />
+    <Compile Include="Models\ViewsModel\BarViewModels.cs" />
+    <Compile Include="Models\ViewsModel\FileViewModels.cs" />
+    <Compile Include="Models\ViewsModel\MsgViewModels.cs" />
     <Compile Include="Models\ViewsModel\RoleViewModels.cs" />
     <Compile Include="Models\StuMentorModels.cs" />
     <Compile Include="Models\ViewsModel\UserViewModel.cs" />
@@ -305,6 +375,7 @@
     <Content Include="bin\System.Web.WebPages.Razor.xml" />
     <Content Include="bin\System.Web.WebPages.xml" />
     <Content Include="bin\WebGrease.dll" />
+    <Content Include="Content\bootstrap%283.3.5%29.min.css" />
     <Content Include="Content\bootstrap-admin-theme-change-size.css" />
     <Content Include="Content\bootstrap-admin-theme-small.css" />
     <Content Include="Content\bootstrap-admin-theme.css" />
@@ -320,6 +391,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\datepicker.fixes.css" />
     <Content Include="Content\DT_bootstrap.css" />
+    <Content Include="Content\mycss.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\uniform.default.fixes.css" />
     <Content Include="Design\毕业设计ER图数据库设计.bmp" />
@@ -331,6 +403,9 @@
     <Content Include="img\default.png" />
     <Content Include="img\aiyin.jpg" />
     <Content Include="img\hongyu.png" />
+    <Content Include="img\iconfont-daxue.png" />
+    <Content Include="img\iconfont-tongzhi.png" />
+    <Content Include="img\jxust2.png" />
     <Content Include="obj\Debug\GraduateDesignBk.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\GraduateDesignBk.dll" />
     <Content Include="obj\Debug\GraduateDesignBk.pdb" />
@@ -339,10 +414,13 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\DT_bootstrap.js" />
+    <Content Include="Scripts\exporting.js" />
+    <Content Include="Scripts\highcharts.js" />
     <Content Include="Scripts\html5shiv.js" />
     <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <Content Include="obj\Debug\GraduateDesignBk.csproj.GenerateResource.Cache" />
     <Content Include="obj\Debug\GraduateDesignBk.csprojResolveAssemblyReference.cache" />
+    <Content Include="问题广场页%28主页%29.html" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -353,6 +431,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\mutilplySelectSubmitForm.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\twitter-bootstrap-hover-dropdown.js" />
@@ -407,9 +486,22 @@
     <Content Include="Views\Account\SelfMsgs.cshtml" />
     <Content Include="Views\Shared\_NavSelfPartial.cshtml" />
     <Content Include="Views\Account\stuOrTeachers.cshtml" />
+    <Content Include="Views\File\Index.cshtml" />
+    <Content Include="Views\File\Details.cshtml" />
+    <Content Include="Views\Account\SendMsg.cshtml" />
+    <Content Include="Views\Note\Index.cshtml" />
+    <Content Include="Views\Note\Create.cshtml" />
+    <Content Include="Views\Msg\Index.cshtml" />
+    <Content Include="Views\Bar\Index.cshtml" />
+    <Content Include="Views\Shared\_BarsDetailsPartial.cshtml" />
+    <Content Include="Views\Shared\_PagingPartial.cshtml" />
+    <Content Include="Views\Bar\EveryDayQues.cshtml" />
+    <Content Include="Views\Bar\Statisics.cshtml" />
+    <Content Include="Views\Shared\_HeaderLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="files\" />
     <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>
@@ -475,6 +567,48 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601310406302_addReadStateEnumforread.resx">
       <DependentUpon>201601310406302_addReadStateEnumforread.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602010837311_addfileSizeAndType.resx">
+      <DependentUpon>201602010837311_addfileSizeAndType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602030703077_chengefileclass.resx">
+      <DependentUpon>201602030703077_chengefileclass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602030705132_addfileType.resx">
+      <DependentUpon>201602030705132_addfileType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602030710065_addfileSizeToInt.resx">
+      <DependentUpon>201602030710065_addfileSizeToInt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602030818445_changeFileSizeType.resx">
+      <DependentUpon>201602030818445_changeFileSizeType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602030819265_changeFileSizeType1.resx">
+      <DependentUpon>201602030819265_changeFileSizeType1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602040618411_增加公告类.resx">
+      <DependentUpon>201602040618411_增加公告类.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602040621344_增加公告类发布时间.resx">
+      <DependentUpon>201602040621344_增加公告类发布时间.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602050547308_为问题增加标题和描述赞和评论数目.resx">
+      <DependentUpon>201602050547308_为问题增加标题和描述赞和评论数目.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602050553160_去掉问题的评论数.resx">
+      <DependentUpon>201602050553160_去掉问题的评论数.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602050557366_修改赞的Likes.resx">
+      <DependentUpon>201602050557366_修改赞的Likes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602050724155_增加一个只能给问题点赞一次的表.resx">
+      <DependentUpon>201602050724155_增加一个只能给问题点赞一次的表.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602110413281_changeQuesTable.resx">
+      <DependentUpon>201602110413281_changeQuesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602110739484_将问题表和评论表分开成两个表.resx">
+      <DependentUpon>201602110739484_将问题表和评论表分开成两个表.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="obj\Debug\GraduateDesignBk.Migrations.init.resources" />
   </ItemGroup>

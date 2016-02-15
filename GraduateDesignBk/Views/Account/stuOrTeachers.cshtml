@@ -18,57 +18,13 @@
 }
 
 @Html.Partial("_NavSelfPartial", Model.counts, dic)
-
-
 <label for="Totalselect" class="btn btn-default">全 选</label>
 <input type="checkbox" id="Totalselect" onclick="CheckDelete()" />
-
 <a  class="btn btn-default" href="/Account/List/?Id=@Model.Id&userType=@Model.subType&subtype=unSorT">添加 @dic["nav_title"]</a> 
 <a href="javascript:Submit('RemoveFromRelation');" onclick="return confirm('你确定要移除这些成员吗？')" class="btn btn-default">移除</a>
-
 @using (Html.BeginForm("RemoveFromRelation", "Account", new {Id=Model.Id, userType = @Model.userType }, FormMethod.Post, new { id = "form_RemoveFromRelation" }))
 {
     <input type="hidden" id="RemoveFromRelation" name="Ids" value="" />
 }
 
 @Html.Partial("_UsersListPartial",Model.userItems,dic)
-
-<script>
-    function CheckDelete() {
-            var allCheck = document.getElementById("Totalselect");
-            var check = document.getElementsByName("delId");
-            if (allCheck.checked == false) {
-                allCheck.checked = false;
-                for (var i = 0; i < check.length; i++) {
-                    check[i].checked = false;
-                }
-                return;
-            }
-            else {
-                for (var i = 0; i < check.length; i++) {
-                    check[i].checked = true;
-                }
-            }
-        }
-
-    function getIds() {
-        var ids = "";
-        var check = document.getElementsByName("delId");
-        for (var i = 0; i < check.length; i++) {
-            if (check[i].checked == true) {
-                ids += check[i].value + "|";
-            }
-        }
-        return ids.substring(0,ids.length-1);
-    }
-
-    function Submit(name) {
-        var ids = getIds();
-        if (ids != "") {
-            $("#" + name).val(ids);
-            $('#form_' + name).submit();
-        } else {
-            alert("你未选中任何选项！");
-        }
-    }
-</script>

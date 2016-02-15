@@ -48,18 +48,10 @@ namespace GraduateDesignBk.Models
 
     public class LoginViewModel
     {
-       // [Required]
-        [Display(Name = "Email")]
-        //[EmailAddress]
-        public string Email { get; set; }
-
-      //  [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
-
-        [Display(Name = "Remember me?")]
+        public string UserName { get; set; }
+        public string PassWord { get; set; }
         public bool RememberMe { get; set; }
+        public string returnURL { get; set; }
     }
 
     public class RegisterViewModel

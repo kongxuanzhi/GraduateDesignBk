@@ -1,0 +1,137 @@
+﻿
+<div class="row">
+    <ul id="nav" class="nav nav-tabs nav-justified">
+        <li role="presentation">
+            <a href="/Bar/Index"><span>问题</span>   </a>
+        </li>
+        <li class="active" role="presentation">
+            <a href="/Bar/EveryDayQues"><span>今日问题</span></a>
+        </li>
+        <li role="presentation">
+            <a href="/Bar/Statisics"><span>问题答疑统计</span></a>
+        </li>
+    </ul>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/highcharts.js"></script>
+<script src="~/Scripts/exporting.js"></script>
+<script>
+
+    // alert(day)
+    $(function ($) {
+        $.ajax({
+            url: "/Bar/ThisWeek",
+            dataType: "json",
+            data: null,
+            type: "Post",
+            success: function (data) {
+                var past7Ques = data.Ques;
+                var week = data.Week;
+                var AnsTN = data.AnsTN;
+                var AnsSN = data.AnsSN;
+                var AnsTRate = data.AnsTRate;
+                var AnsSRate = data.AnsSRate;
+                $('#container').highcharts({
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: '问题统计'
+                    },
+                    subtitle: {
+                        text: '@DateTime.Now.Year 年'
+                    },
+                    xAxis: {
+                        categories: week
+                    },
+                    yAxis: {
+                        title: {
+                            text: '问题量(个)'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: true
+                        }
+                    },
+                    series: [{
+                        name: '过去7天问题统计',
+                        data: past7Ques
+                    },{
+                        name: '过去7天教师回答个数',
+                        data: AnsTN
+                    }, {
+                        name: '过去7天学生回答个数',
+                        data: AnsSN
+                    }, {
+                        name: '过去7天学生回答率',
+                        data: AnsSRate
+                    }, {
+                        name: '过去7天教师回答率',
+                        data: AnsTRate
+                    }
+                    ]
+                });
+                
+            }
+        });
+
+
+        $.ajax({
+            url: "/Bar/TodayTeacherAns",
+            dataType: "json",
+            data: null,
+            type: "Post",
+            success: function (data) {
+                var teachers = data.teachers;
+                var quesNum = data.quesNum;
+                $('#container2').highcharts({
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: '今日教师回答问题统计'
+                    },
+                    subtitle: {
+                        text: '@DateTime.Now.Year 年'
+                    },
+                    xAxis: {
+                        categories: teachers
+                    },
+                    yAxis: {
+                        title: {
+                            text: '回答问题量(个)'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: true
+                        }
+                    },
+                    series: [{
+                        name: '今日回答问题',
+                        data: quesNum
+                    }]
+                });
+
+            }
+        });
+    });
+</script>
+<body>
+
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
+
+    </div>
+    <div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto">
+
+    </div>
+</body>
+

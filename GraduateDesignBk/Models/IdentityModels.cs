@@ -89,7 +89,10 @@ namespace GraduateDesignBk.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
     {
 
-        public DbSet<Bar> Bars { get; set; }
+        public DbSet<Question>  Questions { get; set; }
+        public DbSet<Answer>  Answers { get; set; }
+        public DbSet<Note> Notes { get; set; } //公告
+        public DbSet<likeOnce> LikeOnce { get; set; }   
         public DbSet<DownUpload> DownUpload { get; set; }
         public DbSet<File> File { get; set; }
         public DbSet<MassMeg> MassMeg { get; set; }
@@ -102,6 +105,7 @@ namespace GraduateDesignBk.Models
         {
             return new ApplicationDbContext();
         }
+
 
         #region 数据库初始化，行不通
         //static ApplicationDbContext()

@@ -1,0 +1,101 @@
+﻿@model  GraduateDesignBk.Models.BarDetailModel
+
+<div class="row" >
+    @foreach (var p in Model.pbars.Where(m=>m.QID.Equals(Html.ViewData["QID"])))
+    {
+        <div >
+            <div style="padding:10px 48px;">
+                <div>
+                    <img src="@p.FromPhoto" style="width:50px;height:50px;float:left;margin-right: 13px; float:right" />
+                       <div style="padding-top: 13px;">
+                            <p>
+                                <span><strong> @p.FromName </strong></span>
+                                <br />
+                                @if (p.RaiseQuesTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString()))
+                                {
+                                    @p.RaiseQuesTime.ToShortTimeString()
+                                }
+                                else
+                                {
+                                    @p.RaiseQuesTime
+                                }
+                                @p.Likes 赞
+                                <a href="#@(p.QID)f" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">评论</a>
+                                <div class="collapse" id="@(p.QID)f">
+                                    <textarea id="@(p.QID)t" required></textarea>
+                                    <a href="javascript:postAnsF('@(p.QID)')" class="btn">发表</a>
+                                </div>
+                            </p>
+
+                        </div>
+                        <div class="panel-heading">
+                            问： <strong> @p.Title</strong>
+                        </div>
+                        <div>
+                            <i> 问题描述：</i>
+                            @p.Description
+                        </div>
+                </div>
+                <hr />
+                <div>
+                    @foreach (var f in Model.fbars)
+                    {
+                        if (f.PQID.Equals(p.QID))
+                        {
+                            <div>
+                                <img src="@f.FromPhoto" style="width:30px;height:30px;float:left;margin-right: 13px;float:right" />
+                                <p>
+                                    <b>@f.FromName :</b>
+                                    @f.Description
+                                    <br />@f.AnswerQuesTime.ToShortTimeString()
+                                      @f.Likes 赞
+                                    <a href="#@(f.AID)f" data-toggle="collapse"  aria-expanded="false" aria-controls="collapseExample" >评论</a>
+                                    <div class="collapse" id="@(f.AID)f">
+                                        <textarea id="@(f.AID)t" required></textarea>
+                                         <a href="javascript:Post('@(f.AID)')" class="btn">发表</a>
+                                    </div>
+                                </p>
+                            </div>
+                            foreach (var s in Model.sbars)
+                            {
+                                if (s.PQID.Equals(p.QID) && s.FAID.Equals(f.FAID))
+                                {
+                                    <div style="padding-left: 41px;">
+                                        <img src="@s.FromPhoto" style="width:30px;height:30px;float:left;margin-right: 13px; float:right" />
+                                        <p>
+                                            <b> @s.FromUID</b>
+                                            回复
+                                            <b> @s.ToUID :</b>
+                                            @s.Description
+                                            <br />  @s.AnswerQuesTime.ToShortTimeString()
+                                             @s.Likes  赞
+                                            <a href="#@(s.AID)f" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">评论</a>
+                                            <div class="collapse" id="@(s.AID)f">
+                                                <textarea id="@(s.AID)t" required></textarea>
+                                                <a href="javascript:Post('@(s.AID)')" class="btn">发表</a>
+                                            </div>
+                                        </p>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function postAnsF(BID) {
+        var answer = $("#" + BID + 't').val()
+        var data = { "BID": BID, "Answer": answer };
+        $.ajax({
+            url: "/Bar/Create",
+            method: "post",
+            data: data, success: function () {
+                
+            },
+        });
+    }
+</script>

@@ -1,0 +1,24 @@
+﻿@model GraduateDesignBk.Models.Paging
+<div class="row">
+    <nav>
+        <ul class="pager">
+            <li class="left">
+                @Html.EnumDropDownListFor(model => model.PageSize, htmlAttributes: new { @class = "form-control" })
+            </li>
+            @if (Model.CurIndex > 1)
+            {
+                <li>
+                    <a href="#" onclick="getPageSize(1)">上一页</a>
+                </li>
+            }
+            @if (Model.CurIndex < Model.PageNum)
+            {
+                <li>
+                    <a href="#" onclick="getPageSize(2)">下一页</a>
+                </li>
+            }
+            <li class="right">  当前第  @Model.CurIndex 页 总共: @Model.PageNum 页共 @Model.TotalCount 条记录</li>
+        </ul>
+    </nav>
+</div>
+

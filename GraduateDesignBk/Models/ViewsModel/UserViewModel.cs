@@ -12,9 +12,8 @@ namespace GraduateDesignBk.Models
     {
         public SearchAndPage()
         {
-            CurIndex = 1;
-            PageNum = 1;
-        }
+            page = new Paging();
+        } 
         public string Id { get; set; }//毕业设计分配老师或学生的Id
         public string userType { get; set; }
         public string SearchName { get; set; }  //一卡通号
@@ -23,20 +22,12 @@ namespace GraduateDesignBk.Models
         public Mayjor SearchMayor { get; set; }
         public string type { get; set; }
         public string subtype { get; set; }
-        public Size PageSize { get; set; }  //每页条数
-        public int CurIndex { get; set; }  //当前页
-        public int TotalCount { get; set; }  //一共多少条
-        public int PageNum { get; set; }  //页数
 
+        
+        public Paging page { get; set; }
         public List<UserViewModel> UserItems { get; set; }
     }
-    public enum Size
-    {
-        每页8条 =  0,
-        每页12条 = 4,
-        每页16条 = 8,
-        每页20条 = 12
-    }
+    
 
     public class UserViewModel  
     {
@@ -74,7 +65,7 @@ namespace GraduateDesignBk.Models
     public class UserDetailModel
     {
         public PersonInfo personInfo { get; set; }
-        public List<Bar> bars { get; set; }
+        //public List<Bar> bars { get; set; }
         //上传文件
         public List<File> files { get; set; }
         public List<Notice> msgs { get; set; }
@@ -112,30 +103,17 @@ namespace GraduateDesignBk.Models
         public Counts counts { get; set; }
     }
 
-    public class BarDetail
-    {
-        public string BID { get; set; }
-        public string FromUID { get; set; }
-        public string FromId { get; set; }
-        public string ToId { get; set; }
-        public string FromPhoto { get; set; }
-        public string ToUID { get; set; }
-        public string FBID { get; set; }  //父级问题或回答
-        public string PBID { get; set; }    //祖父级问题或回答
-        public bool Pub { get; set; }  //是否公开
-        public DateTime RaiseQuesTime { get; set; }   //问题提出时间 出发回答问题时间 排序列出
-        public string Content { get; set; }  //内容
-    }
+    
 
-    public class PersonBars
-    {
-        public List<BarDetail> pbars { get; set; }
-        public List<BarDetail> fbars { get; set; }
-        public List<BarDetail> sbars { get; set; }
-        public string Id { get; set; }
-        public string userType { get; set; }
-        public Counts counts { get; set; }
-    }
+    //public class PersonBars
+    //{
+    //    public List<BarDetail> pbars { get; set; }
+    //    public List<BarDetail> fbars { get; set; }
+    //    public List<BarDetail> sbars { get; set; }
+    //    public string Id { get; set; }
+    //    public string userType { get; set; }
+    //    public Counts counts { get; set; }
+    //}
 
     public class PersonFiles
     {
@@ -201,6 +179,14 @@ namespace GraduateDesignBk.Models
         public string Id { get; set; }
         public string userType { get; set; }
         public string Ids { get; set; }
+    }
+
+    public class SendMsg
+    {
+        public string Title { get; set; }
+        public string Detail { get; set; }
+        public string roleName { get; set; }
+        public string  Ids { get; set; }
     }
 
 }

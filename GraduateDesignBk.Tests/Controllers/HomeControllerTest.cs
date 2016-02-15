@@ -20,9 +20,10 @@ namespace GraduateDesignBk.Tests.Controllers
         [TestMethod]
         public void Index()
         {
-           string a = new AccountController().CNTS(null);
-            //Assert.Equals(a,"");
-            Console.WriteLine(a);
+            string a = new FileController().ChangeSize(1024);
+            string date =  DateTime.Now.ToShortDateString();
+            //Assert.Equals(a,"";)
+            Console.WriteLine(date);
         }
 
         [TestMethod]

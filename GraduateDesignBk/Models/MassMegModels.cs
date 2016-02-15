@@ -14,6 +14,7 @@ namespace GraduateDesignBk.Models
         public  MassMeg()
         {
             MID = Guid.NewGuid().ToString();
+            Readstate = ReadState.未读;
         }
         [Key]
         [StringLength(128)]

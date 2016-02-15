@@ -1,17 +1,41 @@
 ﻿@{
     ViewBag.Title = "Contact";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<script>
+    $(function ($) {
+        document.getElementById("LoginModal").click();
+    })
+</script>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
-
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+<a id="LoginModal" class="btn my-btn-primary signinbtn" data-toggle="modal" data-target=".bs-example-modal-sm">登录</a>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">欢迎</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-signin" name="Login">
+                    <input type="hidden" name="returnURL" value="@HttpContext.Current.Request.Path" />
+                    <label for="inputUserName" class="sr-only">账号</label>
+                    <input type="text" id="UserName" name="UserName" class="form-control" placeholder="账号" required autofocus>
+                    <label for="inputPassword" class="sr-only">密码</label>
+                    <input type="password" id="inputPassword" name="PassWord" class="form-control" placeholder="密码" required>
+                    <div style="padding-top:10px;padding-bottom:10px">
+                        <label>
+                            <input type="checkbox" id="RememberMe" name="RememberMe" value=" " />记住密码
+                        </label>
+                    </div>
+                    <a class="btn btn-lg btn-primary btn-block" href="javascript:Login()">登录</a>
+                    <div class="text-danger">
+                        <ul id="LoginFail"></ul>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#">忘记密码？</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -11,17 +11,14 @@ namespace GraduateDesignBk.Models
 {
     public class File
     {
-
         public File()
         {
             FID = Guid.NewGuid().ToString();
-            FileSeq = Guid.NewGuid().ToString();
             UploadTime = DateTime.Now;
         }
-
-        [Key]
         [Required]
         [StringLength(128)]
+        [Key]
         public string FID { get; set; }
 
         [StringLength(128)]
@@ -35,6 +32,12 @@ namespace GraduateDesignBk.Models
 
         public DateTime UploadTime { get; set; }
 
+        [StringLength(80)]
+        public string Type { get; set; }
+
+        [StringLength(80)]
+        public string Size { get; set; }
+
         [DefaultValue("0")]
         [StringLength(120)]
         public string FromUID { get; set; }
@@ -42,5 +45,5 @@ namespace GraduateDesignBk.Models
         public ApplicationUser User { get; set; }
 
         public virtual ICollection<DownUpload> Products { get; set; }
-    }
+    }  
 }
