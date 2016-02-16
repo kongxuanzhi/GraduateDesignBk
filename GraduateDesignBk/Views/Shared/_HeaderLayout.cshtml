@@ -1,4 +1,5 @@
 ﻿@{
+    ViewBag.Active = HttpContext.Current.Request.Path;
     ViewBag.Title = "_HeadLayout";
 }
 <!DOCTYPE html>
@@ -28,6 +29,13 @@
       @Styles.Render("~/Content/css")
       @Scripts.Render("~/bundles/modernizr")
       @Styles.Render("~/Content/HeadCss")
+    <style>
+        .selectNav{
+            border-bottom: 2px solid #287EBB;
+            height: 35px;
+            width: 56px;
+        }
+    </style>
 </head>
 
 <body style="background: #EEE">
@@ -52,21 +60,16 @@
         <div class="col-md-1">
         </div>
         <div class="col-md-4">
-            <ul class="mynavbar">
+            <ul id="mynavbar" class="mynavbar">
                 <!--<li><a href="/products/">Products &amp; Pricing<span></span></a></li>-->
-                <li style="text-align:left">
-                    <div style="border-bottom: 2px solid #287EBB;height: 35px;width: 56px;">
+                <li>
+                    <div class="selectNav">
                         <a href="/" >问题广场</a>
                     </div>
                 </li>
-                <li style="text-align:center">
+                <li>
                     <div>
                         <a href="/file/">文件中心</a>
-                    </div>
-                </li>
-                <li style="text-align:right">
-                    <div>
-                        <a href="/selfimformatiom/">个人信息</a>
                     </div>
                 </li>
             </ul>
@@ -79,6 +82,16 @@
     @Scripts.Render("~/Content/HeadJs")
     <script>
         $(function ($) {
+            $.each($("#mynavbar li"), function (i, n){
+                //alert($(this).children("div").children("a").attr("href").trim())
+                var url = $(this).children("div").children("a").attr("href").trim();
+                var cur = '@ViewBag.Active';
+                if (cur == url) {
+                    $("#mynavbar li div").removeClass("selectNav");
+                    $(this).children("div").addClass("selectNav");
+                }
+            });
+
             //alert("通知");
             $.ajax({
                 url: "/Note/Display",

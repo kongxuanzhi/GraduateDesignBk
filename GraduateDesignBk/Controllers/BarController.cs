@@ -13,6 +13,7 @@ namespace Graduatedesignbk.Controllers
 {
     public class BarController : Controller
     {
+        private static int pagesize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["pagesize"]);
         #region 显示
         // get: bar
         public ActionResult index(BarViewModel barv)
@@ -54,39 +55,57 @@ namespace Graduatedesignbk.Controllers
             return View();
         }
         #endregion
-        
+
         #region 前台显示
+
+        [HttpPost]
+        public JsonResult Search(string searchstr,int currentIndex = 1)
+        {
+            searchstr = string.IsNullOrEmpty(searchstr)?Guid.NewGuid().ToString() : searchstr;
+            List<QestDetail> SearchQues = new List<QestDetail>();
+            SearchQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where ToUID='0'").ToList();
+            SearchQues = SearchQues.Where(m => m.Title.Contains(searchstr) || m.Description.Contains(searchstr)).ToList();
+            SearchQues = SearchQues.OrderByDescending(m => m.Likes).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            return Json(SearchQues);
+        }
+        [HttpPost]
         public JsonResult Latest(int currentIndex = 1)
         {
-            int pagesize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["pagesize"]);
             List<QestDetail> LatestQues = new List<QestDetail>();
-            LatestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail").ToList();
+            LatestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where ToUID='0'").ToList();
             LatestQues = LatestQues.Where(m=>m.RaiseQuesTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString())).ToList();
-            LatestQues = LatestQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+           LatestQues = LatestQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
             return Json(LatestQues);
         }
+        [HttpPost]
         public JsonResult Hotest(int currentIndex = 1)
         {
-            int pagesize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["pagesize"]);
-            List<QestDetail> LatestQues = new List<QestDetail>();
-            LatestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where CommentNum+Likes>10").ToList();
-            LatestQues = LatestQues.Where(m => m.RaiseQuesTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString())).ToList();
-            LatestQues = LatestQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
-            return Json(LatestQues);
+            List<QestDetail> HotestQues = new List<QestDetail>();
+            HotestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail VQ where ToUID='0' and VQ.Likes+CommentNum>10 order by VQ.Likes+CommentNum   desc").ToList();
+            HotestQues = HotestQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            return Json(HotestQues);
         }
-
+        [HttpPost]
         public JsonResult UnAns(int currentIndex = 1)
         {
-            int pagesize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["pagesize"]);
-            List<QestDetail> LatestQues = new List<QestDetail>();
-            LatestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where CommentNum=0").ToList();
-            LatestQues = LatestQues.Where(m => m.RaiseQuesTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString())).ToList();
-            LatestQues = LatestQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
-            return Json(LatestQues);
+            List<QestDetail> UnAnsQues = new List<QestDetail>();
+            UnAnsQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where  ToUID='0' and CommentNum=0").ToList();
+            UnAnsQues = UnAnsQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            return Json(UnAnsQues);
         }
-       
+
+        [HttpPost]
+        public JsonResult BestQuesAns()
+        {
+            List<QestDetail> BestQues = new List<QestDetail>();
+            BestQues = db.Database.SqlQuery<QestDetail>("select top 10 * from V_QestDetail where ToUID != '0' and Pub=1 order by RaiseQuesTime desc").ToList();
+            BestQues = BestQues.OrderByDescending(m => m.RaiseQuesTime).ToList();
+            return Json(BestQues);
+        }
+
         #endregion
         #region 发表、私信、评论、追问 删除问题，评论，追问
+
         //发表提问
         [HttpPost]
         [LoginAuthorize]
@@ -211,21 +230,22 @@ namespace Graduatedesignbk.Controllers
         [LoginAuthorize]
         public JsonResult QuestLike(string QID)
         {
+            string userId = User.Identity.GetUserId();
             Question ques = db.Questions.Find(QID);
             if (ques != null)
             {
-                int count = db.LikeOnce.ToList().Where(m => m.BID == QID && m.FromUID == User.Identity.GetUserId()).Count();
+                int count = db.LikeOnce.Where(m => m.BID == QID && m.FromUID == userId).Count();
                 if (count==0)
                 {
                     //增加点赞记录
-                    db.LikeOnce.Add(new likeOnce() { BID = QID, FromUID = User.Identity.GetUserId() });
+                    db.LikeOnce.Add(new likeOnce() { BID = QID, FromUID = userId });
                     ques.Likes += 1;
                     TryUpdateModel(ques);
                     db.SaveChanges();
                     return Json("addsuccess");
                 }else if (count==1)
                 {
-                    likeOnce lo = db.LikeOnce.ToList().Where(m => m.BID == QID && m.FromUID == User.Identity.GetUserId()).First();
+                    likeOnce lo = db.LikeOnce.Where(m => m.BID == QID && m.FromUID == userId).First();
                     //增加点赞记录
                     db.LikeOnce.Remove(lo);
                     ques.Likes -= 1;
