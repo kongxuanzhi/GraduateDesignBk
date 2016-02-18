@@ -9,6 +9,7 @@ using Microsoft.Owin.Security;
 using GraduateDesignBk.Models;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using GraduateDesignBk.App_Start;
 
 namespace GraduateDesignBk.Controllers
 {
@@ -79,7 +80,7 @@ namespace GraduateDesignBk.Controllers
             }
         }
         #endregion
-
+        [LoginAuthorize]
         public ActionResult List(SearchAndPage UsersModel)
         {
             int pageSize = (int)UsersModel.page.PageSize+8;

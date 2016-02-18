@@ -38,6 +38,8 @@ namespace GraduateDesignBk.Models
         [StringLength(80)]
         public string Size { get; set; }
 
+        public int DownloadTimes { get; set; }
+
         [DefaultValue("0")]
         [StringLength(120)]
         public string FromUID { get; set; }

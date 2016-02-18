@@ -50,32 +50,38 @@
     </div>
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="container" style="background-color:#eee;padding-bottom: 24px;margin-bottom: 30px">
-        <div class="col-md-6">
-            <div class="notice" style="width:100%; float:left">
-                <marquee behavior="scroll" onstart="this.firstChild.innerHTML+=this.firstChild.innerHTML;" scrollamount="5" onmouseover="this.stop();" onmouseout="this.start();">
-                    <span id="Note">通知：请各位同学在下周一之前上交毕业设计文件</span>
-                </marquee>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="notice" style="width:100%; float:left">
+                    <marquee behavior="scroll" onstart="this.firstChild.innerHTML+=this.firstChild.innerHTML;" scrollamount="5" onmouseover="this.stop();" onmouseout="this.start();">
+                        <span id="Note">通知：请各位同学在下周一之前上交毕业设计文件</span>
+                    </marquee>
+                </div>
+            </div>
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+                <ul id="mynavbar" class="mynavbar">
+                    <!--<li><a href="/products/">Products &amp; Pricing<span></span></a></li>-->
+                    <li>
+                        <div class="selectNav">
+                            <a href="/" target="_self">问题广场</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a href="/Home/FileCenter" target="_self">文件中心</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="col-md-1">
+        <div class="row">
+            <hr style="border-top:1px solid #ccc;margin-top:0px" width="100%" SIZE="3">
         </div>
-        <div class="col-md-4">
-            <ul id="mynavbar" class="mynavbar">
-                <!--<li><a href="/products/">Products &amp; Pricing<span></span></a></li>-->
-                <li>
-                    <div class="selectNav">
-                        <a href="/" >问题广场</a>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a href="/file/">文件中心</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    @RenderBody()
+        @RenderBody()
     </div> <!-- /container -->
+    
     <footer>
         <p class="jz">&copy; Horizon 2016</p>
     </footer>

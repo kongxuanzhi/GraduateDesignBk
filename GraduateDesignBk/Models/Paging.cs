@@ -13,6 +13,7 @@ namespace GraduateDesignBk.Models
             CurIndex = 1;
             PageNum = 1;
         }
+        public int FilePageSize { get; set; }
         public pageSize PageSize { get; set; }  //每页条数
         public int CurIndex { get; set; }  //当前页
         public int TotalCount { get; set; }  //一共多少条

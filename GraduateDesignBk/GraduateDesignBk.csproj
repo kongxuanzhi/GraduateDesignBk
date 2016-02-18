@@ -287,6 +287,10 @@
     <Compile Include="Migrations\201602110739484_将问题表和评论表分开成两个表.Designer.cs">
       <DependentUpon>201602110739484_将问题表和评论表分开成两个表.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602181402561_addDownloadTimesforfilemodel.cs" />
+    <Compile Include="Migrations\201602181402561_addDownloadTimesforfilemodel.Designer.cs">
+      <DependentUpon>201602181402561_addDownloadTimesforfilemodel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnswerModel.cs" />
@@ -498,6 +502,7 @@
     <Content Include="Views\Bar\EveryDayQues.cshtml" />
     <Content Include="Views\Bar\Statisics.cshtml" />
     <Content Include="Views\Shared\_HeaderLayout.cshtml" />
+    <Content Include="Views\Home\FileCenter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -609,6 +614,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602110739484_将问题表和评论表分开成两个表.resx">
       <DependentUpon>201602110739484_将问题表和评论表分开成两个表.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181402561_addDownloadTimesforfilemodel.resx">
+      <DependentUpon>201602181402561_addDownloadTimesforfilemodel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="obj\Debug\GraduateDesignBk.Migrations.init.resources" />
   </ItemGroup>

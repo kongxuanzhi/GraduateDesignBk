@@ -59,6 +59,7 @@ namespace Graduatedesignbk.Controllers
         #region 前台显示
 
         [HttpPost]
+        [LoginAuthorize(Roles ="教师")]
         public JsonResult Search(string searchstr,int currentIndex = 1)
         {
             searchstr = string.IsNullOrEmpty(searchstr)?Guid.NewGuid().ToString() : searchstr;

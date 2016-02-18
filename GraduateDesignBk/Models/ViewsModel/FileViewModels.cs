@@ -15,6 +15,7 @@ namespace GraduateDesignBk.Models
         {
             page = new Paging();
             Spub = true;
+            FileItems = new List<FileViewModel>();
         }
 
         public string Sname { get; set; }
@@ -37,11 +38,13 @@ namespace GraduateDesignBk.Models
         [Display(Name = "公开不")]
         public bool  Pub{ get; set; }
         [Display(Name = "发送时间")]
-        public DateTime UploadTime { get; set; }
+        public string UploadTime { get; set; }
         [Display(Name = "类型")]
         public string Type { get; set; }
         [Display(Name = "大小")]
         public string Size { get; set; }
+        public int DownloadTimes { get; set; }
+
     }
 
     public class FileDetail

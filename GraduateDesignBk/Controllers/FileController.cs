@@ -11,46 +11,85 @@ namespace GraduateDesignBk.Controllers
 {
     public class FileController : Controller
     {
+        private static int FilePageSize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["FilePageSize"]);
         // GET: File
         /// <summary>
         /// 文件列表 
         /// </summary>
-        /// <param name="FilesModel"></param>
+        /// <param name="file"></param>
         /// <returns></returns>
-        public ActionResult Index(FileSandP FilesModel)
+        public ActionResult Index(FileSandP file)
         {
-            int pageSize = (int)FilesModel.page.PageSize + 8;
+            int pageSize = (int)file.page.PageSize + 8;
+            file.FileItems = getFiles();
+            //过滤
+            file.FileItems = file.FileItems
+                .Where(m => m.Name.Contains(CNTS(file.Sname))
+                 && m.FromUID.Contains(CNTS(file.SuserName))
+                 && m.Pub == file.Spub
+                 && m.Type.Contains(CNTS(file.Stype))
+                ).ToList();
 
-            FilesModel.FileItems = db.File.ToList().Select(m=>
+            //分页
+            file.page.TotalCount = file.FileItems.Count();
+            file.page.PageNum = (int)Math.Ceiling((double)(file.page.TotalCount) / pageSize);
+            file.FileItems = file.FileItems.OrderByDescending(m => m.UploadTime).Skip(pageSize * (file.page.CurIndex - 1)).Take(pageSize).ToList();
+            return View(file);
+        }
+
+        public string CNTS(string value)
+        {
+            return value == null ? "" : value;
+        }
+
+
+        public JsonResult List(int SearchType, string SearchString,int CurIndex = 1)
+        {
+            FileSandP file = new FileSandP();
+            file.page.FilePageSize = FilePageSize;
+            file.page.CurIndex = CurIndex;
+
+            file.FileItems = getFiles();
+            file.FileItems = file.FileItems
+                .Where(m => m.Pub == true).ToList();
+            switch (SearchType)
+            {
+                case 0:
+                    file.FileItems = file.FileItems.Where(m => m.Name.Contains(CNTS(SearchString))).ToList();
+                    break;
+                case 1:
+                    file.FileItems = file.FileItems.Where(m => m.FromUID.Contains(CNTS(SearchString))).ToList();
+                    break;
+                case 2:
+                    file.FileItems = file.FileItems.Where(m => m.UploadTime.Equals(SearchString)).ToList();
+                    break;
+                default:
+                    break;
+            }
+            file.page.TotalCount = file.FileItems.Count();
+            file.page.PageNum = (int)Math.Ceiling((double)(file.page.TotalCount) / FilePageSize);
+            file.FileItems = file.FileItems.OrderByDescending(m => m.UploadTime).Skip(FilePageSize * (file.page.CurIndex - 1)).Take(FilePageSize).ToList();
+            return Json(file);
+        }
+
+        public List<FileViewModel> getFiles()
+          {
+            List<FileViewModel> fileItems = new List<FileViewModel>();
+            fileItems  = db.File.ToList().Select(m =>
                 new FileViewModel()
                 {
                     FID = m.FID,
                     Name = m.Name,
                     FromId = m.FromUID,
                     Pub = m.Pub,
-                    UploadTime = m.UploadTime,
+                    UploadTime = m.UploadTime.ToString("yyyy-MM-dd"),
                     Type = m.Type,
                     Size = m.Size,
+                    DownloadTimes = m.DownloadTimes,
                     FromUID = UserManager.FindById(m.FromUID).RealName
                 }
             ).ToList();
-
-            FilesModel.FileItems = FilesModel.FileItems
-                .Where(m => m.Name.Contains(CNTS(FilesModel.Sname))
-                 && m.FromUID.Contains(CNTS(FilesModel.SuserName))
-                 && m.Pub == FilesModel.Spub
-                 && m.Type.Contains(CNTS(FilesModel.Stype))
-                ).ToList();
-
-            FilesModel.page.TotalCount = FilesModel.FileItems.Count();
-            FilesModel.page.PageNum = (int)Math.Ceiling((double)(FilesModel.page.TotalCount) / pageSize);
-            FilesModel.FileItems = FilesModel.FileItems.OrderByDescending(m => m.UploadTime).Skip(pageSize * (FilesModel.page.CurIndex - 1)).Take(pageSize).ToList();
-            return View(FilesModel);
-        }
-
-        public string CNTS(string value)
-        {
-            return value == null ? "" : value;
+            return fileItems;
         }
 
         /// <summary>
@@ -70,9 +109,10 @@ namespace GraduateDesignBk.Controllers
                        Name = m.Name,
                        FromId = m.FromUID,
                        Pub = m.Pub,
-                       UploadTime = m.UploadTime,
+                       UploadTime = m.UploadTime.ToShortDateString(),
                        Type = m.Type,
                        Size = m.Size,
+                       DownloadTimes = m.DownloadTimes,
                        FromUID = UserManager.FindById(m.FromUID).RealName
                    }).First();
                 List<string> ToUIDs = db.DownUpload.Where(m=>m.FID.Equals(id)).Select(m => m.ToUID).ToList();
