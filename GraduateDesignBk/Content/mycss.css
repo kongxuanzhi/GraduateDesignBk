@@ -383,11 +383,6 @@ optgroup {
     font-weight: bold;
 }
 
-table {
-    border-spacing: 0;
-    border-collapse: collapse;
-}
-
 td, th {
     padding: 0;
 }
@@ -1806,19 +1801,13 @@ pre {
     }
 }
 
-table {
-    max-width: 100%;
-    background-color: transparent;
-}
+
 
 th {
     text-align: left;
 }
 
-.table {
-    width: 100%;
-    margin-bottom: 20px;
-}
+
 
     .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
         padding: 8px;

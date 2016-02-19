@@ -87,12 +87,11 @@
             success: function (data) {
                 //alert(3)
                 if (data == "addsuccess") {
-                   // alert($("#" + QID + id).html())
+                    // alert($("#" + QID + id).html())
                     $("#" + QID + id).html(parseInt($("#" + QID + id).html()) + 1)
                 } else if (data == "delsuccess") {
                     //alert($("#" + QID + id).html())
                     $("#" + QID + id).html(parseInt($("#" + QID + id).html()) - 1)
-                   
                 }
                 else {
                     eval(data)

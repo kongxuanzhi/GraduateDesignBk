@@ -1,59 +1,73 @@
-﻿@{
+﻿@using Microsoft.AspNet.Identity
+@{
     ViewBag.Title = "FileCenter";
     Layout = "~/Views/Shared/_HeaderLayout.cshtml";
 }
 
+<style>
+
+</style>
 <div class="row">
     <div class="col-md-7">
     </div>
     <div class="col-md-5">
-        <form class="form-inline" role="search">
-            <div class="form-group">
-                <select id="Stype" class="form-control">
-                    <option value="0">文件名</option>
-                    <option value="1">上传者</option>
-                    <option value="2">上传时间</option>
-                </select>
+        <form class="form-horizontal" role="search">
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select id="Stype" class="form-control">
+                        <option value="0">文件名</option>
+                        <option value="1">上传者</option>
+                        <option value="2">上传时间</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                    <i class="faa glyphicon glyphicon-search"  ></i>
-                    <input type="text" size="29" id="searchKey"  onchange="SearchFD()" onkeyup="    SearchFT()" class="form-control search clearable" placeholder="搜索文件">
-            </div>  
-      </form>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input type="text" id="searchKey" onchange="SearchFD()" onkeyup="SearchFT()" class="form-control search clearable" placeholder="搜索文件">
+                    <span id="gly" class="faa glyphicon glyphicon-search " aria-hidden="true"></span>    
+                 </div>
+            </div>
+        </form>
     </div>
 </div>
-<div class="row" >
-    <table class="table  table-hover table-condensed table-responsive" >
-        <thead >
-            <tr>
-                <td>文件名</td>
-                <td>上传者</td>
-                <td>上传时间</td>
-                <td>下载量</td>
-                <td>大小</td>
-                 <td>下载</td>
-            </tr>
-        </thead>
-    <tbody id="fileItems">
-        <tr>
-            <td style="max-width:400px">孔设计孔轩志优秀毕业设毕业设计.doc</td>
-            <td>Admin</td>
-            <td>2016-2-13</td>
-            <td>5</td>
-            <td>3m</td>
-            <td><a href="#">下载</a></td>
-        </tr>
-    </tbody>   
+<div class="row">
+    <div class="table-responsive">
+        <table class="table  table-hover table-condensed">
+            <thead>
+                <tr>
+                    <td>文件名</td>
+                    <td>上传者</td>
+                    <td>上传时间</td>
+                    <td>下载量</td>
+                    <td>大小</td>
+                    <td>下载</td>
+                </tr>
+            </thead>
+            <tbody id="fileItems">
+                <tr>
+                    <td style="max-width:400px">孔设计孔轩志优秀毕业设毕业设计.doc</td>
+                    <td>Admin</td>
+                    <td>2016-2-13</td>
+                    <td>5</td>
+                    <td>3m</td>
+                    <td>
+                        <a href="#">下载</a>
+                    </td>
+                </tr>
+            </tbody>
         </table>
+    </div>
     <div class="row">
-        <div class="col-sm-6" >
-        <nav >
-            <ul id="Pages" class="pagination pagination-lg" style="margin:2px">
-            </ul>
-        </nav>
-            </div>
+        <div class="col-sm-6">
+            <nav>
+                <ul id="Pages" class="pagination pagination-lg" style="margin:2px"></ul>
+            </nav>
+        </div>
         <div class="col-sm-6" style="padding-top:10px;text-align:right ">
-            总共<span id="PageNum"> 100</span>页，当前第<span id="CurIndex">10</span>页，一共
+            总共
+            <span id="PageNum"> 100</span>页，当前第
+            <span id="CurIndex">10</span>页，一共
             <span id="TotalCount">200</span>条，
             <input type="text" size="1" id="jindex" name="index" value="1" />
             <input type="button" onclick="jumpIndex()" name="name" value="跳转" />
@@ -64,121 +78,115 @@
 <script>
     var CurIndex = 1;
     function SearchFD() {
-        alert($("#searchKey").val())
+        // alert($("#searchKey").val())
         CurIndex = 1;
         getFiles(CurIndex);
     }
     function SearchFT() {
-        alert($("#searchKey").val())
+        // alert($("#searchKey").val())
         CurIndex = 1;
         getFiles(CurIndex);
     }
     function jumpIndex() {
         var jumpI = $("#jindex").val();
-        alert(jumpI)
-        alert($("#PageNum").html())
-        if (!(jumpI < 0 || jumpI > parseInt($("#PageNum").html())))
-        {
+        // alert(jumpI)
+        // alert($("#PageNum").html())
+        if (!(jumpI < 0 || jumpI > parseInt($("#PageNum").html()))) {
             getFiles($("#jindex").val());
         }
     }
     $(function ($) {
         $('#Stype ').change(function () {
-           // alert($(this).children('option:selected').val());
-            var p1 = $(this).children('option:selected').val();//这就是selected的值 
+            // alert($(this).children('option:selected').val());
+            var p1 = $(this).children('option:selected').val();//这就是selected的值
             $("#searchKey").val(null)
+            getFiles(1);
             if (p1 == 2) {
                 $("#searchKey").attr("type", "date");
-            }else
-            {
+                $("#gly").hide()
+            } else {
                 $("#searchKey").attr("type", "text");
+                $("#gly").show()
             }
         })
-        //alert($("#Stype option:selected").val())
-        //alert($("#searchKey").val())
         getFiles(1);
     })
+
     function getFiles(CurIndex) {
         $.post("/File/List",
             { CurIndex: CurIndex, SearchType: $("#Stype option:selected").val(), SearchString: $("#searchKey").val() },
               function (data) {
-                    ///alert(data.FileItems.length)
+                  ///alert(data.FileItems.length)
                   var fileItems = data.FileItems;
                   var TotalCount = data.page.TotalCount;
                   var CurIndex = data.page.CurIndex;
                   var PageNum = data.page.PageNum;
-                    $("#TotalCount").html(TotalCount);
-                    $("#CurIndex").html(CurIndex);
-                    $("#PageNum").html(PageNum);
-                    $("#fileItems").empty();
-                    for (var i = 0; i < data.FileItems.length; i++) {
-                        var row = '<tr>' +
-                            '<td style="max-width:400px">' + fileItems[i].Name + '</td>' +
-                            '<td>' + fileItems[i].FromUID + '</td>' +
-                            '<td>' + fileItems[i].UploadTime + '</td>' +
-                            '<td>' + fileItems[i].DownloadTimes + '</td>' +
-                            '<td>' + fileItems[i].Size + '</td>' +
-                            '<td><a href="/File/UploadTime">下载</a></td>' +
-                        '</tr>';
-                        $("#fileItems").append(row);
-                    }
-                    var start,end;
-                    if (PageNum < 6) {
-                        start = 1; end = PageNum;
-                    }
-                    else {
-                        if (CurIndex <= 3) {
-                            start = 1;
-                            end = 6;
-                        }
-                        else if (CurIndex > 3) {
-                            if (CurIndex + 2 < PageNum) {
-                                start = CurIndex - 3;
-                                end = CurIndex + 2;
-                            }
-                            else {
-                                start = CurIndex - (5 - (PageNum - CurIndex));
-                                end = PageNum;
-                            }
-                        }
-                    }
-                    $("#Pages").empty();
-                    //  alert(start + '--' + end)
-                    var previousDisable = '<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
-                    var previousable = '<li><a href="javascript:getFiles('+(CurIndex-1)+')" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
-                    if (CurIndex == 1) {
-                        $("#Pages").append(previousDisable);
-                    } else {
-                        $("#Pages").append(previousable);
-                    }
-                    for (var i = start; i <= end; i++) {
-                        var li = '<li><a href="javascript:getFiles(' + i + ')">' + i + '</a></li>';
-                        var liActive = '<li class="active"><a href="javascript:getFiles(' + i + ')">' + i + '</a></li>';
-                        if(i==CurIndex)
-                            $("#Pages").append(liActive);
-                        else {
-                            $("#Pages").append(li);
-                        }
-                    }
-                    var NextDisable = '<li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
-                    var Nextable = '<li><a href="javascript:getFiles(' + (CurIndex + 1) + ')" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
-                    if (CurIndex < PageNum) {
-                        $("#Pages").append(Nextable);
-                    } else {
-                        $("#Pages").append(NextDisable);
-                    }
-                //  <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-                //<li class="active"><a href="#">1</a></li>
-                //<li><a href="#">2</a></li>
-                //<li><a href="#">3</a></li>
-                //<li><a href="#">4</a></li>
-                //<li><a href="#">5</a></li>
-                //<li>
-                //    <a href="#" aria-label="Next">
-                //        <span aria-hidden="true">&raquo;</span>
-                //    </a>
-                //</li>
-            });
+                  $("#TotalCount").html(TotalCount);
+                  $("#CurIndex").html(CurIndex);
+                  $("#PageNum").html(PageNum);
+                  $("#fileItems").empty();
+                  for (var i = 0; i < data.FileItems.length; i++) {
+                      var row = '<tr>' +
+                          '<td>' + fileItems[i].Name + '</td>' +
+                          '<td>' + fileItems[i].FromUID + '</td>' +
+                          '<td>' + fileItems[i].UploadTime + '</td>' +
+                          '<td id="'+fileItems[i].FID+'">' + fileItems[i].DownloadTimes + '</td>' +
+                          '<td>' + fileItems[i].Size + '</td>' +
+                          '<td><a href="javascript:getfile('+"'"+fileItems[i].FID +"'"+')">下载</a></td>' +
+                      '</tr>';
+                      $("#fileItems").append(row);
+                  }
+                  page(PageNum, CurIndex)
+              });
     }
-    
+    function getfile(id) {
+        $.get("/File/Download", function (data) {
+            if (data == "document.getElementById('LoginModelBtn').click();") {
+                eval(data)
+            }
+            else if (data == "") {
+                window.location.href = "/File/Download/" + id;
+                $("#" + id).html(parseInt($("#"+id).html()) + 1)
+            }
+        })
+    }
+    function page(PageNum, CurIndex) {
+        var start, end;
+        if (PageNum < 6) {
+            start = 1; end = PageNum;
+        }
+        else {
+            if (CurIndex <= 3) {
+                start = 1;
+                end = 6;
+            }
+            else if (CurIndex > 3) {
+                if (CurIndex + 2 < PageNum) {
+                    start = CurIndex - 3;
+                    end = CurIndex + 2;
+                }
+                else {
+                    start = CurIndex - (5 - (PageNum - CurIndex));
+                    end = PageNum;
+                }
+            }
+        }
+        $("#Pages").empty();
+        //  alert(start + '--' + end)
+        var previousDisable = '<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+        var previousable = '<li><a href="javascript:getFiles(' + (CurIndex - 1) + ')" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+        CurIndex == 1 ? $("#Pages").append(previousDisable) : $("#Pages").append(previousable);
+        for (var i = start; i <= end; i++) {
+            var li = '<li><a href="javascript:getFiles(' + i + ')">' + i + '</a></li>';
+            var liActive = '<li class="active"><a href="javascript:getFiles(' + i + ')">' + i + '</a></li>';
+            i == CurIndex ? $("#Pages").append(liActive) : $("#Pages").append(li);
+        }
+        var NextDisable = '<li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+        var Nextable = '<li><a href="javascript:getFiles(' + (CurIndex + 1) + ')" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+        CurIndex < PageNum ? $("#Pages").append(Nextable) : $("#Pages").append(NextDisable);
+    }
+
+
 </script>
+
+

@@ -20,7 +20,10 @@ namespace GraduateDesignBk.App_Start
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             filterContext.HttpContext.Response.Write("document.getElementById('LoginModelBtn').click();");
-            base.HandleUnauthorizedRequest(filterContext);
+            filterContext.HttpContext.Response.End();
+             //filterContext.Result = new HttpUnauthorizedResult();
+           base.HandleUnauthorizedRequest(filterContext);
         }
     }
+ 
 }

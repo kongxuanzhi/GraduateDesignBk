@@ -107,7 +107,6 @@ namespace GraduateDesignBk.Models
             return new ApplicationDbContext();
         }
 
-
         #region 数据库初始化，行不通
         //static ApplicationDbContext()
         //{

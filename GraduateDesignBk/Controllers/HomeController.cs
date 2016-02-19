@@ -12,7 +12,6 @@ namespace GraduateDesignBk.Controllers
         {
             return View();
         }
-
         public ActionResult FileCenter()
         {
             return View();

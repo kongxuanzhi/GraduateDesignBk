@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System;
+using GraduateDesignBk.App_Start;
 
 namespace GraduateDesignBk.Controllers
 {
@@ -61,7 +62,7 @@ namespace GraduateDesignBk.Controllers
                     file.FileItems = file.FileItems.Where(m => m.FromUID.Contains(CNTS(SearchString))).ToList();
                     break;
                 case 2:
-                    file.FileItems = file.FileItems.Where(m => m.UploadTime.Equals(SearchString)).ToList();
+                    file.FileItems = file.FileItems.Where(m => m.UploadTime.Contains(SearchString)).ToList();
                     break;
                 default:
                     break;
@@ -152,7 +153,8 @@ namespace GraduateDesignBk.Controllers
                 return View();
             }
         }
-
+        
+        [LoginAuthorize]
         public FileStreamResult Download(string id)
         {
             string absoluFilePath;
@@ -162,6 +164,9 @@ namespace GraduateDesignBk.Controllers
                 absoluFilePath = System.IO.Path.Combine(HttpContext.Server.MapPath(System.Configuration.ConfigurationManager.AppSettings["FilePath"]), System.IO.Path.GetFileName(file.FileSeq));
                 FileStreamResult filee =  File(new System.IO.FileStream(absoluFilePath, System.IO.FileMode.Open), "application/octet-stream", Server.UrlEncode(file.FileSeq));
                 filee.FileDownloadName = file.Name;
+                file.DownloadTimes += 1;
+                TryUpdateModel(file);
+                db.SaveChanges();
                 return filee;
             }
             return null;
