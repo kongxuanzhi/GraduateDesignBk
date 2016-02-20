@@ -291,6 +291,10 @@
     <Compile Include="Migrations\201602181402561_addDownloadTimesforfilemodel.Designer.cs">
       <DependentUpon>201602181402561_addDownloadTimesforfilemodel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602191550234_addCommentNumforAnswer.cs" />
+    <Compile Include="Migrations\201602191550234_addCommentNumforAnswer.Designer.cs">
+      <DependentUpon>201602191550234_addCommentNumforAnswer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnswerModel.cs" />
@@ -396,6 +400,7 @@
     <Content Include="Content\datepicker.fixes.css" />
     <Content Include="Content\DT_bootstrap.css" />
     <Content Include="Content\mycss.css" />
+    <Content Include="Content\questionDetail.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\uniform.default.fixes.css" />
     <Content Include="Design\毕业设计ER图数据库设计.bmp" />
@@ -404,12 +409,16 @@
     <Content Include="fonts\Ubuntu-LICENSE.txt" />
     <Content Include="Global.asax" />
     <Content Include="img\2.jpg" />
-    <Content Include="img\default.png" />
+    <Content Include="img\30_avatar_max.jpg" />
+    <Content Include="img\32_avatar_max.jpg" />
+    <Content Include="img\32_avatar_min.jpg" />
     <Content Include="img\aiyin.jpg" />
+    <Content Include="img\defaultImg.png" />
     <Content Include="img\hongyu.png" />
     <Content Include="img\iconfont-daxue.png" />
     <Content Include="img\iconfont-tongzhi.png" />
     <Content Include="img\jxust2.png" />
+    <Content Include="img\jxust_top2.png" />
     <Content Include="obj\Debug\GraduateDesignBk.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\GraduateDesignBk.dll" />
     <Content Include="obj\Debug\GraduateDesignBk.pdb" />
@@ -503,6 +512,7 @@
     <Content Include="Views\Bar\Statisics.cshtml" />
     <Content Include="Views\Shared\_HeaderLayout.cshtml" />
     <Content Include="Views\Home\FileCenter.cshtml" />
+    <Content Include="Views\Home\BarDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -617,6 +627,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602181402561_addDownloadTimesforfilemodel.resx">
       <DependentUpon>201602181402561_addDownloadTimesforfilemodel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602191550234_addCommentNumforAnswer.resx">
+      <DependentUpon>201602191550234_addCommentNumforAnswer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="obj\Debug\GraduateDesignBk.Migrations.init.resources" />
   </ItemGroup>

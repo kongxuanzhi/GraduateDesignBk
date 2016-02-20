@@ -30,9 +30,9 @@ namespace GraduateDesignBk
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                     //"~/Content/bootstrap-combined.min.css",
-                    "~/Content/bootstrap.min.css",
                        "~/Content/bootstrap-theme.min.css"));
             bundles.Add(new StyleBundle("~/Content/AdminCss").Include(
+                "~/Content/bootstrap.min.css",
                    "~/Content/bootstrap-admin-theme.css",
                      "~/Content/bootstrap-admin-theme-change-size.css"));
             bundles.Add(new StyleBundle("~/Content/HeadCss").Include(

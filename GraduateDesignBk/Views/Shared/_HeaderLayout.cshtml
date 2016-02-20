@@ -26,11 +26,11 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-      @Styles.Render("~/Content/css")
-      @Scripts.Render("~/bundles/modernizr")
-      @Styles.Render("~/Content/HeadCss")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/HeadCss")
     <style>
-        .selectNav{
+        .selectNav {
             border-bottom: 2px solid #287EBB;
             height: 35px;
             width: 56px;
@@ -41,11 +41,11 @@
 <body style="background: #EEE">
     <div class="navbar navbar-inverse navbar-static-top" role="navigation" style="background-color: #2b303e;border-color: #2b303e;">
         <div class="container">
+            @Html.Partial("_LoginPartial")
             <div class="navbar-header">
                 <a class="navbar-brand navbar-brand-background" href="#"></a>
             </div>
             <div class="titlejz navbar-header">理学院毕业指导网站</div>
-            @Html.Partial("_LoginPartial")
         </div>
     </div>
     <!-- Main jumbotron for a primary marketing message or call to action -->
@@ -86,14 +86,14 @@
         </div>
         @RenderBody()
     </div> <!-- /container -->
-    
+
     <footer>
         <p class="jz">&copy; Horizon 2016</p>
     </footer>
     @Scripts.Render("~/Content/HeadJs")
     <script>
         $(function ($) {
-            $.each($("#mynavbar li"), function (i, n){
+            $.each($("#mynavbar li"), function (i, n) {
                 //alert($(this).children("div").children("a").attr("href").trim())
                 var url = $(this).children("div").children("a").attr("href").trim();
                 var cur = '@ViewBag.Active';
@@ -110,8 +110,8 @@
                 type: "post",
                 success: function (data) {
                     if (data != "error") {
-                     //   alert(data)
-                        $("#Note").html("通知："+data);
+                        //   alert(data)
+                        $("#Note").html("通知：" + data);
                     }
                 }
             });

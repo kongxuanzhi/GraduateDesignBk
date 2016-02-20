@@ -2,7 +2,6 @@
     Layout = "~/Views/Shared/_HeaderLayout.cshtml";
     ViewBag.Title = "Home Page";
 }
-
 <div class="row">
     <div class="col-md-7">
         <div class="_ask-box" style="/*margin-left:-15px;margin-right:-15px*/">
@@ -123,7 +122,7 @@
                                 '<div style="text-align:center;font-size: 12px;margin-top:5px">' + data[i].FromName + '</div>' +
                             '</div>' +
                             '<div class="media-body">' +
-                                '<a href="/ask/955" class="question-list-title">' + data[i].Title + '</a>' +
+                                '<a href="/Home/BarDetail/' + data[i].QID + '" target="_blank" class="question-list-title">' + data[i].Title + '</a>' +
                                 '<div class="pull-right">' +
                                     '<div class="action-top clearfix no-answer">' +
                                         '<span class="pull-left">' + data[i].CommentNum + '&nbsp</span>' +

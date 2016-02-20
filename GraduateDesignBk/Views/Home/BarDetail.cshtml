@@ -1,0 +1,364 @@
+﻿@{
+    ViewBag.Title = "BarDetail";
+    Layout = "~/Views/Shared/_HeaderLayout.cshtml";
+}
+<link href="~/Content/questionDetail.css" rel="stylesheet" />
+<div id="Detail" class="aw-content-wrap clearfix" style="margin: 0 -14px">
+    <div class="col-sm-12 col-md-8 aw-main-content">
+        <!-- 话题推荐bar -->
+        <!-- 话题推荐bar -->
+        <!-- 话题bar -->
+        <!-- end 话题bar -->
+        <div class="aw-mod aw-question-detail aw-item">
+            <div class="mod-head" style="margin-top: 20px;">
+                <h1 id="Title" style="font-weight:bold">大家毕业设计写的怎么样啦？</h1>
+            </div>
+            <div class="mod-body">
+                <div id="Description" class="content markitup-box">
+                    我才刚开始写，听说下个星期五之前要交
+                    求大神带我飞，确实太难写了，你们是怎么写的
+                </div>
+            </div>
+            <div class="mod-footer">
+                <div class="meta">
+                    <span id="RaiseQuesTime" class="text-color-999">2015-07-26</span>
+                    <div class="pull-right more-operate">
+                        <a href="#ct1" data-id="1493" data-type="question" class="aw-add-comment text-color-999 " data-comment-count="0" data-first-click="hide">
+                            <i class="glyphicon glyphicon-edit" style="vertical-align: sub;"></i>
+                            添加评论
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="aw-mod aw-question-comment">
+            <div class="mod-head">
+                <div class="nav nav-tabs aw-nav-tabs active">
+                    <h2 id="ansNum" class="hidden-xs">9 个回复</h2>
+                </div>
+            </div>
+            <div id="AnsList" class="mod-body aw-feed-list">
+            </div>
+            <div class="mod-footer">
+                <div class="aw-load-more-content">
+                    @*<span class="text-color-999 aw-alert-box text-color-999" href="javascript:;" tabindex="-1" onclick="javascript:alert('被折叠的回复是被你或者被大多数用户认为没有帮助的回复');">为什么被折叠?</span>*@
+                    <a class="collapsed aw-load-more-content" role="button" data-toggle="collapse" href="#collapsemore" aria-expanded="false" aria-controls="collapsemore">展开全部回复</a>
+                </div>
+                <div class="aw-feed-list collapse" id="collapsemore">
+                    <div class="aw-item" uninterested_count="0" force_fold="0" id="answer_list_2356">
+                        <div class="mod-head">
+                            <a class="anchor" name="answer_2356"></a>
+                            <!-- 用户头像 -->
+                            <a class="aw-user-img aw-border-radius-5 pull-right" href="http://wenda.golaravel.com/people/linlin" data-id="1730"><img src="http://wenda.golaravel.com/uploads/avatar/000/00/17/30_avatar_mid.jpg" alt="" /></a>										<!-- end 用户头像 -->
+                            <div class="title">
+                                <p>
+                                    <a class="aw-user-name" href="http://wenda.golaravel.com/people/linlin" data-id="1730">琳琳</a>
+                                </p>
+                                <p class="text-color-999 aw-agree-by hide">
+                                    赞同来自:
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mod-body clearfix">
+                            <!-- 评论内容 -->
+                            <div class="markitup-box">
+                                谢谢！
+                                <br />
+                                听你们这么一说，我还算是写得多的，大家赶紧写，时间不多啦，自己慢慢写。‘
+                                <br />
+                            </div><!-- end 评论内容 -->
+                        </div>
+                        <div class="mod-footer">
+                            <!-- 社交操作 -->
+                            <div class="meta clearfix">
+                                <span class="text-color-999 pull-right">2015-07-27</span>
+                                <!-- 投票栏 -->
+                                <span class="operate">
+                                    <a class="agree  disabled"><i data-placement="right" title="" data-toggle="tooltip" class="glyphicon glyphicon-thumbs-up" data-original-title="赞同回复"></i> <b class="count">0</b></a>
+                                </span>
+                                <!-- end 投票栏 -->
+                                <span class="operate">
+                                    <a class="aw-add-comment" role="button" data-toggle="collapse" href="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3"><i class="glyphicon glyphicon-comment"></i> 2</a>
+                                </span>
+
+
+                            </div>
+                            <div class="collapse" id="collapseExample3">
+                                <div class="aw-comment-box" id="aw-comment-box-answer-2356" style="display: block;">
+                                    <div class="aw-comment-list">
+                                        <ul style="margin: 0;padding: 0;list-style: none;">
+                                            <li>
+                                                <a class="aw-user-name" href="http://wenda.golaravel.com/people/%E4%B9%A0%E6%83%AF%E5%AD%A4%E7%8B%AC" data-id="466"><img src="http://wenda.golaravel.com/static/common/avatar-min-img.png" alt=""></a>
+                                                <div>
+                                                    <a href="http://wenda.golaravel.com/people/%E4%B9%A0%E6%83%AF%E5%AD%A4%E7%8B%AC" class="aw-user-name author" data-id="466">习惯孤独</a>
+                                                    <span>2015-07-30 12:58</span>
+                                                    <p></p>
+                                                    <p class="clearfix">phpstorm 有民间的汉化包，是8.*的，可以用，还有就是网上的KEY就能激活最新版</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end 问题详细模块 -->
+        <!-- 回复编辑器 -->
+        <div class="aw-mod aw-replay-box question" id="ct1">
+            <a name="answer_form"></a>
+            @if (Request.IsAuthenticated)
+            {
+                <div class="form-group">
+                    <label for="Comment"></label>
+                    <textarea style="width:100%;height:125px" name="Comment" id="Comment" class="form-control" placeholder="评论..."></textarea>
+                </div>
+                <div>
+                    <a id="CommentBtn" href="javascript:CommentU()" class="btn btn-default" style="float:right;margin:10px 0px;background-color: #287EBB; color:#FFF" border-color #287EBB;>提问</a>
+                </div>
+            }
+            else
+            {
+                <div style="border: 1px solid;border-color: #aaa #ddd #ddd #aaa;    line-height: 100px;">
+                    <p align="center">
+                        要回复问题请先
+                        <a href="javascript:document.getElementById('LoginModelBtn').click();" style="color: #287EBB;">登录</a>
+                    </p>
+                </div>
+            }
+           
+        </div>
+        <!-- end 回复编辑器 -->
+    </div>
+    <!-- 侧边栏 -->
+    <div class="col-md-4 aw-side-bar hidden-xs hidden-sm">
+        <!-- 发起人 -->
+        <div class="aw-mod">
+            <div class="mod-head">
+                <h3>发起人</h3>
+            </div>
+            <div class="mod-body">
+                <dl>
+                    <dt class="pull-left aw-border-radius-5">
+                        <a href="http://wenda.golaravel.com/people/linlin"><img id="AuthorImg" alt="琳琳" src="http://wenda.golaravel.com/uploads/avatar/000/00/17/30_avatar_mid.jpg" /></a>
+                    </dt>
+                    <dd class="pull-left" style="margin-left: 10px;">
+                        <a id="AuthorName" class="aw-user-name" href="http://wenda.golaravel.com/people/linlin" data-id="1730">杨雨欣</a>
+                        <p></p>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <!-- end 发起人 -->
+        <!-- 相关问题 -->
+        <div class="aw-mod">
+            <div class="mod-head">
+                <h3>相关问题</h3>
+            </div>
+            <div class="mod-body font-size-12">
+                <ul style="margin: 0;padding: 0;list-style: none;">
+                    <li>
+                        <a href="http://wenda.golaravel.com/question/1338">毕业设计到底怎么写？</a>
+                    </li>
+                    <li>
+                        <a href="http://wenda.golaravel.com/question/4">毕业设计格式是怎样的？</a>
+                    </li>
+                    <li>
+                        <a href="http://wenda.golaravel.com/question/18">毕业设计至少写多少字？</a>
+                    </li>
+                    <li>
+                        <a href="http://wenda.golaravel.com/question/1048">毕业设计高分攻略</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- end 相关问题 -->
+        <!-- 问题状态 -->
+        <div class="aw-mod question-status">
+            <div class="mod-head">
+                <h3>问题状态</h3>
+            </div>
+            <div class="mod-body">
+                <ul style="margin: 0;padding: 0;list-style: none;">
+                    <li>
+                        最近评论:
+                        <span class="aw-text-color-blue">2016-01-31 15:23</span>
+                    </li>
+                    <li>
+                        浏览:
+                        <span class="aw-text-color-blue">1395</span>
+                    </li>
+                    <li>
+                        收藏:
+                        <span  class="aw-text-color-blue">9</span> 人
+                    </li>
+
+                    <li class="aw-border-radius-5" id="focus_users"></li>
+                </ul>
+            </div>
+        </div>
+        <!-- end 问题状态 -->
+    </div>
+    <!-- end 侧边栏 -->
+</div>
+
+<script>
+    function AnsLike(AID) {
+        $.ajax({
+            url: "/Bar/AddAnsLike",
+            type: "POST",
+            data: { "AID": AID },
+            success: function (data) {
+                alert(3)
+                var aid = $("#" + AID + 'likeans');
+                if (data == "addsuccess") {
+                    // alert($("#" + QID + id).html())
+                    aid.html(parseInt(aid.html()) + 1)
+                } else if (data == "delsuccess") {
+                    //alert($("#" + QID + id).html())
+                    aid.html(parseInt(aid.html()) - 1)
+                }
+                else {
+                    eval(data)
+                }
+            }
+        });
+    }
+
+    function CommentU() {
+        alert($("#Comment").val())
+        $("#CommentBtn").addClass("disabled")
+        $.post("/Bar/Comment", { QID: '@ViewBag.QID', ansDescription: $("#Comment").val() }, function (data) {
+            $("#CommentBtn").removeClass("disabled")
+            var logined = data.split('|');
+            if (logined[0] == "logined") {
+                alert(logined[1]);
+                location = location;
+            } else {
+                eval(logined[0]);
+            }
+        });
+    }
+
+    function Reply(AID) {
+       // alert("#Reply" + AID)
+        //alert($("#Reply" + AID).val())
+        $("#btn" + AID).addClass("disabled")
+        $.ajax({
+            url: "/Bar/Reply",
+            type: "POST",
+            data: { "AID": AID, "reDescription": $("#Reply" + AID).val() },
+            success: function (data) {
+                $("#btn" + AID).removeClass("disabled")
+          //      alert(data);
+                var logined = data.split('|');
+            //    alert(logined[0]);
+                if (logined[0] == "logined") {
+                    alert(logined[1]);
+                    location = location;
+                } else {
+                    eval(logined[0]);
+                }
+            }
+        });
+    }
+
+    $(function ($) {
+        $.post("/Bar/QDetail", { QID: '@ViewBag.QID' }, function (data) {
+            var totalAnswer = data.Bars.fbars.length;
+            //alert(totalAnswer)
+            if (data.Bars.pbars.length == 0) {
+                $("#Detail").html('<h1 style="font-weight:bold">问题不存在!</h1>');
+                return;
+            }
+            $("#ansNum").html(totalAnswer + "个回复")
+            $("#Title").html(data.Bars.pbars[0].Title)
+            $("#Description").html(data.Bars.pbars[0].Description)
+            var raisetime = new Date(parseInt(data.Bars.pbars[0].RaiseQuesTime.replace(/\D/igm, ""))).toLocaleString()
+            $("#RaiseQuesTime").html(raisetime)
+            $("#AuthorImg").attr("src", data.Bars.pbars[0].FromPhoto);
+            $("#AuthorName").html(data.Bars.pbars[0].FromName);
+            
+            $("#AnsList").html(null);
+            //$("#collapsemore").html(null);
+            for (var f = 0; f < totalAnswer; f++) {
+                var anstime = new Date(parseInt(data.Bars.fbars[f].AnswerQuesTime.replace(/\D/igm, ""))).toLocaleString();
+              //  alert($("#AnsList").html());
+                var list =
+               '<div class="aw-item" uninterested_count="0" force_fold="0" id="answer_list_' + data.Bars.fbars[f].AID + '">' +
+               '<div class="mod-head">' +
+                        '<a class="anchor" name="answer_2356"></a>' +
+                        '<!-- 用户头像 -->' +
+                        '<a class="aw-user-img aw-border-radius-5 pull-right" href="http://wenda.golaravel.com/people/linlin" data-id="1730"><img src="' + data.Bars.fbars[f].FromPhoto + '" alt="' + data.Bars.fbars[f].FromName + '" /></a>' +
+                    '<div class="title">' +
+                        '<p>' +
+                            '<a class="aw-user-name" href="http://wenda.golaravel.com/people/linlin" data-id="1730">' + data.Bars.fbars[f].FromName + '</a>' +
+                        '</p>' +
+                    '</div>' +
+                '</div>' +
+                    '<div class="mod-body clearfix">' +
+                        '<!-- 评论内容 -->' +
+                        '<div class="markitup-box">' +
+                            data.Bars.fbars[f].Description +
+                        '</div><!-- end 评论内容 -->' +
+                 '</div>' +
+                    '<div class="mod-footer">' +
+                        '<!-- 社交操作 -->' +
+                        '<div class="meta clearfix">' +
+                            '<span class="text-color-999 pull-right">' + anstime + '</span>' +
+                            '<!-- 投票栏 -->' +
+                            '<span class="operate">' +
+                                '<a href="javascript:AnsLike(' + "'" + data.Bars.fbars[f].AID + "'" + ')" class="agree"><i data-placement="right" title="" data-toggle="tooltip" class="glyphicon glyphicon-thumbs-up" data-original-title="赞同回复"></i> <b id="' + data.Bars.fbars[f].AID + 'likeans" class="count">' + data.Bars.fbars[f].Likes + '</b></a>' +
+                            '</span>' +
+                            '<!-- end 投票栏 -->' +
+                            '<span class="operate">' +
+                                 '<a class="aw-add-comment" role="button" data-toggle="collapse" href="#collapse' + data.Bars.fbars[f].AID + '" aria-expanded="false" aria-controls="collapse' + data.Bars.fbars[f].AID + '"><i class="glyphicon glyphicon-comment"></i>' + data.Bars.fbars[f].CommentNum + '</a>' +
+                            '</span>' +
+                        '</div>' +
+                        '<div class="collapse" id="collapse' + data.Bars.fbars[f].AID + '">' +
+                        '<div class="aw-comment-box" id="aw-comment-box-answer-' + data.Bars.fbars[f].AID + '" style="display: block;">' +
+                            '<div class="aw-comment-list">' +
+                                '<ul id="ulback' + data.Bars.fbars[f].AID + '"  style="margin: 0;padding: 0;list-style: none;">' +
+                                '</ul>' +
+                            '</div>' +
+                        '</div>' +
+                        @if (Request.IsAuthenticated)
+                        {
+                            @:'<div class="input-group aw-comment-box">' +
+                            @:'<textarea id="Reply' + data.Bars.fbars[f].AID + '" placeholder="评论" style="width: 100%;border-bottom-left-radius: 4px;"></textarea>' +
+                            @:'<span class="input-group-btn">' +
+                                @:'<button id="btn' + data.Bars.fbars[f].AID + '" onclick="Reply(' + "'" + data.Bars.fbars[f].AID + "'" + ')" class="btn btn-default" type="button" style="border-bottom-right-radius: 4px;padding: 9px 12px;">发表</button>' +
+                            @:'</span>' +
+                             @:'</div><!-- /input-group -->' +
+                        }
+                    '</div>' +
+                '</div>' +
+            '</div>';
+                f < 10 ? $("#AnsList").append(list) : $("#collapsemore").append(list);
+                for (var s = 0; s < data.Bars.sbars.length; s++) {
+                    if (data.Bars.sbars[s].FAID == data.Bars.fbars[f].AID) {
+                        var ansbacktime = new Date(parseInt(data.Bars.sbars[s].AnswerQuesTime.replace(/\D/igm, ""))).toLocaleString()
+                        var li =
+                        '<li>' +
+                           '<a class="aw-user-name  " href="http://wenda.golaravel.com/people/Alano" data-id="1732"><img src="' + data.Bars.sbars[s].FromPhoto + '" alt=""></a>' +
+                           '<div>' +
+                               '<a href="http://wenda.golaravel.com/people/Alano" class="aw-user-name author" data-id="1732">' + data.Bars.sbars[s].FromName + '</a>' +
+                               '<span> ' + ansbacktime + '</span>' +
+                               '<p></p>' +
+                               '<span class="operate">' +
+                                '<a href="javascript:AnsLike(' + "'" + data.Bars.sbars[s].AID + "'" + ')" class="agree"><i data-placement="right" title="" data-toggle="tooltip" class="glyphicon glyphicon-thumbs-up" data-original-title="赞同回复"></i> <b id="' + data.Bars.sbars[s].AID + 'likeans" class="count">' + data.Bars.sbars[s].Likes + '</b></a>' +
+                                '</span>' +
+                               '<p class="clearfix">' + data.Bars.sbars[s].Description + '</p>' +
+                           '</div>' +
+                       '</li>';
+                        $("#ulback" + data.Bars.fbars[f].AID).append(li);
+                    }
+                }
+            }
+        });
+    });
+</script>
+

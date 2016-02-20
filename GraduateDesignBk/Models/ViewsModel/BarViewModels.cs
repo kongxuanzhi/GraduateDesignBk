@@ -14,6 +14,7 @@ namespace GraduateDesignBk.Models
         public string ToUID { get; set; }   // 编号 为空时就是公开提问，否则为私信 指向私信的老师
         public bool Pub { get; set; }  //是否公开
         public DateTime RaiseQuesTime { get; set; }   //问题提出时间 出发回答问题时间 排序列出
+        public string StrRaiseQTime { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }  //内容
         public int Likes { get; set; }
@@ -35,6 +36,7 @@ namespace GraduateDesignBk.Models
         public DateTime AnswerQuesTime { get; set; }   //问题提出时间 出发回答问题时间 排序列出
         public string Description { get; set; }  //内容
         public int Likes { get; set; }
+        public int CommentNum { get; set; } 
     }
 
     public class BarViewModel

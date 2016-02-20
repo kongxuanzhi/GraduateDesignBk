@@ -1,4 +1,4 @@
-
+﻿
 .pricing_table {
     padding: 20px;
 }
@@ -8191,8 +8191,8 @@ h1 .edit {
     }
 
     .navbar-brand {
-        background-image: url("jxust_top2.png");
-        width: 109px;
+        background-image: url("../img/jxust_top2.png");
+        width: 109px;   
         height: 25px;
         margin-top: 11px;
     }
@@ -15483,7 +15483,7 @@ ul.news-list.right {
 
 
 	.titlejz{
-		width:54%;
+		width:58%;/*54改为60*/
 		height:22px;
 		margin-left:auto;
 		margin-right:auto;
@@ -15577,7 +15577,7 @@ ul.news-list.right {
 	.signinbtn{
 		float: right;
 		margin-top: 3%;
-		margin-right: 8.8%;
+		/*margin-right: 8.8%;注释掉了*/
 	}
 	@media screen and (max-width: 991px){
 		.signinbtn{
@@ -15602,5 +15602,19 @@ ul.news-list.right {
 		.navbar-brand-background{
 			margin-top: 2%;
 			margin-bottom: 0;
+		}
+	}
+	/*以下是我增加de*/
+    @media screen and (width: 768px){
+		.navbar-brand-background{
+			margin-top: 6%;
+			margin-bottom: 0;
+		}
+		.signinbtn{
+			margin-top: 1%;
+		}
+		.titlejz{
+			width:61%;
+			margin-top: 13px;
 		}
 	}

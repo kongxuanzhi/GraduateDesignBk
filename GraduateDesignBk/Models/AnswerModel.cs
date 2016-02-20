@@ -38,5 +38,6 @@ namespace GraduateDesignBk.Models
         public string Description { get; set; }  //内容
 
         public int Likes { get; set; }   // 赞
+        public int CommentNum { get; set; }
     }
 }

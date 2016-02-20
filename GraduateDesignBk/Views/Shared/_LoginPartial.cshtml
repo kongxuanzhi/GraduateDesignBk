@@ -2,13 +2,12 @@
 
 @if (Request.IsAuthenticated)
 {
-
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", style = "float:right" }))
     {
         @Html.AntiForgeryToken()
         <ul class="nav navbar-nav navbar-right">
             <li id="fat-menu" class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 欢迎,@User.Identity.GetUserName() </a>
+                <a href="#" class="dropdown-toggle  " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 欢迎,@User.Identity.GetUserName() </a>
                 <ul class="dropdown-menu">
                     <li>
                         <a href="#">个人信息</a>

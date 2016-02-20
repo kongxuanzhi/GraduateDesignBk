@@ -12,6 +12,12 @@ namespace GraduateDesignBk.Controllers
         {
             return View();
         }
+        public ActionResult BarDetail(string id)
+        {
+            ViewBag.QID = id;
+            return View();
+        }
+
         public ActionResult FileCenter()
         {
             return View();
