@@ -15477,7 +15477,7 @@ ul.news-list.right {
 		}
 		.mynavbar>li>a {
 			padding-top: 15px;
-			padding-bottom: 15px;
+			padding-bottom: 0px;
 		}
 	}
 
@@ -15545,7 +15545,6 @@ ul.news-list.right {
 
 	.mynavbar{
 		width: 100%;
-		margin-top: 5%;
 	}
 	.mynavbar>li {
 		float: left;

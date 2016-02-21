@@ -2,18 +2,41 @@
     Layout = "~/Views/Shared/_HeaderLayout.cshtml";
     ViewBag.Title = "Home Page";
 }
+<script src="~/ckeditor/ckeditor.js"></script>
+<link href="~/ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css" rel="stylesheet" />
 <div class="row">
     <div class="col-md-7">
+        <form name="Post" style="margin-top:-20px">
+            <div class="form-group">
+                <label for="Title"></label>
+                <input type="text" name="Title" class="form-control" id="Title" placeholder="标题">
+            </div>
+            <div class="form-group">
+                <label for="Description"></label>
+                <textarea name="Description" id="Description" class="form-control" placeholder="描述"></textarea>
+
+            </div>
+            <div style="margin-bottom:57px;">
+                <a href="javascript:Post()" class="btn btn-default" style="float:right;margin:10px 0px;background-color: #44546A; color:#FFF">提问</a>
+            </div>
+        </form>
+        <div class="row"></div>
         <div class="_ask-box" style="/*margin-left:-15px;margin-right:-15px*/">
             <div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
                 <ul id="myTabs" class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#latest" onclick="LatestQ()" id="latest-tab" role="tab" data-toggle="tab" aria-controls="latest" aria-expanded="true">最新问题</a></li>
-                    <li role="presentation" class=""><a href="#hotest" onclick="HotQ()"  role="tab" id="hotest-tab" data-toggle="tab" aria-controls="hotest" aria-expanded="false">热门问题</a></li>
-                    <li role="presentation" class=""><a href="#unAnswer" onclick="UnAnsQ()" role="tab" id="unAnswer-tab" data-toggle="tab" aria-controls="unAnswer" aria-expanded="false">未回答问题</a></li>
+                    <li role="presentation" class="active">
+                        <a href="#latest" onclick="LatestQ()" id="latest-tab" role="tab" data-toggle="tab" aria-controls="latest" aria-expanded="true">最新问题</a>
+                    </li>
+                    <li role="presentation" class="">
+                        <a href="#hotest" onclick="HotQ()" role="tab" id="hotest-tab" data-toggle="tab" aria-controls="hotest" aria-expanded="false">热门问题</a>
+                    </li>
+                    <li role="presentation" class="">
+                        <a href="#unAnswer" onclick="UnAnsQ()" role="tab" id="unAnswer-tab" data-toggle="tab" aria-controls="unAnswer" aria-expanded="false">未回答问题</a>
+                    </li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
                     <div role="tabpanel" class="tab-pane fade active in" id="latest" aria-labelledby="latest-tab">
-                       <div id="latestQues"></div>
+                        <div id="latestQues"></div>
                     </div>
                     <div role="tabpanel" class="tab-pane fade" id="hotest" aria-labelledby="hotest-tab">
                         <div id="hotestQues"></div>
@@ -26,8 +49,12 @@
                     </div>
                     <nav>
                         <ul class="pager">
-                            <li class="previous" ><a href="javascript:Previou()"><span aria-hidden="true">&larr;</span> 上一页</a></li>
-                            <li class="next"><a href="javascript:Next()">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+                            <li class="previous">
+                                <a href="javascript:Previou()"><span aria-hidden="true">&larr;</span> 上一页</a>
+                            </li>
+                            <li class="next">
+                                <a href="javascript:Next()">下一页 <span aria-hidden="true">&rarr;</span></a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -39,38 +66,30 @@
     <div class="col-md-4">
         <form class="" role="search">
             <div class="form-group">
-                <input type="text" id="searchKey"  onkeyup="SearchR()" class="form-control search clearable" placeholder="搜索问题">
+                <input type="text" id="searchKey" onkeyup="SearchR()" class="form-control search clearable" placeholder="搜索问题">
                 <i class="faa glyphicon glyphicon-search"></i>
             </div>
         </form>
-        
+
         <p style="margin-bottom: 10px;margin-top: 25px;margin-left: 10px;font-size: 12px;">精选答疑：</p>
         <hr style="border-top:1px solid #ccc; margin-top: 5px" width="100%" SIZE="3">
         <div class="row">
             <div class="pagination">
                 <ul id="hotQA">
                     @*<li><a href="#">毕业设计到底怎么写？</a></li>
-                    <li><a href="#">毕业设计格式是怎样的？</a></li>
-                    <li><a href="#">毕业设计至少写多少字？</a></li>*@
+                        <li><a href="#">毕业设计格式是怎样的？</a></li>
+                        <li><a href="#">毕业设计至少写多少字？</a></li>*@
                 </ul>
             </div>
         </div>
-        <form name="Post">
-            <div class="form-group">
-                <label for="Title"></label>
-                <input type="text" name="Title" class="form-control" id="Title" placeholder="标题">
-            </div>
-            <div class="form-group">
-                <label for="Description"></label>
-                <textarea style="width:100%;height:125px" name="Description" id="Description" class="form-control" placeholder="描述"></textarea>
-            </div>
-            <div style="margin-bottom:57px">
-                <a href="javascript:Post()" class="btn btn-default" style="float:right;margin:10px 0px;background-color: #44546A; color:#FFF">提问</a>
-            </div>
-        </form>
+
         <ul class="nav" data-spm="yqask2">
-            <li><a href="#modal-login" data-toggle="modal"><span class="glyphicon glyphicon-pencil"></span>我提出的问题</a></li>
-            <li><a href="#modal-login" data-toggle="modal"><span class="glyphicon glyphicon-star-empty"></span>我收藏的问题</a></li>
+            <li>
+                <a href="#modal-login" data-toggle="modal"><span class="glyphicon glyphicon-pencil"></span>我提出的问题</a>
+            </li>
+            <li>
+                <a href="#modal-login" data-toggle="modal"><span class="glyphicon glyphicon-star-empty"></span>我收藏的问题</a>
+            </li>
         </ul>
     </div>
 </div>
@@ -82,7 +101,7 @@
         $.ajax({
             url: "/Bar/QuestLike",
             type: "POST",
-            data:{"QID":QID},
+            data: { "QID": QID },
             success: function (data) {
                 //alert(3)
                 if (data == "addsuccess") {
@@ -103,7 +122,7 @@
         QueryQues(currentIndex, url, id, $("#searchKey").val());
     }
     function Next() {
-        if ($("#"+id).html() != '无内容！') {
+        if ($("#" + id).html() != '无内容！') {
             currentIndex = currentIndex + 1;
             QueryQues(currentIndex, url, id, $("#searchKey").val());
         }
@@ -112,13 +131,13 @@
         $.ajax({
             url: url,
             type: "POST",
-            data: { "currentIndex": currentIndex ,"searchstr": search},
+            data: { "currentIndex": currentIndex, "searchstr": search },
             success: function (data) {
                 $("#" + id).empty();
                 for (var i = 0; i < data.length; i++) {
                     var p = '<div class="question-list media clearfix">' +
                     '<div class="pull-left question-list-action">' +
-                        '<img src="' + data[i].FromPhoto + '" width="50" height="50" alt="'+data[i].FromName+'" class="">' +
+                        '<img src="' + data[i].FromPhoto + '" width="50" height="50" alt="' + data[i].FromName + '" class="">' +
                                 '<div style="text-align:center;font-size: 12px;margin-top:5px">' + data[i].FromName + '</div>' +
                             '</div>' +
                             '<div class="media-body">' +
@@ -130,15 +149,15 @@
                                     '</div>' +
 
                                     '<div class="action-bottom clearfix">' +
-                                        '<span class="pull-left" id="' + data[i].QID + id+'">' + data[i].Likes + '</span>' +
-                                        '<a href="javascript:Like' + "('" + data[i].QID + "')"+'"><span        class="pull-right glyphicon glyphicon-thumbs-up"></span></a>' +
+                                        '<span class="pull-left" id="' + data[i].QID + id + '">' + data[i].Likes + '</span>' +
+                                        '<a href="javascript:Like' + "('" + data[i].QID + "')" + '"><span        class="pull-right glyphicon glyphicon-thumbs-up"></span></a>' +
                                     '</div>' +
 
                                 '</div>' +
                                 '<div class="question-list-bar">' +
                                     '<span><span class="glyphicon glyphicon-time"></span>' + new Date(parseInt(data[i].RaiseQuesTime.replace(/\D/igm, ""))).toLocaleString() + '</span>' +
-                                    '<span>&nbsp;</span>'+
-                                    '<span><span class="glyphicon glyphicon-plus"></span> 7次浏览</span>'+
+                                    '<span>&nbsp;</span>' +
+                                    '<span><span class="glyphicon glyphicon-plus"></span> 7次浏览</span>' +
                                 '</div>' +
                         '</div>' +
                     '</di>';
@@ -155,31 +174,31 @@
         $("#myTabs").html(li);
         $("#latest").empty(); $("#unAnsQues").empty(); $("#latestQues").empty();
         currentIndex = 1;
-        url="/Bar/Search";
-        id="SearchResultQues";
+        url = "/Bar/Search";
+        id = "SearchResultQues";
         QueryQues(1, url, id, $("#searchKey").val());
         document.getElementById("SearchResult-tab").click();
     }
     function UnAnsQ() {
         url = "/Bar/UnAns";
-        id= "unAnsQues";
-        QueryQues(1, url,id,null);
+        id = "unAnsQues";
+        QueryQues(1, url, id, null);
         currentIndex = 1;
     }
     function HotQ() {
         currentIndex = 1;
         url = "/Bar/Hotest";
         id = "hotestQues";
-        QueryQues(currentIndex, url, id,null);
+        QueryQues(currentIndex, url, id, null);
     }
     function LatestQ() {
         currentIndex = 1;
         url = "/Bar/Latest";
         id = "latestQues";
-        QueryQues(currentIndex, url, id,null);
+        QueryQues(currentIndex, url, id, null);
     }
 
-    
+
     $(function ($) {
         LatestQ();
         $.ajax({
@@ -189,7 +208,7 @@
             success: function (data) {
                 $("#hotQA").empty();
                 for (var i = 0; i < data.length; i++) {
-                    var mo = '<li><a href="https://www.baidu.com/">'+data[i].Title+'</a></li>';
+                    var mo = '<li><a href="https://www.baidu.com/">' + data[i].Title + '</a></li>';
                     $("#hotQA").append(mo);
                 }
             }
@@ -198,12 +217,13 @@
     function Post() {
         var form = document.forms["Post"];
         alert("发表提问");
+        var Descrption = CKEDITOR.instances.Description.getData();
         $.ajax({
             url: "/Bar/Post",
             type: "POST",
             data: {
                 "Title": form.Title.value,
-                "Description": form.Description.value
+                "Description": Descrption
             },
             success: function (data) {
                 var str = data.split('|');
@@ -221,5 +241,42 @@
             }
         });
     }
+
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    var maxlength = 500;
+    _editor = CKEDITOR.replace('Description',
+    {
+        extraPlugins: 'codesnippet',
+        codeSnippet_theme: 'monokai_sublime',
+        height: '119px',
+        toolbarCanCollapse: true,
+        toolbarExpanded: false,
+        smiley_columns: 100,
+        smiley_images: [
+            '0.png', '1.png', '2.png', '3.png'
+        ],
+        customConfig: 'custumconfig.js',
+    });
+    _editor.on('instanceReady', function (ev) { ev.editor.execCommand('toolbarCollapse'); });
+    _editor.on('key', function (event) {
+        var oldhtml = _editor.document.getBody().getHtml();
+        var description = oldhtml.replace(/<.*?>/ig, "");
+        var etop = $("#cke_1_top");
+        var _slen = maxlength - description.length;
+        var canwrite = $("<label  id='canwrite'>剩200字</label>");
+        if (etop.find("#canwrite").length < 1) {
+            canwrite.css({ border: '1px #f1f1f1 solid', 'line-height': '28px', color: '#999' });
+            etop.prepend(canwrite);
+        }
+        var _label = etop.find("#canwrite");
+        if (description.length > maxlength) {
+            //alert("最多可以输入"+maxlength+"个文字，您已达到最大字数限制");
+            _editor.setData(oldhtml);
+            _label.html("剩0字");
+        } else {
+            _label.html("剩" + _slen + "字");
+        }
+    });
 </script>
 

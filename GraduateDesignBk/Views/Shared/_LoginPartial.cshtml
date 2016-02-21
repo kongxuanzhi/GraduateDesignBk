@@ -2,30 +2,31 @@
 
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", style = "float:right" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
     {
         @Html.AntiForgeryToken()
-        <ul class="nav navbar-nav navbar-right">
-            <li id="fat-menu" class="dropdown">
-                <a href="#" class="dropdown-toggle  " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 欢迎,@User.Identity.GetUserName() </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="#">个人信息</a>
-                    </li>
-                    <li>
-                        <a href="#">Another action</a>
-                    </li>
-                    <li>
-                        <a href="#">Something else here</a>
-                    </li>
-                    <li role="presentation" class="divider"></li>
-                    <li> </li>
-                    <li>
-                        <a href="javascript:document.getElementById('logoutForm').submit()">登 出</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+        <div class="dropdown signinbtn" style="height: 30px;padding-top: 3px;">
+
+            <a href="#" style="color: white;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 欢迎,1920135159 </a>
+            <ul class="dropdown-menu" style="min-width: 100px;width: 118px;">
+                <!-- 里面新增的style用于覆盖原有代码 -->
+                <li>
+                    <a href="#">个人信息</a>
+                </li>
+                <li>
+                    <a href="#">Another </a>
+                </li>
+                <li>
+                    <a href="#">Something </a>
+                </li>
+                <li role="presentation" class="divider"></li>
+                <li> </li>
+                <li>
+                    <a href="javascript:document.getElementById('logoutForm').submit()">登 出</a>
+                </li>
+            </ul>
+
+        </div>
     }
 }
 else

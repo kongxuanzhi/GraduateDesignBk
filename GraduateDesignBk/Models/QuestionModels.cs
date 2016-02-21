@@ -33,7 +33,6 @@ namespace GraduateDesignBk.Models
         [StringLength(200)]
         public string Title { get; set; }  //标题
 
-        [StringLength(500)]
         public string  Description { get; set; }  //内容
 
         public int Likes { get; set; }   // 赞

@@ -32,10 +32,11 @@
     <style>
         .selectNav {
             border-bottom: 2px solid #287EBB;
-            height: 35px;
             width: 56px;
+            /*padding-bottom: 15px;*/
         }
     </style>
+  
 </head>
 
 <body style="background: #EEE">
@@ -63,20 +64,26 @@
             <div class="col-md-4">
                 <ul id="mynavbar" class="mynavbar">
                     <!--<li><a href="/products/">Products &amp; Pricing<span></span></a></li>-->
-                    <li>
-                        <div class="selectNav">
-                            <a href="/" target="_self">问题广场</a>
-                        </div>
+                    <li style="text-align:left">
+                        <a href="/" target="_self">
+                            <div class="selectNav" style="height:35px">
+                                问题广场
+                            </div>
+                        </a>
                     </li>
-                    <li>
-                        <div>
-                            <a href="/Home/FileCenter" target="_self">文件中心</a>
-                        </div>
+                    <li style="text-align:center">
+                        <a href="/Home/FileCenter" target="_self">
+                            <div style="margin:0 auto;height:35px">
+                                文件中心
+                            </div>
+                        </a>
                     </li>
-                    <li>
-                        <div>
-                            <a href="/Home/SecuritylfCenter" target="_self">个人信息</a>
-                        </div>
+                    <li style="text-align:right">
+                        <a href="/Home/SecuritylfCenter" target="_self">
+                            <div style="height:35px">
+                                个人信息
+                            </div>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -95,11 +102,11 @@
         $(function ($) {
             $.each($("#mynavbar li"), function (i, n) {
                 //alert($(this).children("div").children("a").attr("href").trim())
-                var url = $(this).children("div").children("a").attr("href").trim();
+                var url = $(this).children("a").attr("href").trim();
                 var cur = '@ViewBag.Active';
                 if (cur == url) {
-                    $("#mynavbar li div").removeClass("selectNav");
-                    $(this).children("div").addClass("selectNav");
+                    $("#mynavbar li a div").removeClass("selectNav");
+                    $(this).children("a").children("div").addClass("selectNav");
                 }
             });
 
