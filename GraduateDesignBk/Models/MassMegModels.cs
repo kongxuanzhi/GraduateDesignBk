@@ -24,7 +24,7 @@ namespace GraduateDesignBk.Models
         [StringLength(128)]
         public string NID { get; set; }       //消息号关联T_ notice
         [ForeignKey("NID")]
-        public Notice notices { get; set; }
+        public Mesg notices { get; set; }
 
 
         [StringLength(128)]

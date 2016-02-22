@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace GraduateDesignBk.Models
 {
-    public class Notice
+    public class Mesg
     {
-        public Notice()
+        public Mesg() //消息
         {
             this.CreateTime = DateTime.Now;
             NID = Guid.NewGuid().ToString();

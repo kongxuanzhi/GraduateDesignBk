@@ -1,5 +1,4 @@
 ﻿using GraduateDesignBk.Models;
-using GraduateDesignBk.Models.ViewsModel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
@@ -10,45 +9,44 @@ using System.Web.Mvc;
 
 namespace GraduateDesignBk.Controllers
 {
-    public class MsgController : Controller
+    public class AnnounceController : Controller
     {
-        // GET: Msg
-        public ActionResult Index()
+        // GET: Announce
+        public ActionResult Index(AnnouandP Annou)
         {
-            List<MsgViewModel> msgs = db.Mesg.ToList().Select(m =>
-                new MsgViewModel()
-                {
-                    NID = m.NID,
-                    CreateTime = m.CreateTime,
-                    Detail = m.Detail,
-                    FromId = m.FromUID,
-                    Title = m.Title,
-                    FromUID = UserManager.FindById(m.FromUID).UserName
-                }
+            int pageSize = (int)Annou.page.PageSize + 8;
+            Annou.AnnouItems = getAnnous();
+            //过滤
+            Annou.AnnouItems = Annou.AnnouItems
+                .Where(m => m.Title.Contains(CNTS(Annou.STitle)) || m.Content.Contains(CNTS(Annou.STitle))
+                 && m.FromUID.Contains(CNTS(Annou.SuserName))
+                ).ToList();
+
+            //分页
+            Annou.page.TotalCount = Annou.AnnouItems.Count();
+            Annou.page.PageNum = (int)Math.Ceiling((double)(Annou.page.TotalCount) / pageSize);
+            Annou.AnnouItems = Annou.AnnouItems.OrderBy(m => m.Time).Skip(pageSize * (Annou.page.CurIndex - 1)).Take(pageSize).ToList();
+            return View(Annou);
+        }
+        public string CNTS(string value)
+        {
+            return value == null ? "" : value;
+        }
+        public List<AnnounceView> getAnnous()
+        {
+            List<AnnounceView> AnnouItems = new List<AnnounceView>();
+            AnnouItems = db.Announces.ToList().Select(m =>
+               new AnnounceView()
+               {
+                   ANID = m.ANID,
+                   Title = m.Title,
+                   FromUID = m.FromUID,
+                   Time = m.Time,
+                   FromName = UserManager.FindById(m.FromUID).RealName
+               }
             ).ToList();
-           return View(msgs);
+            return AnnouItems;
         }
-
-        public ActionResult DeleteMany(string Id)
-        {
-            string[] ids = Id.Split('|');
-            foreach (string id in ids)
-            {
-                if (db.Mesg.Where(m => m.NID.Equals(id)).Count() > 0)
-                {
-                    Mesg notice = db.Mesg.Where(m => m.NID.Equals(id)).First();
-                    if(notice == null)
-                    {
-                        return new HttpNotFoundResult();
-                    }
-                    db.Mesg.Remove(notice);
-                }
-
-            }
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -68,7 +66,6 @@ namespace GraduateDesignBk.Controllers
 
             base.Dispose(disposing);
         }
-
         #region 初始化
         private ApplicationUserManager _userManager;
         public ApplicationDbContext _contextManger;
@@ -88,7 +85,7 @@ namespace GraduateDesignBk.Controllers
             get
             {
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }  
+            }
             private set
             {
                 _userManager = value;

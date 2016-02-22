@@ -4,6 +4,20 @@
 }
 <script src="~/ckeditor/ckeditor.js"></script>
 <link href="~/ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css" rel="stylesheet" />
+<style>
+    /*所需css*/
+    .span-mark {
+	    display: inline-block;
+	    background-color: #f63756;
+	    position: absolute;
+	    z-index: 1;
+	    height: 14px;
+	    line-height: 20px;
+	    margin: -28px 0 0;
+	    width: 4px;
+    }
+/*----------------------------------------*/
+</style>
 <div class="row">
     <div class="col-md-7">
         <form name="Post" style="margin-top:-20px">
@@ -70,27 +84,40 @@
                 <i class="faa glyphicon glyphicon-search"></i>
             </div>
         </form>
-
-        <p style="margin-bottom: 10px;margin-top: 25px;margin-left: 10px;font-size: 12px;">精选答疑：</p>
-        <hr style="border-top:1px solid #ccc; margin-top: 5px" width="100%" SIZE="3">
-        <div class="row">
-            <div class="pagination">
-                <ul id="hotQA">
-                    @*<li><a href="#">毕业设计到底怎么写？</a></li>
-                        <li><a href="#">毕业设计格式是怎样的？</a></li>
-                        <li><a href="#">毕业设计至少写多少字？</a></li>*@
-                </ul>
-            </div>
+        <hr style="border-top:1px solid #ccc; margin-top: 5px; margin-bottom: 5px;" width="100%" SIZE="3">
+        <div>
+            <p style="margin-bottom: 10px;margin-top: 20px;margin-left: 10px; font-size: 14px;">精选答疑</p>
+            <span class="span-mark"></span>
+            <ul  id="hotQA" style="padding-left: 0px;list-style: none;">
+                <li><a href="https://www.baidu.com/">毕业设计高分攻略</a></li>
+                <li><a href="#">毕业设计到底怎么写？</a></li>
+                <li><a href="#">毕业设计格式是怎样的？</a></li>
+                <li><a href="#">毕业设计至少写多少字？</a></li>
+            </ul>
         </div>
-
-        <ul class="nav" data-spm="yqask2">
-            <li>
-                <a href="#modal-login" data-toggle="modal"><span class="glyphicon glyphicon-pencil"></span>我提出的问题</a>
-            </li>
-            <li>
-                <a href="#modal-login" data-toggle="modal"><span class="glyphicon glyphicon-star-empty"></span>我收藏的问题</a>
-            </li>
-        </ul>
+        <hr style="border-top:1px solid #ccc; margin-top: 5px; margin-bottom: 5px;" width="100%" SIZE="3">
+        <div>
+            <p style="margin-bottom: 10px;margin-top: 20px;margin-left: 10px; font-size: 14px;">快速链接</p>
+            <span class="span-mark"></span>
+            <ul style="padding-left: 0px;list-style: none;">
+                <li><a href="http://www.jxust.cn/">>>江西理工大学官网</a></li>
+                <li><a href="http://lxy.jxust.edu.cn/">>>江西理工大学官网理学院</a></li>
+                <li><a href="http://jw.jxust.edu.cn/">>>江西理工大学教务管理系统</a></li>
+                <li><a href="http://zsjy.jxust.edu.cn/">>>江西理工大学招生就业处</a></li>
+            </ul>
+        </div>
+        <hr style="border-top:1px solid #ccc; margin-top: 5px; margin-bottom: 5px;" width="100%" SIZE="3">
+        <div>
+            <p style="margin-bottom: 10px;margin-top: 20px;margin-left: 10px; font-size: 14px;">通知公告<a href="#"  style="float:right;font-size:smaller;margin-top: 2px;color: #999999;"><span style="width:20px;height:20px">全部>></span></a></p>
+            <span class="span-mark"></span>
+            <ul style="padding-left: 0px;list-style: none;">
+                <li><a href="#">[01-22] 关于研究生考试的温馨提示</a></li>
+                <li><a href="#">[12-14] 我院关于做好学期末相关学生教育管理工作的通知</a></li>
+                <li><a href="#">[11-22] 关于做好2016届优秀毕业生评选工作的通知</a></li>
+                <li><a href="#">[11-11] 理学院2015年社会奖学金候选人名单公示</a></li>
+                <li><a href="#">[10-11] 关于填写2014-2015学年个人先进事迹材料的通知</a></li>
+            </ul>
+        </div>
     </div>
 </div>
 <script>
@@ -249,6 +276,8 @@
     {
         extraPlugins: 'codesnippet',
         codeSnippet_theme: 'monokai_sublime',
+        extraPlugins: 'uploadimage',
+        uploadUrl: '/uploader/upload.php',
         height: '119px',
         toolbarCanCollapse: true,
         toolbarExpanded: false,

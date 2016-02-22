@@ -246,6 +246,26 @@ namespace GraduateDesignBk.Controllers
             return RedirectToAction("Index");
         }
 
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
+
+                if (_contextManger != null)
+                {
+                    _contextManger.Dispose();
+                    _contextManger = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
         #region 初始化
         private ApplicationUserManager _userManager;
         public ApplicationDbContext _contextManger;

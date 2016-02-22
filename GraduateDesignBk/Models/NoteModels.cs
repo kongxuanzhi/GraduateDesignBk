@@ -9,11 +9,15 @@ namespace GraduateDesignBk.Models
 {
     public class Note
     {
+        public Note()
+        {
+            NTID = Guid.NewGuid().ToString();
+            Time = DateTime.Now;
+        }
         [Key]
         [StringLength(120)]
         public string NTID { get; set; }
-        [StringLength(200)]
-        [Display(Name ="公告内容：")]
+        [Display(Name ="通知内容")]
         public string Content { get; set; }
         [StringLength(120)]
         public string FromUID { get; set; }

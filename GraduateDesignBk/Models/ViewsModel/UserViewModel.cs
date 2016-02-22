@@ -68,7 +68,7 @@ namespace GraduateDesignBk.Models
         //public List<Bar> bars { get; set; }
         //上传文件
         public List<File> files { get; set; }
-        public List<Notice> msgs { get; set; }
+        public List<Mesg> msgs { get; set; }
 
         public List<UserViewModel> stuOrTeaches { get; set; }
     }
@@ -136,7 +136,7 @@ namespace GraduateDesignBk.Models
 
     public class PersonNotice
     {
-        public List<Notice> msgs { get; set; }
+        public List<Mesg> msgs { get; set; }
         public List<MassMegDetail> massMsg { get; set; }
         public string Id { get; set; }
         public string userType { get; set; }
@@ -183,9 +183,13 @@ namespace GraduateDesignBk.Models
 
     public class SendMsg
     {
+        [Required(ErrorMessage ="标题必填")]
+        [Display(Name ="标题")]
         public string Title { get; set; }
+        [Required(ErrorMessage = "详情必填")]
+        [Display(Name = "详情")]
         public string Detail { get; set; }
-        public string roleName { get; set; }
+        public string roleName { get; set; } //为了跳回刚才那个角色列表
         public string  Ids { get; set; }
     }
 

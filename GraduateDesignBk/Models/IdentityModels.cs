@@ -92,12 +92,13 @@ namespace GraduateDesignBk.Models
 
         public DbSet<Question>  Questions { get; set; }
         public DbSet<Answer>  Answers { get; set; }
-        public DbSet<Note> Notes { get; set; } //公告
+        public DbSet<Note> Notes { get; set; } //通知
+        public DbSet<Announce> Announces { get; set; }  //新增的公告
         public DbSet<likeOnce> LikeOnce { get; set; }   
         public DbSet<DownUpload> DownUpload { get; set; }
         public DbSet<File> File { get; set; }
         public DbSet<MassMeg> MassMeg { get; set; }
-        public DbSet<Notice> Notice { get; set; }
+        public DbSet<Mesg> Mesg { get; set; }
         public DbSet<StuMentor> StuMentor { get; set; }
 
         public ApplicationDbContext()

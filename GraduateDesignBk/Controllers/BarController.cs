@@ -196,7 +196,7 @@ namespace Graduatedesignbk.Controllers
             if (ansCom != null)
             {
                 if (string.IsNullOrEmpty(reDescription)) return Json(str + "回复的内容不能为空！");
-                if (reDescription.Length > 5000) return Json(str + "评论内容过长");
+                if (reDescription.Length > 5000) return Json(str + "回复内容过长");
                 Answer reply = new Answer() {
                     FromUID = User.Identity.GetUserId(),
                     ToUID = ansCom.FromUID,
@@ -482,7 +482,25 @@ namespace Graduatedesignbk.Controllers
             return value == null ? "" : value;
         }
         #endregion
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
 
+                if (_contextManger != null)
+                {
+                    _contextManger.Dispose();
+                    _contextManger = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
         #region 初始化
         private ApplicationUserManager _userManager;
         public ApplicationDbContext _contextManger;

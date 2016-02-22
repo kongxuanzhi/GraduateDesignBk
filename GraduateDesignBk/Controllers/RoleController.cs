@@ -159,6 +159,31 @@ namespace GraduateDesignBk.Controllers
             return View("_SuccessView", new { Result = "移出成功" });
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
+                
+                if (_contextManger != null)
+                {
+                    _contextManger.Dispose();
+                    _contextManger = null;
+                }
+                if (_roleManager != null)
+                {
+                    _roleManager.Dispose();
+                    _roleManager = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
         #region helper
         public ApplicationUserManager UserManager
         {

@@ -252,7 +252,7 @@ namespace GraduateDesignBk.Controllers
         {
             PersonNotice NoticeD = new PersonNotice();
             NoticeD.Id = Id; NoticeD.userType = userType;
-            NoticeD.msgs = ContextManger.Notice.Where(m => m.FromUID == Id).ToList();
+            NoticeD.msgs = ContextManger.Mesg.Where(m => m.FromUID == Id).ToList();
             NoticeD.massMsg = ContextManger.MassMeg.ToList().Select(m =>
                 new MassMegDetail()
                 {
@@ -445,13 +445,13 @@ namespace GraduateDesignBk.Controllers
                 return View(msg);
             }
             string[] ids = msg.Ids.Split(new char[] {'|'});
-            Notice notice = new Notice()
+            Mesg mesg = new Mesg()
             {
                 Title = msg.Title,
                 Detail = msg.Detail,
                 FromUID = User.Identity.GetUserId()
             };
-            ContextManger.Notice.Add(notice);
+            ContextManger.Mesg.Add(mesg);
             foreach (string id in ids)
             {
                 ApplicationUser user = UserManager.FindById(id);
@@ -459,7 +459,7 @@ namespace GraduateDesignBk.Controllers
                 {
                     MassMeg massMsg = new MassMeg()
                     {
-                        NID = notice.NID,
+                        NID = mesg.NID,
                         ToUID = id,
                     };
                     ContextManger.MassMeg.Add(massMsg);

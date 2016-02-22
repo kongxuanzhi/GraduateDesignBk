@@ -43,8 +43,7 @@
             </div>
             <div class="mod-footer">
                 <div class="aw-load-more-content">
-                    @*<span class="text-color-999 aw-alert-box text-color-999" href="javascript:;" tabindex="-1" onclick="javascript:alert('被折叠的回复是被你或者被大多数用户认为没有帮助的回复');">为什么被折叠?</span>*@
-                    <a class="collapsed aw-load-more-content" role="button" data-toggle="collapse" href="#collapsemore" aria-expanded="false" aria-controls="collapsemore">展开全部回复</a>
+                    <a class="collapsed aw-load-more-content" role="button" data-toggle="collapse" href="#collapsemore" aria-expanded="false" aria-controls="collapsemore">展开全部评论</a>
                 </div>
                 <div class="aw-feed-list collapse" id="collapsemore">
                     <div class="aw-item" uninterested_count="0" force_fold="0" id="answer_list_2356">
@@ -114,19 +113,21 @@
             <a name="answer_form"></a>
             @if (Request.IsAuthenticated)
             {
-                <div class="form-group">
-                    <label for="Comment"></label>
-                    <textarea style="width:100%;height:125px" name="Comment" id="Comment" class="form-control" placeholder="评论..."></textarea>
-                </div>
-                <div>
-                    <a id="CommentBtn" href="javascript:CommentU()" class="btn btn-default" style="float:right;margin:10px 0px;background-color: #287EBB; color:#FFF" border-color #287EBB;>回复</a>
+                <div id="com">
+                    <div class="form-group">
+                        <label for="Comment"></label>
+                        <textarea style="width:100%;height:125px" name="Comment" id="Comment" class="form-control" placeholder="评论..."></textarea>
+                    </div>
+                    <div>
+                        <a id="CommentBtn" href="javascript:CommentU()" class="btn btn-default" style="float:right;margin:10px 0px;background-color: #287EBB; color:#FFF" border-color #287EBB;>评论</a>
+                    </div>
                 </div>
             }
             else
             {
                 <div style="border: 1px solid;border-color: #aaa #ddd #ddd #aaa;    line-height: 100px;">
                     <p align="center">
-                        要回复问题请先
+                        要评论问题请先
                         <a href="javascript:document.getElementById('LoginModelBtn').click();" style="color: #287EBB;">登录</a>
                     </p>
                 </div>
@@ -242,7 +243,9 @@
                 var logined = data.split('|');
                 if (logined[0] == "logined") {
                     alert(logined[1]);
-                    location.reload();
+                    if ("评论成功！" == logined[1]) {
+                        location.reload();
+                    }
                 } else {
                     eval(logined[0]);
                 }
@@ -250,7 +253,7 @@
         });
     }
 
-    function Reply(AID,f) {
+    function Reply(AID, f) {
         // alert("#Reply" + AID)
         //alert($("#Reply" + AID).val())
         $("#btn" + AID).addClass("disabled")
@@ -267,7 +270,9 @@
                 //    alert(logined[0]);
                 if (logined[0] == "logined") {
                     alert(logined[1]);
-                    location.reload()
+                    if (logined[1] == "回复成功") {
+                        location.reload()
+                    }
                 } else {
                     eval(logined[0]);
                 }
@@ -297,8 +302,8 @@
                 var anstime = new Date(parseInt(data.Bars.fbars[f].AnswerQuesTime.replace(/\D/igm, ""))).toLocaleString();
 
                 //  alert($("#AnsList").html());
-                var list =
-               '<div class="aw-item" uninterested_count="0" force_fold="0" id="answer_list_' + data.Bars.fbars[f].AID + '">' +
+                var listStart =
+               '<div  onmouseover="$(' + "'" + '#replytext' + f + "'" + ').show()" onmouseout="$(' + "'" + '#replytext' + f + "'" + ').hide()"  class="aw-item" uninterested_count="0" force_fold="0" id="answer_list_' + data.Bars.fbars[f].AID + '">' +
                '<div class="mod-head">' +
                         '<a class="anchor" name="answer_2356"></a>' +
                         '<!-- 用户头像 -->' +
@@ -328,46 +333,54 @@
                                  '<a class="aw-add-comment" role="button" data-toggle="collapse" href="#collapse' + data.Bars.fbars[f].AID + '" aria-expanded="false" aria-controls="collapse' + data.Bars.fbars[f].AID + '"><i class="glyphicon glyphicon-comment"></i>' + data.Bars.fbars[f].CommentNum + '</a>' +
                             '</span>' +
                         '</div>' +
-                        '<div class="collapse" id="collapse' + data.Bars.fbars[f].AID + '">' +
+                        '<div class="collapse in" id="collapse' + data.Bars.fbars[f].AID + '">' +
                         '<div class="aw-comment-box" id="aw-comment-box-answer-' + data.Bars.fbars[f].AID + '" style="display: block;">' +
                             '<div class="aw-comment-list">' +
                                 '<ul id="ulback' + data.Bars.fbars[f].AID + '"  style="margin: 0;padding: 0;list-style: none;">' +
                                 '</ul>' +
                             '</div>' +
-                        '</div>' +
-                        @if (Request.IsAuthenticated)
-                        {
-                            @:'<div class="input-group aw-comment-box">' +
-                            @:'<textarea id="Reply' + f + '" placeholder="评论" style="width: 100%;border-bottom-left-radius: 4px;"></textarea>' +
-                            @:'<span class="input-group-btn">' +
-                                @:'<button id="btn' + data.Bars.fbars[f].AID + '" onclick="Reply(' + "'" + data.Bars.fbars[f].AID + "',"+f+')" class="btn btn-default" type="button" style="border-bottom-right-radius: 4px;padding:39px 11px;">发表</button>' +
-                            @:'</span>' +
-                             @:'</div><!-- /input-group -->' +
-                        }
-                    '</div>' +
-                '</div>' +
-            '</div>';
-                f < 10 ? $("#AnsList").append(list) : $("#collapsemore").append(list);
-                _editor = CKEDITOR.replace("Reply" + f,
-               {
-                   extraPlugins: 'codesnippet',
-                   codeSnippet_theme: 'monokai_sublime',
-                   height: '    53px',
-                   toolbarCanCollapse: true,
-                   smiley_columns: 8,
-                   smiley_images: [
-                       '0.png', '1.png', '2.png', '3.png'
-                   ],
-                   customConfig: 'custumconfig.js',
-               });
-                _editor.on('instanceReady', function (ev) { ev.editor.execCommand('toolbarCollapse'); });
+                        '</div>';
+                var listMid =
+                    '<div style="display:none" id="replytext'+f+'" class="input-group aw-comment-box">' +
+                    '<textarea id="Reply' + f + '" placeholder="评论" style="width: 100%;border-bottom-left-radius: 4px;"></textarea>' +
+                    '<span class="input-group-btn">' +
+                    '<button id="btn' + data.Bars.fbars[f].AID + '" onclick="Reply(' + "'" + data.Bars.fbars[f].AID + "'," + f + ')" class="btn btn-default" type="button" style="border-bottom-right-radius: 4px;padding:74px 11px;">发表</button>' +
+                    '</span>' +
+                    '<div>';
+
+                var listEnd = '</div></div></div>';
+                @if (Request.IsAuthenticated)
+                {
+                    @:list = listStart + listMid + listEnd;
+                    @:f < 10 ? $("#AnsList").append(list) : $("#collapsemore").append(list);
+                    @:_editor = CKEDITOR.replace('Reply' + f,
+                    @:{
+                            @:extraPlugins: 'codesnippet',
+                            @:extraPlugins:'uploadimage',
+                            @:uploadUrl: '/uploader/upload.php',
+                            @:codeSnippet_theme: 'monokai_sublime',
+                            @:height: '119px',
+                            @:toolbarCanCollapse: true,
+                            @:smiley_columns: 8,
+                            @:smiley_images: [
+                                @:'0.png', '1.png', '2.png', '3.png'
+                            @:],
+                            @:customConfig: 'custumconfig.js',
+                        @:});
+                    @:_editor.on('instanceReady', function(ev) { ev.editor.execCommand('toolbarCollapse'); });
+                }
+                else
+                {
+                     @:list = listStart + listEnd;
+                                     @:f < 10 ? $("#AnsList").append(list) : $("#collapsemore").append(list);
+                                }
                 for (var s = 0; s < data.Bars.sbars.length; s++) {
                     if (data.Bars.sbars[s].FAID == data.Bars.fbars[f].AID) {
                         var ansbacktime = new Date(parseInt(data.Bars.sbars[s].AnswerQuesTime.replace(/\D/igm, ""))).toLocaleString()
                         var li =
                         '<li>' +
-                           '<a class="aw-user-name  " href="http://wenda.golaravel.com/people/Alano" data-id="1732"><img src="' + data.Bars.sbars[s].FromPhoto + '" alt=""></a>' +
-                           '<div>' +
+                           '<a  class="aw-user-name" href="http://wenda.golaravel.com/people/Alano" data-id="1732"><img src="' + data.Bars.sbars[s].FromPhoto + '" alt=""></a>' +
+                           '<div >' +
                                '<a href="http://wenda.golaravel.com/people/Alano" class="aw-user-name author" data-id="1732">' + data.Bars.sbars[s].FromName + '</a>' +
                                '<span> ' + ansbacktime + '</span>' +
                                '<p></p>' +
@@ -380,6 +393,9 @@
                         $("#ulback" + data.Bars.fbars[f].AID).append(li);
                     }
                 }
+                if ($("#ulback" + data.Bars.fbars[f].AID).html() == "") {
+                    $("#ulback" + data.Bars.fbars[f].AID).append("暂无评论！");
+                }
             }
         });
         //------------------------------------------------------------------------------------
@@ -388,6 +404,8 @@
         {
             extraPlugins: 'codesnippet',
             codeSnippet_theme: 'monokai_sublime',
+            extraPlugins: 'uploadimage',
+            uploadUrl: '/uploader/upload.php',
             height: '119px',
             toolbarCanCollapse: true,
             smiley_columns: 8,

@@ -1,16 +1,15 @@
-﻿@model GraduateDesignBk.Models.Note
+﻿@model GraduateDesignBk.Models.CreateNoteView
 @{
     ViewBag.Title = "Create";
 }
 
-<h2>发布新公告</h2>
+<h2>发布新通知</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
         <hr />
- 
         <div class="form-group">
             @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -27,5 +26,5 @@
 }
 
 <div>
-    @Html.ActionLink("返回历史公告列表", "Index")
+    @Html.ActionLink("返回历史通知列表", "Index")
 </div>

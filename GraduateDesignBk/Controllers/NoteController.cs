@@ -36,15 +36,16 @@ namespace GraduateDesignBk.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Note note)
+        public ActionResult Create(CreateNoteView NoteV)
         {
             if (!ModelState.IsValid)
             {
-                return View(note);
+                return View(NoteV);
             }
-            note.FromUID = User.Identity.GetUserName();
-            note.Time = DateTime.Now;
-            note.NTID = Guid.NewGuid().ToString();
+            Note note = new Note() {
+                Content = NoteV.Content,
+                FromUID = User.Identity.GetUserName()
+            };
             db.Notes.Add(note);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -67,6 +68,25 @@ namespace GraduateDesignBk.Controllers
             }
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
+
+                if (_contextManger != null)
+                {
+                    _contextManger.Dispose();
+                    _contextManger = null;
+                }
+            }
+
+            base.Dispose(disposing);
         }
 
         #region 初始化
