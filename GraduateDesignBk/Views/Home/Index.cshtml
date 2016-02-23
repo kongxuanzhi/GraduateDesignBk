@@ -2,39 +2,40 @@
     Layout = "~/Views/Shared/_HeaderLayout.cshtml";
     ViewBag.Title = "Home Page";
 }
-<script src="~/ckeditor/ckeditor.js"></script>
-<link href="~/ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css" rel="stylesheet" />
+
 <style>
     /*所需css*/
     .span-mark {
-	    display: inline-block;
-	    background-color: #f63756;
-	    position: absolute;
-	    z-index: 1;
-	    height: 14px;
-	    line-height: 20px;
-	    margin: -28px 0 0;
-	    width: 4px;
+        display: inline-block;
+        background-color: #f63756;
+        position: absolute;
+        z-index: 1;
+        height: 14px;
+        line-height: 20px;
+        margin: -28px 0 0;
+        width: 4px;
     }
-/*----------------------------------------*/
 </style>
 <div class="row">
     <div class="col-md-7">
-        <form name="Post" style="margin-top:-20px">
-            <div class="form-group">
-                <label for="Title"></label>
-                <input type="text" name="Title" class="form-control" id="Title" placeholder="标题">
-            </div>
-            <div class="form-group">
-                <label for="Description"></label>
-                <textarea name="Description" id="Description" class="form-control" placeholder="描述"></textarea>
+        @if (Request.IsAuthenticated)
+        {
+            <form name="Post" style="margin-top:-20px">
+                <div class="form-group">
+                    <label for="Title"></label>
+                    <input type="text" name="Title" class="form-control" id="Title" placeholder="标题">
+                </div>
+                <div class="form-group">
+                    <label for="Description"></label>
+                    <textarea name="Description" id="Description" class="form-control" placeholder="描述"></textarea>
 
-            </div>
-            <div style="margin-bottom:57px;">
-                <a href="javascript:Post()" class="btn btn-default" style="float:right;margin:10px 0px;background-color: #44546A; color:#FFF">提问</a>
-            </div>
-        </form>
-        <div class="row"></div>
+                </div>
+                <div style="margin-bottom:57px;">
+                    <a href="javascript:Post()" class="btn btn-default" style="float:right;margin:10px 0px;background-color: #44546A; color:#FFF">提问</a>
+                </div>
+            </form>
+            <div class="row"></div>
+        }
         <div class="_ask-box" style="/*margin-left:-15px;margin-right:-15px*/">
             <div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
                 <ul id="myTabs" class="nav nav-tabs" role="tablist">
@@ -88,11 +89,19 @@
         <div>
             <p style="margin-bottom: 10px;margin-top: 20px;margin-left: 10px; font-size: 14px;">精选答疑</p>
             <span class="span-mark"></span>
-            <ul  id="hotQA" style="padding-left: 0px;list-style: none;">
-                <li><a href="https://www.baidu.com/">毕业设计高分攻略</a></li>
-                <li><a href="#">毕业设计到底怎么写？</a></li>
-                <li><a href="#">毕业设计格式是怎样的？</a></li>
-                <li><a href="#">毕业设计至少写多少字？</a></li>
+            <ul id="hotQA" style="padding-left: 0px;list-style: none;">
+                <li>
+                    <a href="https://www.baidu.com/">毕业设计高分攻略</a>
+                </li>
+                <li>
+                    <a href="#">毕业设计到底怎么写？</a>
+                </li>
+                <li>
+                    <a href="#">毕业设计格式是怎样的？</a>
+                </li>
+                <li>
+                    <a href="#">毕业设计至少写多少字？</a>
+                </li>
             </ul>
         </div>
         <hr style="border-top:1px solid #ccc; margin-top: 5px; margin-bottom: 5px;" width="100%" SIZE="3">
@@ -100,22 +109,43 @@
             <p style="margin-bottom: 10px;margin-top: 20px;margin-left: 10px; font-size: 14px;">快速链接</p>
             <span class="span-mark"></span>
             <ul style="padding-left: 0px;list-style: none;">
-                <li><a href="http://www.jxust.cn/">>>江西理工大学官网</a></li>
-                <li><a href="http://lxy.jxust.edu.cn/">>>江西理工大学官网理学院</a></li>
-                <li><a href="http://jw.jxust.edu.cn/">>>江西理工大学教务管理系统</a></li>
-                <li><a href="http://zsjy.jxust.edu.cn/">>>江西理工大学招生就业处</a></li>
+                <li>
+                    <a href="http://www.jxust.cn/">>>江西理工大学官网</a>
+                </li>
+                <li>
+                    <a href="http://lxy.jxust.edu.cn/">>>江西理工大学官网理学院</a>
+                </li>
+                <li>
+                    <a href="http://jw.jxust.edu.cn/">>>江西理工大学教务管理系统</a>
+                </li>
+                <li>
+                    <a href="http://zsjy.jxust.edu.cn/">>>江西理工大学招生就业处</a>
+                </li>
             </ul>
         </div>
         <hr style="border-top:1px solid #ccc; margin-top: 5px; margin-bottom: 5px;" width="100%" SIZE="3">
         <div>
-            <p style="margin-bottom: 10px;margin-top: 20px;margin-left: 10px; font-size: 14px;">通知公告<a href="#"  style="float:right;font-size:smaller;margin-top: 2px;color: #999999;"><span style="width:20px;height:20px">全部>></span></a></p>
+            <p style="margin-bottom: 10px;margin-top: 20px;margin-left: 10px; font-size: 14px;">
+                通知公告
+                <a href="/Home/ListAnnounce" style="float:right;font-size:smaller;margin-top: 2px;color: #999999;"><span style="width:20px;height:20px">全部>></span></a>
+            </p>
             <span class="span-mark"></span>
-            <ul style="padding-left: 0px;list-style: none;">
-                <li><a href="#">[01-22] 关于研究生考试的温馨提示</a></li>
-                <li><a href="#">[12-14] 我院关于做好学期末相关学生教育管理工作的通知</a></li>
-                <li><a href="#">[11-22] 关于做好2016届优秀毕业生评选工作的通知</a></li>
-                <li><a href="#">[11-11] 理学院2015年社会奖学金候选人名单公示</a></li>
-                <li><a href="#">[10-11] 关于填写2014-2015学年个人先进事迹材料的通知</a></li>
+            <ul id="Announce" style="padding-left: 0px;list-style: none;">
+                <li>
+                    <a href="#">[01-22] 关于研究生考试的温馨提示</a>
+                </li>
+                <li>
+                    <a href="#">[12-14] 我院关于做好学期末相关学生教育管理工作的通知</a>
+                </li>
+                <li>
+                    <a href="#">[11-22] 关于做好2016届优秀毕业生评选工作的通知</a>
+                </li>
+                <li>
+                    <a href="#">[11-11] 理学院2015年社会奖学金候选人名单公示</a>
+                </li>
+                <li>
+                    <a href="#">[10-11] 关于填写2014-2015学年个人先进事迹材料的通知</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -225,9 +255,23 @@
         QueryQues(currentIndex, url, id, null);
     }
 
-
+    function AnnounceList() {
+        $.ajax({
+            url: "/Announce/Latest10",
+            type: "POST",
+            data: null,
+            success: function (data) {
+                $("#Announce").empty();
+                for (var i = 0; i < data.length; i++) {
+                    var an = '<li><a href="/Announce/Detail?ANID=' + data[i].ANID + '"  target="_blank">[' + data[i].Time + "]" + data[i].Title + '</a></li>';
+                    $("#Announce").append(an);
+                }
+            }
+        });
+    }
     $(function ($) {
         LatestQ();
+        AnnounceList();
         $.ajax({
             url: "/Bar/BestQuesAns",
             type: "POST",
@@ -240,6 +284,8 @@
                 }
             }
         });
+
+        
     });
     function Post() {
         var form = document.forms["Post"];
@@ -271,41 +317,44 @@
 
     // Replace the <textarea id="editor1"> with a CKEditor
     // instance, using default configuration.
-    var maxlength = 500;
-    _editor = CKEDITOR.replace('Description',
-    {
-        extraPlugins: 'codesnippet',
-        codeSnippet_theme: 'monokai_sublime',
-        extraPlugins: 'uploadimage',
-        uploadUrl: '/uploader/upload.php',
-        height: '119px',
-        toolbarCanCollapse: true,
-        toolbarExpanded: false,
-        smiley_columns: 100,
-        smiley_images: [
-            '0.png', '1.png', '2.png', '3.png'
-        ],
-        customConfig: 'custumconfig.js',
+    //var maxlength = 500;
+    $(function ($) {
+        _editor = CKEDITOR.replace('Description',
+        {
+            extraPlugins: 'codesnippet',
+            codeSnippet_theme: 'monokai_sublime',
+            extraPlugins: 'uploadimage',
+            uploadUrl: '/uploader/upload.php',
+            height: '119px',
+            toolbarCanCollapse: true,
+            toolbarExpanded: false,
+            smiley_columns: 100,
+            smiley_images: [
+                '0.png', '1.png', '2.png', '3.png'
+            ],
+            customConfig: 'custumconfig.js',
+        });
+        CKFinder.SetupCKEditor(_editor, '/ckfinder/');
+        _editor.on('instanceReady', function (ev) { ev.editor.execCommand('toolbarCollapse'); });
     });
-    _editor.on('instanceReady', function (ev) { ev.editor.execCommand('toolbarCollapse'); });
-    _editor.on('key', function (event) {
-        var oldhtml = _editor.document.getBody().getHtml();
-        var description = oldhtml.replace(/<.*?>/ig, "");
-        var etop = $("#cke_1_top");
-        var _slen = maxlength - description.length;
-        var canwrite = $("<label  id='canwrite'>剩200字</label>");
-        if (etop.find("#canwrite").length < 1) {
-            canwrite.css({ border: '1px #f1f1f1 solid', 'line-height': '28px', color: '#999' });
-            etop.prepend(canwrite);
-        }
-        var _label = etop.find("#canwrite");
-        if (description.length > maxlength) {
-            //alert("最多可以输入"+maxlength+"个文字，您已达到最大字数限制");
-            _editor.setData(oldhtml);
-            _label.html("剩0字");
-        } else {
-            _label.html("剩" + _slen + "字");
-        }
-    });
-</script>
 
+    //_editor.on('key', function (event) {
+    //    var oldhtml = _editor.document.getBody().getHtml();
+    //    var description = oldhtml.replace(/<.*?>/ig, "");
+    //    var etop = $("#cke_1_top");
+    //    var _slen = maxlength - description.length;
+    //    var canwrite = $("<label  id='canwrite'>剩200字</label>");
+    //    if (etop.find("#canwrite").length < 1) {
+    //        canwrite.css({ border: '1px #f1f1f1 solid', 'line-height': '28px', color: '#999' });
+    //        etop.prepend(canwrite);
+    //    }
+    //    var _label = etop.find("#canwrite");
+    //    if (description.length > maxlength) {
+    //        //alert("最多可以输入"+maxlength+"个文字，您已达到最大字数限制");
+    //        _editor.setData(oldhtml);
+    //        _label.html("剩0字");
+    //    } else {
+    //        _label.html("剩" + _slen + "字");
+    //    }
+    //});
+</script>

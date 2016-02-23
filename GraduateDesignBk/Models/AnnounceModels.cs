@@ -9,6 +9,13 @@ namespace GraduateDesignBk.Models
 {
     public class Announce
     {
+        public Announce()
+        {
+            ANID = Guid.NewGuid().ToString();
+            Time = DateTime.Now;
+            ReadTimes = 0;
+            Prop = 0;
+        }
         [Key]
         [StringLength(120)]
         public string ANID { get; set; }
@@ -19,6 +26,7 @@ namespace GraduateDesignBk.Models
         [StringLength(120)]
         public string FromUID { get; set; }
         public DateTime Time { get; set; }
+        public int Prop { get; set; }  //优先级  2 置顶 1 最新 0 一般
         public int ReadTimes { get; set; }
     }
 }

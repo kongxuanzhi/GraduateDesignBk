@@ -47,7 +47,7 @@ namespace GraduateDesignBk.Controllers
         public JsonResult List(int SearchType, string SearchString,int CurIndex = 1)
         {
             FileSandP file = new FileSandP();
-            file.page.FilePageSize = FilePageSize;
+            file.page.IPageSize = FilePageSize;
             file.page.CurIndex = CurIndex;
 
             file.FileItems = getFiles();

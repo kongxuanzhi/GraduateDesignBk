@@ -1,52 +1,99 @@
 ﻿@model GraduateDesignBk.Models.AnnouandP
 @{
+    ViewBag.Title = "公告管理";
 }
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+  
+@using (Html.BeginForm("Index", "Announce", new { }, FormMethod.Post, new { id = "form_Search", @class = "form-inline" }))
+{
+    <input type="hidden" id="pagesize" name="page.PageSize" value="@Model.page.PageSize" />
+    <input type="hidden" id="CurIndex" name="page.CurIndex" value="@Model.page.CurIndex" />
+    <a href="javascript:Submit('Delete');" class="btn btn-default">删除</a>
+    <a class="btn btn-default" href="/Announce/Post">发布公告</a>
+    <a class="btn btn-default" href="javascript:Submit('SetTop');">设置为置顶</a>
+    <a class="btn btn-default" href="javascript:Submit('DeleteTop');">取消置顶</a>
+    <div class="right">
+        <div class="form-group">
+            @Html.EditorFor(model => model.STitle, new { htmlAttributes = new { placeholder = "公告标题", @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            @Html.EditorFor(model => model.SuserName, new { htmlAttributes = new { placeholder = "发布人", @class = "form-control" } })
+        </div>
+        <a href="#" onclick="getPageSize(0)" class="btn btn-default"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜 索</a>
+    </div>
+}
+@using (Html.BeginForm("SetTop", "Announce", null, FormMethod.Post, new { id = "form_SetTop" }))
+{
+    <input type="hidden" id="SetTop" name="Ids" value="" />
+}
+@using (Html.BeginForm("DeleteTop", "Announce", null, FormMethod.Post, new { id = "form_DeleteTop" }))
+{
+    <input type="hidden" id="DeleteTop" name="Ids" value="" />
+}
+@using (Html.BeginForm("Delete", "Announce", null, FormMethod.Post, new { id = "form_Delete" }))
+{
+    <input type="hidden" id="Delete" name="Ids" value="" />
+}
+<div style="height:3px"></div>
 <table class="table">
-    <tr>
-        <th>
-            标题
-        </th>
-        <th>
-            内容
-        </th>
-        <th>
-            发布者
-        </th>
-        <th>
-            发布时间
-        </th>
-        <th>
-            阅读次数
-        </th>
-        <th>操作</th>
-    </tr>
-
-    @foreach (var item in Model.AnnouItems)
-    {
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FromName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReadTimes)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ANID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ANID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ANID })
-            </td>
+            <th>
+                <input type="checkbox" id="Totalselect" onclick="CheckDelete()" /><label for="Totalselect">选择</label>
+            </th>
+            <th>
+                标题
+            </th>
+            <th>
+                发布者
+            </th>
+            <th>
+                发布时间
+            </th>
+            <th>
+                阅读次数
+            </th>
+            <th>
+                置顶
+            </th>
+            <th>操作</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model.AnnouItems)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" name="delId" id="@item.ANID" value="@item.ANID" />
+                </td>
+                <td>
+                    <label for="@item.ANID">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </label>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FromName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReadTimes)
+                </td>
+                <td>
+                    @if (item.Prop == 2) {
+                        <span style="color:#ff0000">置顶</span>
+                    }
+                    else
+                    {
+                        <span style="color:#808080">否</span>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("编辑", "Edit", new { ANID = item.ANID }) |
+                    @Html.ActionLink("详情", "Detail", new { ANID = item.ANID }) 
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+@Html.Partial("_PagingPartial", Model.page)

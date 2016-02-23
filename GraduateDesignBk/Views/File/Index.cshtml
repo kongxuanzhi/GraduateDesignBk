@@ -1,6 +1,6 @@
 ﻿@model  GraduateDesignBk.Models.FileSandP
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "文件管理";
 }
 
 @using (Html.BeginForm("Index", "File", new { }, FormMethod.Post, new { id = "form_Search", @class = "form-inline" }))
@@ -23,7 +23,7 @@
             @Html.CheckBoxFor(model => model.Spub, true)
         </label>
     </div>
-        <a href="#" onclick="getPageSize(0)" class="btn btn-default"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜 索</a>
+    <a href="#" onclick="getPageSize(0)" class="btn btn-default"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜 索</a>
 }
 
 <div class="row">
