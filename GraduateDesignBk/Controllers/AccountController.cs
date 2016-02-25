@@ -13,6 +13,7 @@ using GraduateDesignBk.App_Start;
 
 namespace GraduateDesignBk.Controllers
 {
+    [Authorize(Roles ="管理员")]
     public class AccountController : Controller
     {
         #region 初始化获得managers
@@ -804,6 +805,7 @@ namespace GraduateDesignBk.Controllers
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

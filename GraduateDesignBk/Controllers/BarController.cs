@@ -9,23 +9,24 @@ using System;
 using GraduateDesignBk;
 using GraduateDesignBk.App_Start;
 using System.Data.SqlClient;
+using Microsoft.Ajax.Utilities;
 
 namespace Graduatedesignbk.Controllers
 {
     public class BarController : Controller
     {
         private static int pagesize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["pagesize"]);
+        private static int statisPastDays= Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["statisPastDays"]);
         #region 显示
         // get: bar
+        [Authorize(Roles = "管理员,教师")]
         public ActionResult index(BarViewModel barv)
         {
             int pagesize = (int)barv.page.PageSize + 8;
             barv.Bars.pbars = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail").OrderBy(m => m.RaiseQuesTime).ToList();
             barv.Bars.pbars = barv.Bars.pbars.Where(m => m.FromName.Contains(cnts(barv.SAuthor))).ToList();
             barv.Bars.pbars = barv.Bars.pbars.Where(m => m.Title.Contains(cnts(barv.SQue)) || m.Description.Contains(cnts(barv.SQue))).ToList();
-
-            barv.Bars.fbars = db.Database.SqlQuery<AnswerDetail>("select * from V_AnswerDetail  where FAID='0'").OrderBy(m => m.AnswerQuesTime).ToList();
-            barv.Bars.sbars = db.Database.SqlQuery<AnswerDetail>("select * from V_AnswerDetail  where FAID<>'0'").OrderBy(m => m.AnswerQuesTime).ToList();
+            barv.Bars.pbars = barv.Bars.pbars.Where(m => m.RaiseQuesTime.ToString("yyyy-MM-dd").Contains(cnts(barv.sTime))).ToList();
 
             if (barv.isPub != 0)
             {
@@ -34,6 +35,7 @@ namespace Graduatedesignbk.Controllers
                 if ((int)barv.isPub == 2)
                     barv.Bars.pbars = barv.Bars.pbars.Where(m => m.Pub == false).ToList();
             }
+
             barv.page.TotalCount = barv.Bars.pbars.Count();
             barv.page.PageNum = (int)Math.Ceiling((double)(barv.page.TotalCount) / pagesize);
             barv.Bars.pbars = barv.Bars.pbars.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (barv.page.CurIndex - 1)).Take(pagesize).ToList();
@@ -41,36 +43,35 @@ namespace Graduatedesignbk.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult QDetail(string QID)
         {
+            if (!string.IsNullOrEmpty(QID))
+            {
+                Question q = db.Questions.Find(QID);
+                if (q != null)
+                {
+                    q.ReadTimes++;
+                    TryUpdateModel(q);
+                    db.SaveChanges();
+                }
+            }
             BarViewModel barv = new BarViewModel();
             SqlParameter pqid = new SqlParameter("@QID", QID);
             SqlParameter fqid = new SqlParameter("@FQID", QID);
             SqlParameter sqid = new SqlParameter("@SQID", QID);
             barv.Bars.pbars = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where QID=@QID",pqid).OrderBy(m => m.RaiseQuesTime).ToList();
-            barv.Bars.fbars = db.Database.SqlQuery<AnswerDetail>("select * from V_AnswerDetail where PQID=@FQID and FAID='0'", fqid).OrderBy(m => m.AnswerQuesTime).ToList();
+            barv.Bars.fbars = db.Database.SqlQuery<AnswerDetail>("select * from V_AnswerDetail where PQID=@FQID and FAID='0'", fqid).OrderByDescending(m=>m.Likes).ThenBy(m => m.AnswerQuesTime).ToList();
             barv.Bars.sbars = db.Database.SqlQuery<AnswerDetail>("select * from V_AnswerDetail where PQID=@SQID and FAID<>'0'", sqid).OrderBy(m => m.AnswerQuesTime).ToList();
             return Json(barv);
         }
-
-        //public ActionResult everydayques()
-        //{
-        //    barViewmodel barv = new barViewmodel();
-        //    barv.Bars.pbars = db.Database.SqlQuery<bardetail>("select * from v_bars_users Where touid is null and fbid=pbid and fbid='0'").OrderBy(m => m.raisequestime).ToList();
-        //    barv.Bars.pbars = barv.Bars.pbars.Where(m => m.raisequestime.toshortdatestring().equals(DateTime.now.toshortdatestring())).ToList();
-
-        //    barv.Bars.fbars = db.Database.SqlQuery<bardetail>("select * from v_bars_users vb Where  vb.pbid=vb.fbid and  vb.fbid <> '0'").OrderBy(m => m.raisequestime).ToList();
-        //    barv.Bars.sbars = db.Database.SqlQuery<bardetail>("select * from v_bars_users vb Where  vb.pbid <>vb.fbid").OrderBy(m => m.raisequestime).ToList();
-        //    return View(barv);
-        //}
         public ActionResult Statisics()
         {
             return View();
         }
         #endregion
-
         #region 前台显示
-
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult Search(string searchstr,int currentIndex = 1)
         {
@@ -81,6 +82,18 @@ namespace Graduatedesignbk.Controllers
             SearchQues = SearchQues.OrderByDescending(m => m.Likes).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
             return Json(SearchQues);
         }
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        public JsonResult All(int currentIndex = 1)
+        {
+            List<QestDetail> LatestQues = new List<QestDetail>();
+            LatestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where ToUID='0'").ToList();
+            LatestQues = LatestQues.OrderByDescending(m => m.Likes).ThenBy(m=>m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            return Json(LatestQues);
+        }
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult Latest(int currentIndex = 1)
         {
@@ -90,33 +103,78 @@ namespace Graduatedesignbk.Controllers
            LatestQues = LatestQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
             return Json(LatestQues);
         }
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult Hotest(int currentIndex = 1)
         {
             List<QestDetail> HotestQues = new List<QestDetail>();
             HotestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail VQ where ToUID='0' and VQ.Likes+CommentNum>10 order by VQ.Likes+CommentNum   desc").ToList();
-            HotestQues = HotestQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            HotestQues = HotestQues.OrderByDescending(m => m.Likes).ThenBy(m=>m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
             return Json(HotestQues);
         }
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult UnAns(int currentIndex = 1)
         {
             List<QestDetail> UnAnsQues = new List<QestDetail>();
             UnAnsQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where  ToUID='0' and CommentNum=0").ToList();
-            UnAnsQues = UnAnsQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            UnAnsQues = UnAnsQues.OrderByDescending(m => m.Likes).ThenBy(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
             return Json(UnAnsQues);
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult BestQuesAns()
         {
             List<QestDetail> BestQues = new List<QestDetail>();
             BestQues = db.Database.SqlQuery<QestDetail>("select top 10 * from V_QestDetail where ToUID != '0' and Pub=1 order by RaiseQuesTime desc").ToList();
-            BestQues = BestQues.OrderByDescending(m => m.RaiseQuesTime).ToList();
+            BestQues = BestQues.OrderByDescending(m => m.Likes).ToList();
             return Json(BestQues);
         }
+        [AllowAnonymous]
+        [HttpPost] 
+        public JsonResult RelativeQues(string QID)
+        {
+            //int a = getCommonStrLen("abcdef", "acbcqdtdh5f");
+            //int b = getCommonStrLen("见天我去看家了", "发发给对我方方家法官方");
+            if (!string.IsNullOrEmpty(QID))
+            {
+                List<QBrif> AllQ = new List<QBrif>();
+                Question q = db.Questions.Find(QID);
+                if (q != null)
+                {
+                    AllQ = db.Questions.Where(m=>m.QID!=q.QID).ToList().Select(m =>
+                        new QBrif()
+                        {
+                            QID = m.QID,
+                            Title = m.Title,
+                            Likes = m.Likes,
+                            DegreeOfSimilarity = getCommonStrLen(q.Title,m.Title)
+                        }
+                    ).Where(m=>m.DegreeOfSimilarity>2).OrderByDescending(m=>m.DegreeOfSimilarity).ThenByDescending(m=>m.Likes).
+                    Skip(0).Take(6).
+                    ToList();
+                }
+                return Json(AllQ);
+            }
+            return null;
+        }
 
+        public int getCommonStrLen(string strA, string strB)
+        {
+            int a_len = strA.Length;
+            int b_len = strB.Length;
+            int[,] L = new int[a_len + 1, b_len + 1];
+            for (int i = 1; i <= a_len; i++)
+            {
+                for (int j = 1; j <= b_len; j++)
+                {
+                    L[i,j] = strA[i - 1] == strB[j - 1]?L[i - 1,j - 1] + 1: Math.Max(L[i-1,j],L[i,j-1]);
+                }
+            }
+            return L[a_len, b_len];
+        }
         #endregion
+
         #region 发表、私信、评论、追问 删除问题，评论，追问
 
         //发表提问
@@ -212,7 +270,8 @@ namespace Graduatedesignbk.Controllers
             }
             return Json(str + "回复的问题不存在！");
         }
-
+        [Authorize(Roles = "管理员")]
+        [HttpPost]
         public JsonResult DeleteQues(string id)
         {
             string[] ids = id.Split('|');
@@ -230,8 +289,12 @@ namespace Graduatedesignbk.Controllers
             }
             return Json("success");
         }
+
+        [Authorize(Roles = "管理员")]
+        [HttpPost]
         public JsonResult DeleteAnswer(string AID)
         {
+            bool flag = false;
             Answer ans = db.Answers.Find(AID);
             if (ans != null)
             {
@@ -239,18 +302,22 @@ namespace Graduatedesignbk.Controllers
                 {
                     List<Answer> ansons = db.Answers.Where(m => m.FAID.Equals(ans.AID)).ToList();
                     db.Answers.RemoveRange(ansons);
+                    flag = true;  //删除评论
+                    string QID = ans.PQID;
+                    Question ques = db.Questions.Find(QID);
+                    if (QID != null)
+                    {
+                        ques.CommentNum--;
+                        TryUpdateModel(ques);
+                    }
                 }
-                else
-                {
-                    db.Answers.Remove(ans);   //删除该追问
-                }
+                db.Answers.Remove(ans);   //删除该追问
                 db.SaveChanges();
-                return Json("success");
+                return Json("success|" + (flag==true?"1":"0"));
             }
             return Json("error");
         }
         #endregion
-
         #region 为问题、回答点赞 ，设置为问题已解决设置为公开或私密
 
         //ajax为问题点赞
@@ -375,16 +442,14 @@ namespace Graduatedesignbk.Controllers
             return Json("error");
         }
         #endregion
-        
         #region 统计
-        public JsonResult ThisWeek()
+        public JsonResult ThisWeek(int k)
         {
-            List<string> week = getpast7days();
-            int[] quesN = getPast7QuesN();
-            int[] ansTN = getPast7Anses("教师");
-            int[] ansSN = getPast7Anses("学生");
-            double[] ansTRate = getAnsRate(ansTN,quesN);
-            double[] ansSRate = getAnsRate(ansSN,quesN);
+            DateTime dt = DateTime.Now.AddDays(k * (-1*statisPastDays));
+            List<string> week = getpast7days(dt);
+            int[] quesN = getPast7QuesN(dt);
+            int[] ansTN = getPast7Anses("教师", dt);
+            int[] ansSN = getPast7Anses("学生", dt);
             JsonResult result = new JsonResult
             {
                 Data = new
@@ -392,17 +457,18 @@ namespace Graduatedesignbk.Controllers
                     Ques = quesN,
                     AnsTN = ansTN,
                     AnsSN = ansSN, 
-                    AnsTRate = ansTRate,
-                    AnsSRate = ansSRate,
                     Week = week
                 }
             };
             return result;
         }
-
+        //  double[] ansTRate = getAnsRate(ansTN,quesN);
+        //double[] ansSRate = getAnsRate(ansSN, quesN);
+        //AnsTRate = ansTRate,
+        //AnsSRate = ansSRate,
         private double[] getAnsRate(int[] ansN, int[] quesN)
         {
-            double[] rate = new double[7];
+            double[] rate = new double[statisPastDays];
             for (int i = 0; i < ansN.Length; i++)
             {
                 rate[i] = quesN[i] == 0 ? 0 : (double)ansN[i] / quesN[i];
@@ -410,44 +476,39 @@ namespace Graduatedesignbk.Controllers
             return rate;
         }
 
-        public int[] getPast7Anses(string role)
+        public int[] getPast7Anses(string role,DateTime dt)
         {
-            int[] ansN = new int[7];
-            DateTime dt = DateTime.Now;
-            for (int i = 0; i < 7; i++)
+            int[] ansN = new int[statisPastDays];
+            for (int i = 0; i < statisPastDays; i++)
             {
                 List<Answer> anses = db.Answers.ToList().Where(m => m.AnswerQuesTime.ToShortDateString().Equals(dt.ToShortDateString())).ToList();
                 anses = anses.Where(m => UserManager.IsInRole(m.FromUID, role)).ToList();
-                ansN[7 - i - 1] = anses.Count();
+                anses = anses.DistinctBy(m => m.PQID).ToList();
+                ansN[statisPastDays - i - 1] = anses.Count();
                 dt = dt.AddDays(-1);
             }
             return ansN;
         }
 
-        public int[] getPast7QuesN()
+        public int[] getPast7QuesN(DateTime dt)
         {
-            int[] quesN = new int[7];
-            DateTime dt = DateTime.Now;
-            for (int i = 0; i < 7; i++)
+            int[] quesN = new int[statisPastDays];
+            for (int i = 0; i < statisPastDays; i++)
             {
                 List<Question> queses = db.Questions.ToList().Where(m => m.RaiseQuesTime.ToShortDateString().Equals(dt.ToShortDateString())).ToList();
-                quesN[7-i-1] = queses.Count();
+                quesN[statisPastDays - i-1] = queses.Count();
                 dt = dt.AddDays(-1);
             }
             return quesN;
         }
 
-        public List<string> getpast7days()
+        public List<string> getpast7days(DateTime dt)
         {
-            DateTime dt = DateTime.Now;
             List<string> week = new List<string>();
-            int day = (int)dt.DayOfWeek + 7;
-            week.Add(dt.DayOfWeek.ToString());
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < statisPastDays; i++)
             {
-                DayOfWeek dow = (DayOfWeek)((day - 1) % 7);
-                week.Add(dow.ToString());
-                day--;
+                week.Add(dt.ToString("M/d"));
+                dt = dt.AddDays(-1);
             }
             week.Reverse();
             return week;

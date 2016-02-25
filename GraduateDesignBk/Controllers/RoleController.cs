@@ -14,6 +14,7 @@ namespace GraduateDesignBk.Controllers
     public class RoleController : Controller
     {
         // GET: /Role/Index
+        [Authorize(Roles = "管理员")]
         public ActionResult Index()
         {
             List<ListRoleModel> roles = new List<ListRoleModel>();

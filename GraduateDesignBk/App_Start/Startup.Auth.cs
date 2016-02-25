@@ -27,7 +27,7 @@ namespace GraduateDesignBk
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
+                LoginPath = new PathString("/"),
                 Provider = new CookieAuthenticationProvider
                 {
                     #region SecurityStampValidator 安全戳的作用

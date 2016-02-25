@@ -10,6 +10,8 @@ using System.Web.Mvc;
 
 namespace GraduateDesignBk.Controllers
 {
+
+    [Authorize(Roles = "管理员")]
     public class AnnounceController : Controller
     {
         private static int AnnouncePageSize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["AnnouncePageSize"]);
@@ -19,7 +21,7 @@ namespace GraduateDesignBk.Controllers
             Annou.page.IPageSize = (int)Annou.page.PageSize + 8;
             return View(ListAnnounce(Annou));
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult AllAnnounce(AnnouandP Annou)
         {
@@ -98,7 +100,7 @@ namespace GraduateDesignBk.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult Latest10()
         {
@@ -199,7 +201,7 @@ namespace GraduateDesignBk.Controllers
             }
             return RedirectToAction("Index");
         }
-        
+        [AllowAnonymous]
         public async Task<ActionResult> Detail(string ANID)
         {
             Announce m = await db.Announces.FindAsync(ANID);

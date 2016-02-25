@@ -323,6 +323,10 @@
     <Compile Include="Migrations\201602231430431_给公告加上置顶.Designer.cs">
       <DependentUpon>201602231430431_给公告加上置顶.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602240520444_增加问题的浏览次数.cs" />
+    <Compile Include="Migrations\201602240520444_增加问题的浏览次数.Designer.cs">
+      <DependentUpon>201602240520444_增加问题的浏览次数.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AnnounceModels.cs" />
     <Compile Include="Models\ViewsModel\AccountViewModels.cs" />
@@ -1687,6 +1691,7 @@
     <Content Include="Views\Announce\Edit.cshtml" />
     <Content Include="Views\Announce\Detail.cshtml" />
     <Content Include="Views\Home\ListAnnounce.cshtml" />
+    <Content Include="Views\Home\Back.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1813,6 +1818,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602231430431_给公告加上置顶.resx">
       <DependentUpon>201602231430431_给公告加上置顶.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602240520444_增加问题的浏览次数.resx">
+      <DependentUpon>201602240520444_增加问题的浏览次数.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="obj\Debug\GraduateDesignBk.Migrations.init.resources" />
   </ItemGroup>

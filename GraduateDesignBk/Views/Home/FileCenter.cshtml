@@ -12,20 +12,19 @@
 @*<div class="row">
     <div class="col-md-7">
     </div>
-    <div class="col-md-5">
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-4">
         <form class="form-inline" role="search">
-            <div class="col-md-1"></div>
-            <div class="col-md-11">
+            <div class="col-md-12">
                 <div class="form-group">
-                    <div>
-                        <select id="Stype" class="form-control">
+                        <select id="Stype" style="width:20px">
                             <option value="0">文件名</option>
                             <option value="1">上传者</option>
                             <option value="2">上传时间</option>
                         </select>
-                        <input type="text" id="searchKey" onchange="SearchFD()" onkeyup="SearchFT()" class="form-control search clearable" placeholder="搜索文件">
+                        <input type="text" id="searchKey"style="width:80%" onchange="SearchFD()" onkeyup="SearchFT()" class="form-control search clearable" placeholder="搜索文件">
                         <span id="gly" class="faa glyphicon glyphicon-search " aria-hidden="true"></span>
-                    </div>
                 </div>
             </div>
         </form>

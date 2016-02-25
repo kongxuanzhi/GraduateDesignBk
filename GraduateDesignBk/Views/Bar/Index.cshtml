@@ -2,21 +2,16 @@
 @{
     ViewBag.Title = "Index";
 }
-
 <div class="row">
     <ul id="nav" class="nav nav-tabs nav-justified">
-        <li role="presentation">
-            <a href="/Bar/Index"><span>问题</span>   </a>
-        </li>
         <li class="active" role="presentation">
-            <a href="/Bar/EveryDayQues"><span>今日问题</span></a>
+            <a href="/Bar/Index"><span>问题</span>   </a>
         </li>
         <li role="presentation">
             <a href="/Bar/Statisics"><span>问题答疑统计</span></a>
         </li>
     </ul>
 </div>
-
 <div class="panel panel-primary">
     <div class="panel-heading">问题</div>
     <div class="panel-body">
@@ -26,10 +21,13 @@
                 <input type="hidden" id="pagesize" name="page.PageSize" value="@Model.page.PageSize" />
                 <input type="hidden" id="CurIndex" name="page.CurIndex" value="@Model.page.CurIndex" />
                 <div class="form-group">
-                    @Html.EnumDropDownListFor(model => model.isPub, "--公开还是私密--", htmlAttributes: new { @class = "form-control" })
+                    @Html.EnumDropDownListFor(model => model.isPub, "权限", htmlAttributes: new { @class = "form-control" })
                 </div>
                 <div class="form-group">
                     @Html.EditorFor(model => model.SAuthor, new { htmlAttributes = new { placeholder = "提问者", @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(model => model.sTime, new { htmlAttributes = new { placeholder = "时间",type="date",  @class = "form-control" } })
                 </div>
                 <div class="form-group">
                     @Html.EditorFor(model => model.SQue, new { htmlAttributes = new { placeholder = "相关问题", @class = "form-control" } })
@@ -38,67 +36,56 @@
             }
         </div>
         <div class="left">
-               <a href="javascript:Submit('Delete')" class="btn btn-default">删除</a> <span><i>删除问题，将删除所有评论</i></span> 
+               <a href="javascript:Submit('DeleteQues')" class="btn btn-default">删除</a> <span><i>除所有评论</i></span> 
         </div>
-        
-        @using (Html.BeginForm("DeleteQues", "Bar", null, FormMethod.Post, new { id = "form_Delete" }))
+        @using (Html.BeginForm("DeleteQues", "Bar", null, FormMethod.Post, new { id = "form_DeleteQues" }))
         {
-            <input type="hidden" id="Delete" name="id" value="" />
+            <input type="hidden" id="DeleteQues" name="id" value="" />
         }
     </div>
-    <table class="table table-striped  table-hover table-condensed">
-        <thead>
-            <tr>
-                <td>
-                    <b><input type="checkbox" id="Totalselect" onclick="CheckDelete()" /><label for="Totalselect" class="btn btn-default">选择</label> </b>
-                </td>
-                <td>发表人</td>
-                <td>
-                    问题标题
-                </td>
-                <td>问题内容</td>
-                <td>评论数</td>
-                <td>赞</td>
-                <td>公开不</td>
-                <td>发布时间</td>
-                <td>操作</td>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="table-responsive">
+        <table class="table table-striped  table-hover table-condensed">
+            <thead>
+                <tr>
+                    <td>
+                        <b><input type="checkbox" id="Totalselect" onclick="CheckDelete()" /><label for="Totalselect" class="btn btn-default">选择</label> </b>
+                    </td>
+                    <td>发表人</td>
+                    <td>
+                        问题标题
+                    </td>
+                    <td>问题内容</td>
+                    <td>评论数</td>
+                    <td>赞</td>
+                    <td>公开不</td>
+                    <td>发布时间</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
             @foreach (var temp in Model.Bars.pbars)
             {
-                <tr>
-                    <td>
-                        <input type="checkbox" name="delId" id="@temp.QID" value="@temp.QID" />
-                    </td>
-                    <td>@temp.FromName</td>
-                    <td>@temp.Title.Substring(0, temp.Title.Length > 10 ? 10 : temp.Title.Length)...</td>
-                    <td>@temp.Description.Substring(0, temp.Description.Length > 15 ? 15 : temp.Description.Length) ...</td>
-                    <td>@temp.CommentNum</td>
-                    <td>@temp.Likes</td>
-                    <td>@Html.DisplayFor(model => @temp.Pub)</td>
-                    <td>@temp.RaiseQuesTime</td>
-                    <td>
-                        <a class="btn" data-toggle="collapse" href="#@(temp.QID)2" aria-expanded="false" aria-controls="collapseExample">
-                            详情
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="9" style="padding:0px">
-                                <div class="collapse" id="@(temp.QID)2">
-                              @{
-                                  ViewDataDictionary dt = new ViewDataDictionary();
-                                  dt.Add("QID", temp.QID);
-                               }      
-                              @Html.Partial("_BarsDetailsPartial", Model.Bars, dt) 
-                        </div>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="delId" id="@temp.QID" value="@temp.QID" />
+                        </td>
+                        <td>@temp.FromName</td>
+                        <td>@temp.Title.Substring(0, temp.Title.Length > 10 ? 10 : temp.Title.Length)...</td>
+                        <td>@temp.Description.Substring(0, temp.Description.Length > 15 ? 15 : temp.Description.Length) ...</td>
+                        <td>@temp.CommentNum</td>
+                        <td>@temp.Likes</td>
+                        <td>@Html.DisplayFor(model => @temp.Pub)</td>
+                        <td>@temp.RaiseQuesTime</td>
+                        <td>
+                            <a class="btn" href="/Home/BarDetail/@temp.QID" target="_blank">
+                                详情
+                            </a>
+                        </td>
+                    </tr>
             }
-        </tbody>
-    </table>
-
+            </tbody>
+        </table>
+    </div>
 </div>
 @Html.Partial("_PagingPartial", Model.page)
 

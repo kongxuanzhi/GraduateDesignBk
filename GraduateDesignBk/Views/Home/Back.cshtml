@@ -1,6 +1,5 @@
-﻿@{
-    ViewBag.Active = HttpContext.Current.Request.Path;
-    ViewBag.Active = ViewBag.Active == "/" ? "/Home/Index" : ViewBag.Active;
+﻿@{ 
+    Layout = null;
 }
 <!DOCTYPE html>
 <html>
@@ -11,9 +10,19 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/AdminCss")
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 0;
+            background-color: #000;
+        }
+    </style>
 </head>
 <body>
-
     <!-- main / large navbar -->
     <nav class="navbar navbar-default navbar-fixed-top bootstrap-admin-navbar" role="navigation">
         <div class="container">
@@ -38,7 +47,6 @@
             </nav>
         </div><!-- /.container -->
     </nav>
-    <div style="margin:20px"></div>
     <div class="container">
         <!-- left, vertical navbar & content -->
         <div class="row">
@@ -52,7 +60,7 @@
                     <li>
                         <a href="/File/Index"><i class="glyphicon glyphicon-chevron-right"></i> 文件中心</a>
                     </li>
-                    <li>
+                    <li >
                         <a href="/Msg/Index"><i class="glyphicon glyphicon-chevron-right"></i>消息管理</a>
                     </li>
                     <li>
@@ -70,7 +78,6 @@
                             </ul>
                         </li>*@
                     <li>
-
                         <a href="javascript:void(0)" onclick="sideDown(this)">   <i class="glyphicon glyphicon-chevron-right"></i> 用户管理</a>
                         <ul class="nav navbar-collapse bootstrap-admin-navbar-side">
                             <li><a href="/Account/List/?userType=学生"><i class="glyphicon glyphicon-chevron-right"></i>学院学生</a></li>
@@ -81,10 +88,36 @@
                     </li>
                 </ul>
             </div>
+            <script>
+                $(function ($) {
+                    $.each($("#side  li"), function (i, n) {
+                        $(this).click(function () {
+                            var Href = $(this).children("a").attr("href").trim();
+                            //alert(Href)
+                            $("#side  li").removeAttr("class")
+                            $(this).attr("class", "active");
+                            $("#iframepage").attr("src", Href)
+                            return false;
+                        });
+                       
+                    });
+                })
+            </script>
+          
             <!-- content -->
-            <div class="col-md-10">
-                @RenderBody()
+            <div id="body" style="padding:0px" class="col-md-10">
+                <iframe src="/Bar/Index" id="iframepage" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" onLoad="iFrameHeight()"></iframe>
             </div>
+              <script type="text/javascript" language="javascript">
+                  function iFrameHeight() {
+                        var ifm= document.getElementById("iframepage");
+                        var subWeb = document.frames ? document.frames["iframepage"].document : ifm.contentDocument;
+                        if(ifm != null && subWeb != null) {
+                            ifm.height = subWeb.body.scrollHeight;
+                            ifm.width = $("#body").width()  
+                        }
+                }
+            </script>
         </div>
     </div>
     <!-- footer -->
@@ -102,7 +135,6 @@
     </div>
     <span id="CurrentAction" style="display:none">  @ViewBag.Active</span>
     @*<div class="container body-content">
-
             <hr />
             <footer>
                 <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
@@ -111,22 +143,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/customMutiplySelect")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
     <script>
-        //$("#side")
-        //$(function ($) {
-        //    $.each($("#side  li"), function (i, n) {
-        //        var Href = $(this).children("a").attr("href").trim();  //    /Role/Index  /User/Index
-        //        // alert(Href);
-        //        var CurHref = $("#CurrentAction").html().trim();  // /Home/Create
-        //        // alert(CurHref);
-        //        start = CurHref.indexOf("/");
-        //        // alert(start);
-        //        next = CurHref.indexOf("/", start + 1);
-        //        //alert(next);
-        //        var CurrentHome = CurHref.substr(1, next - start - 1);
-        //        //alert(CurrentHome);
-        //        // var CurrentList = stringObject.indexOf(searchvalue, fromindex)
         //        if (Href.indexOf(CurrentHome) > 0) {
         //            //  alert("yes")
         //            $(this).addClass("active");
@@ -155,7 +172,6 @@
         //    })
         //});
         function sideDown(obj) {
-
             ////$("#sides").hide();
             //var side = $("a ~ ul");// $("#sides");
             ////alert(side.next("li").addClass("hidden"))

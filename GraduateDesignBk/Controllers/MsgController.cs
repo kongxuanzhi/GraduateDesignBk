@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace GraduateDesignBk.Controllers
 {
+    [Authorize(Roles = "管理员")]
     public class MsgController : Controller
     {
         // GET: Msg

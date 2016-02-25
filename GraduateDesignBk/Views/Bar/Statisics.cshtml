@@ -1,85 +1,128 @@
-﻿
-<div class="row">
+﻿<div class="row">
     <ul id="nav" class="nav nav-tabs nav-justified">
         <li role="presentation">
             <a href="/Bar/Index"><span>问题</span>   </a>
         </li>
-        <li class="active" role="presentation">
-            <a href="/Bar/EveryDayQues"><span>今日问题</span></a>
-        </li>
-        <li role="presentation">
+       
+        <li  class="active role="presentation">
             <a href="/Bar/Statisics"><span>问题答疑统计</span></a>
         </li>
     </ul>
 </div>
-
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/highcharts.js"></script>
 <script src="~/Scripts/exporting.js"></script>
-<script>
 
-    // alert(day)
-    $(function ($) {
+<script>
+    var k = 0;
+    function ThisWeek($, time) {
         $.ajax({
             url: "/Bar/ThisWeek",
             dataType: "json",
-            data: null,
+            data: { "k":k},
             type: "Post",
             success: function (data) {
                 var past7Ques = data.Ques;
                 var week = data.Week;
                 var AnsTN = data.AnsTN;
                 var AnsSN = data.AnsSN;
-                var AnsTRate = data.AnsTRate;
-                var AnsSRate = data.AnsSRate;
-                $('#container').highcharts({
+                $("#pdays").html(week.length);
+                $("#ndays").html(week.length);
+                //var AnsTRate = data.AnsTRate;
+                //var AnsSRate = data.AnsSRate;
+                $('#container').empty();
+                var char = null;
+                //定义一个HighCharts
+                chart = new Highcharts.Chart({
                     chart: {
-                        type: 'line'
+                        renderTo: 'container',  //放置的div id
+                        type: "spline" // 图表类型
                     },
+                    //配置链接及名称选项
+                    credits: {
+                        enabled: true,
+                        href: '/Bar/Index',
+                        text: '全部问题'
+                    },
+                    //配置标题
                     title: {
-                        text: '问题统计'
+                        text: '问题统计',
+                        y: 10
                     },
+                    //配置副标题
                     subtitle: {
-                        text: '@DateTime.Now.Year 年'
+                        text: '日提问量和日回答量',
+                        y: 30
                     },
+                    //配置x轴
                     xAxis: {
                         categories: week
                     },
+                    // 配置y轴
                     yAxis: {
                         title: {
                             text: '问题量(个)'
+                        },
+                        lables: {
+                            formatter: function () { return this.value + '个' }
                         }
                     },
+                    //配置数据点提示框
+                    tooltip: {
+                        crosshairs: true,
+                        shared: true
+                    },
+                    //配置数据使其点显示信息
                     plotOptions: {
-                        line: {
+                        spline: {
                             dataLabels: {
                                 enabled: true
                             },
                             enableMouseTracking: true
                         }
                     },
+                    //配置数据列
                     series: [{
-                        name: '过去7天问题统计',
+                        name: '过去' + week.length + '天问题统计',
+                        marker: {
+                            symbol: 'square'
+                        },
                         data: past7Ques
-                    },{
-                        name: '过去7天教师回答个数',
+                    }, {
+                        name: '过去' + week.length + '天教师回答个数',
+                        marker: {
+                            symbol: 'diamond'
+                        },
                         data: AnsTN
                     }, {
-                        name: '过去7天学生回答个数',
+                        name: '过去' + week.length + '天学生回答个数',
+                        marker: {
+                            symbol: 'diamond'
+                        },
                         data: AnsSN
-                    }, {
-                        name: '过去7天学生回答率',
-                        data: AnsSRate
-                    }, {
-                        name: '过去7天教师回答率',
-                        data: AnsTRate
-                    }
-                    ]
+                    }]
                 });
-                
             }
         });
-
+    }
+    function Previous() {
+        k = k + 1;
+          ThisWeek($)
+        }
+    function Next() {
+        k = k - 1;
+        ThisWeek($);
+      }
+    $(document).ready(function () {
+        ThisWeek($)
+        });
+        @*//{
+        //    name: '过去7天学生回答率',
+        //    data: AnsSRate
+        //}, {
+        //    name: '过去7天教师回答率',
+        //    data: AnsTRate
+        //}
 
         $.ajax({
             url: "/Bar/TodayTeacherAns",
@@ -123,14 +166,35 @@
 
             }
         });
-    });
+    });*@
 </script>
 <body>
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
-
+    </div>
+    <div class="row">
+        <nav>
+            <ul class="pager">
+                <li>
+                    <a href="#" onclick="Previous()">前<span id="pdays"></span>天</a>
+                </li>
+                    <li>
+                        <a href="#" onclick="Next()">后<span id="ndays"></span> 天</a>
+                    </li>
+            </ul>
+        </nav>
     </div>
     <div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto">
 
     </div>
 </body>
+
+
+
+
+
+
+
+
+
+
 

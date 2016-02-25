@@ -17,7 +17,6 @@ namespace GraduateDesignBk.Controllers
             ViewBag.QID = id;
             return View();
         }
-
         public ActionResult FileCenter()
         {
             return View();
@@ -38,6 +37,10 @@ namespace GraduateDesignBk.Controllers
         {
             ViewBag.Message = "Your contact page.";
 
+            return View();
+        }
+        public ActionResult Back()
+        {
             return View();
         }
     }

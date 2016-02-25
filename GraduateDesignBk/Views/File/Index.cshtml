@@ -7,130 +7,131 @@
 {
     <input type="hidden" id="pagesize" name="page.PageSize" value="@Model.page.PageSize" />
     <input type="hidden" id="CurIndex" name="page.CurIndex" value="@Model.page.CurIndex" />
+    <div class="row">
+        <a href="javascript:Submit('DeleteMany');" class="btn btn-default">删除</a>
+        <a class="btn btn-default" data-toggle="modal" data-target="#myModal">
+            上传
+        </a>
+        @*<a class="btn btn-default" href="javascript:Downloadmany('Download')">下载</a>*@
+        <a href="javascript:Submit('PubMany');" class="btn btn-default">公开</a>
+        <a href="javascript:Submit('HideMany');" class="btn btn-default">隐藏</a>
+        <div class="form-group">
+            @Html.EditorFor(model => model.Sname, new { htmlAttributes = new { placeholder = "文件名", @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            @Html.EditorFor(model => model.SuserName, new { htmlAttributes = new { placeholder = "上传人", @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            @Html.EditorFor(model => model.Stype, new { htmlAttributes = new { placeholder = "文件类型", @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            <label for="Spub">
+                公开：
+                @Html.CheckBoxFor(model => model.Spub, true)
+            </label>
+        </div>
+        <a href="#" onclick="getPageSize(0)" class="btn btn-default"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜 索</a>
+    </div>
 
-    <div class="form-group">
-        @Html.EditorFor(model => model.Sname, new { htmlAttributes = new { placeholder = "文件名", @class = "form-control" } })
-    </div>
-    <div class="form-group">
-        @Html.EditorFor(model => model.SuserName, new { htmlAttributes = new { placeholder = "上传人", @class = "form-control" } })
-    </div>
-    <div class="form-group">
-        @Html.EditorFor(model => model.Stype, new { htmlAttributes = new { placeholder = "文件类型", @class = "form-control" } })
-    </div>
-    <div class="form-group">
-        <label for="Spub">
-            公开：
-            @Html.CheckBoxFor(model => model.Spub, true)
-        </label>
-    </div>
-    <a href="#" onclick="getPageSize(0)" class="btn btn-default"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜 索</a>
 }
 
-<div class="row">
-    <a href="javascript:Submit('DeleteMany');" class="btn btn-default">删除</a>
-    <a class="btn btn-default" data-toggle="modal" data-target="#myModal">
-        上传
-    </a>
-    @*<a class="btn btn-default" href="javascript:Downloadmany('Download')">下载</a>*@
-    <a href="javascript:Submit('PubMany');" class="btn btn-default">公开</a>
-    <a href="javascript:Submit('HideMany');" class="btn btn-default">隐藏</a>
-</div>
-@*@using (Html.BeginForm("Download", "File", null, FormMethod.Post, new { id = "form_Download" }))
-{
-    <input type="hidden" id="Download" name="id" value="" />
-}*@
 
-@using (Html.BeginForm("DeleteMany", "File", null, FormMethod.Post, new { id = "form_DeleteMany" }))
-{
-    <input type="hidden" id="DeleteMany" name="Ids" value="" />
-}
-@using (Html.BeginForm("PubMany", "File", null, FormMethod.Post, new { id = "form_PubMany" }))
-{
-    <input type="hidden" id="PubMany" name="Ids" value="" />
-}
-@using (Html.BeginForm("HideMany", "File", null, FormMethod.Post, new { id = "form_HideMany" }))
-{
-    <input type="hidden" id="HideMany" name="Ids" value="" />
-}
+    @*@using (Html.BeginForm("Download", "File", null, FormMethod.Post, new { id = "form_Download" }))
+        {
+            <input type="hidden" id="Download" name="id" value="" />
+        }*@
 
-<table class="table table-striped table-bordered table-hover table-condensed " style="text-align:center;margin-top:10px">
-    <thead>
-        <tr>
-            <td>
-                <b><input type="checkbox" id="Totalselect" onclick="CheckDelete()" /><label for="Totalselect">选择</label> </b>
-            </td>
-            <td><b>文件名</b></td>
-            <td><b>上传者</b></td>
-            <td><b>公开否</b></td>
-            <td><b>上传时间</b></td>
-            <td><b>类型</b></td>
-            <td><b>大小</b></td>
-            <td><b>操作</b></td>
-        </tr>
-    </thead>
-    @foreach (var item in Model.FileItems)
+    @using (Html.BeginForm("DeleteMany", "File", null, FormMethod.Post, new { id = "form_DeleteMany" }))
     {
-        <tr style="cursor:pointer">
-            <td>
-                <input type="checkbox" name="delId" id="@item.FID" value="@item.FID" />
-            </td>
-            <td style="max-width:250px">
-                <label for="@item.FID">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </label>
-            </td>
-            <td>
-                <label for="@item.FID">
-                    @Html.DisplayFor(modelItem => item.FromUID)
-                </label>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pub)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UploadTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Size)
-            </td>
-            <td>
-                @Html.ActionLink("详情", "Details", new { id = item.FID }) |
-                @Html.ActionLink("删除", "DeleteMany", new { Ids = item.FID })|
-                @Html.ActionLink("下载", "Download",new { id=item.FID})
-            </td>
-         
-        </tr>
+        <input type="hidden" id="DeleteMany" name="Ids" value="" />
     }
-</table>
+    @using (Html.BeginForm("PubMany", "File", null, FormMethod.Post, new { id = "form_PubMany" }))
+    {
+        <input type="hidden" id="PubMany" name="Ids" value="" />
+    }
+    @using (Html.BeginForm("HideMany", "File", null, FormMethod.Post, new { id = "form_HideMany" }))
+    {
+        <input type="hidden" id="HideMany" name="Ids" value="" />
+    }
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">上传文件</h4>
-            </div>
-            @using (Html.BeginForm("FileUpload", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="modal-body">
-                    <input type="file" class="btn btn-default" name="file" />
-                </div>
-                <div class="modal-body">
-                    <label for="pub">
-                        @Html.CheckBox("pub",true)
-                        公开否
+    <table class="table table-striped table-bordered table-hover table-condensed " style="text-align:center;margin-top:10px">
+        <thead>
+            <tr>
+                <td>
+                    <b><input type="checkbox" id="Totalselect" onclick="CheckDelete()" /><label for="Totalselect">选择</label> </b>
+                </td>
+                <td><b>文件名</b></td>
+                <td><b>上传者</b></td>
+                <td><b>公开否</b></td>
+                <td><b>上传时间</b></td>
+                <td><b>类型</b></td>
+                <td><b>大小</b></td>
+                <td><b>操作</b></td>
+            </tr>
+        </thead>
+        @foreach (var item in Model.FileItems)
+        {
+            <tr style="cursor:pointer">
+                <td>
+                    <input type="checkbox" name="delId" id="@item.FID" value="@item.FID" />
+                </td>
+                <td style="max-width:250px">
+                    <label for="@item.FID">
+                        @Html.DisplayFor(modelItem => item.Name)
                     </label>
+                </td>
+                <td>
+                    <label for="@item.FID">
+                        @Html.DisplayFor(modelItem => item.FromUID)
+                    </label>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pub)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UploadTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Size)
+                </td>
+                <td>
+                    @Html.ActionLink("详情", "Details", new { id = item.FID }) |
+                    @Html.ActionLink("删除", "DeleteMany", new { Ids = item.FID })|
+                    @Html.ActionLink("下载", "Download", new { id = item.FID })
+                </td>
+
+            </tr>
+        }
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">上传文件</h4>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">确认 上传</button>
-                </div>
+                @using (Html.BeginForm("FileUpload", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+            <div class="modal-body">
+                <input type="file" class="btn btn-default" name="file" />
+            </div>
+            <div class="modal-body">
+                <label for="pub">
+                    @Html.CheckBox("pub",true)
+                    公开否
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">确认 上传</button>
+            </div>
             }
+            </div>
         </div>
     </div>
-</div>
-@Html.Partial("_PagingPartial", Model.page)
+    @Html.Partial("_PagingPartial", Model.page)

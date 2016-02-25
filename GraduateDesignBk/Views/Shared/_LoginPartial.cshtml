@@ -1,13 +1,17 @@
 ﻿@using Microsoft.AspNet.Identity
-
+@using Microsoft.AspNet.Identity.Owin;
+@{ 
+    ApplicationUserManager UserManager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+    string imgsrc = UserManager?.FindById(User?.Identity?.GetUserId())?.Photo;
+}
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
     {
         @Html.AntiForgeryToken()
-        <div class="dropdown signinbtn" style="height: 30px;padding-top: 3px;">
+        <div class="dropdown signinbtn" style="height: 30px;padding-top: 0px;margin-top:1.5%;">
 
-            <a href="#" style="color: white;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 欢迎,1920135159 </a>
+            <a href="#" style="color: white;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <img src="@imgsrc" class="img-circle" style="width:50px;height:50px"/>@*<br /> @User.Identity.GetUserName()*@</a>
             <ul class="dropdown-menu" style="min-width: 100px;width: 118px;">
                 <!-- 里面新增的style用于覆盖原有代码 -->
                 <li>

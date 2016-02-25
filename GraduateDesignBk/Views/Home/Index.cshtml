@@ -40,16 +40,22 @@
             <div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
                 <ul id="myTabs" class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#latest" onclick="LatestQ()" id="latest-tab" role="tab" data-toggle="tab" aria-controls="latest" aria-expanded="true">最新问题</a>
+                        <a href="#latest" onclick="LatestQ()" id="latest-tab" role="tab" data-toggle="tab" aria-controls="latest" aria-expanded="true">最新</a>
+                    </li>
+                    <li role="presentation" >
+                        <a href="#allq" onclick="AllQ()" id="allq-tab" role="tab" data-toggle="tab" aria-controls="allq" aria-expanded="true">全部</a>
+                    </li>
+                     <li role="presentation" class="">
+                        <a href="#hotest" onclick="HotQ()" role="tab" id="hotest-tab" data-toggle="tab" aria-controls="hotest" aria-expanded="false">热门</a>
                     </li>
                     <li role="presentation" class="">
-                        <a href="#hotest" onclick="HotQ()" role="tab" id="hotest-tab" data-toggle="tab" aria-controls="hotest" aria-expanded="false">热门问题</a>
-                    </li>
-                    <li role="presentation" class="">
-                        <a href="#unAnswer" onclick="UnAnsQ()" role="tab" id="unAnswer-tab" data-toggle="tab" aria-controls="unAnswer" aria-expanded="false">未回答问题</a>
+                        <a href="#unAnswer" onclick="UnAnsQ()" role="tab" id="unAnswer-tab" data-toggle="tab" aria-controls="unAnswer" aria-expanded="false">未回答</a>
                     </li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade active in" id="allq" aria-labelledby="allq-tab">
+                        <div id="allQues"></div>
+                    </div>
                     <div role="tabpanel" class="tab-pane fade active in" id="latest" aria-labelledby="latest-tab">
                         <div id="latestQues"></div>
                     </div>
@@ -60,7 +66,7 @@
                         <div id="unAnsQues"></div>
                     </div>
                     <div role="tabpanel" class="tab-pane fade" id="SearchResult" aria-labelledby="SearchResult-tab">
-                        <div id="SearchResultQues">fd</div>
+                        <div id="SearchResultQues"></div>
                     </div>
                     <nav>
                         <ul class="pager">
@@ -125,9 +131,9 @@
         </div>
         <hr style="border-top:1px solid #ccc; margin-top: 5px; margin-bottom: 5px;" width="100%" SIZE="3">
         <div>
-            <p style="margin-bottom: 10px;margin-top: 20px;margin-left: 10px; font-size: 14px;">
+            <p onmouseover="$('#allAns').show()" onmouseout="$('#allAns').hide()" style="margin-bottom: 10px;margin-top: 20px;margin-left: 10px; font-size: 14px;">
                 通知公告
-                <a href="/Home/ListAnnounce" style="float:right;font-size:smaller;margin-top: 2px;color: #999999;"><span style="width:20px;height:20px">全部>></span></a>
+                <a id="allAns" href="/Home/ListAnnounce" style="display:none;float:right;font-size:smaller;margin-top: 2px;color: #999999;"><span style="width:20px;height:20px">全部>></span></a>
             </p>
             <span class="span-mark"></span>
             <ul id="Announce" style="padding-left: 0px;list-style: none;">
@@ -192,6 +198,7 @@
             success: function (data) {
                 $("#" + id).empty();
                 for (var i = 0; i < data.length; i++) {
+                    var s =data[i].Solved ==true?'已解决':"待解决";
                     var p = '<div class="question-list media clearfix">' +
                     '<div class="pull-left question-list-action">' +
                         '<img src="' + data[i].FromPhoto + '" width="50" height="50" alt="' + data[i].FromName + '" class="">' +
@@ -214,7 +221,9 @@
                                 '<div class="question-list-bar">' +
                                     '<span><span class="glyphicon glyphicon-time"></span>' + new Date(parseInt(data[i].RaiseQuesTime.replace(/\D/igm, ""))).toLocaleString() + '</span>' +
                                     '<span>&nbsp;</span>' +
-                                    '<span><span class="glyphicon glyphicon-plus"></span> 7次浏览</span>' +
+                                    '<span><span class="glyphicon glyphicon-plus"></span> ' + data[i].ReadTimes + '次浏览</span>' +
+                                    '<span>&nbsp;</span>' +
+                                    '<span><span class="glyphicon glyphicon-wrench"></span> ' + s + '</span>' +
                                 '</div>' +
                         '</div>' +
                     '</di>';
@@ -254,6 +263,12 @@
         id = "latestQues";
         QueryQues(currentIndex, url, id, null);
     }
+    function AllQ() {
+        currentIndex = 1;
+        url = "/Bar/All";
+        id = "allQues"
+        QueryQues(currentIndex, url, id, null);
+    }
 
     function AnnounceList() {
         $.ajax({
@@ -270,7 +285,7 @@
         });
     }
     $(function ($) {
-        LatestQ();
+        LatestQ()
         AnnounceList();
         $.ajax({
             url: "/Bar/BestQuesAns",
@@ -279,7 +294,7 @@
             success: function (data) {
                 $("#hotQA").empty();
                 for (var i = 0; i < data.length; i++) {
-                    var mo = '<li><a href="https://www.baidu.com/">' + data[i].Title + '</a></li>';
+                    var mo = '<li><a href="/Home/BarDetail/' + data[i].QID + '">' + data[i].Title + '</a></li>';
                     $("#hotQA").append(mo);
                 }
             }

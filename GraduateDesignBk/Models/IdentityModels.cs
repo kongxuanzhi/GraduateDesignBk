@@ -36,7 +36,7 @@ namespace GraduateDesignBk.Models
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
-            userIdentity.AddClaim(new Claim(ClaimTypes.Role, "教师"));
+           //userIdentity.AddClaim(new Claim(ClaimTypes.Role, "学生"));
             return userIdentity;
         }
     }

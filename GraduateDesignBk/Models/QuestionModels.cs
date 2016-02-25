@@ -13,6 +13,7 @@ namespace GraduateDesignBk.Models
             Likes = 0;
             Solved = false;
             CommentNum = 0;
+            ReadTimes = 0;
         }
         [Key]
         [StringLength(128)]
@@ -39,7 +40,7 @@ namespace GraduateDesignBk.Models
 
         [DefaultValue(false)]
         public bool Solved { get; set; }  //解决没
-
+        public int ReadTimes { get; set; }
         public int CommentNum { get; set; }  //评论数 触发器
     }
 }

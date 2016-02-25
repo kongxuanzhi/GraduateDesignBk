@@ -18,10 +18,17 @@ namespace GraduateDesignBk.Models
         public string Title { get; set; }
         public string Description { get; set; }  //内容
         public int Likes { get; set; }
-        public bool Solved { get; set; } 
+        public bool Solved { get; set; }
+        public int ReadTimes { get; set; }
         public int CommentNum { get; set; }
     }
-
+    public class QBrif
+    {
+        public string QID { get; set; }
+        public string Title { get; set; }
+        public int Likes { get; set; }
+        public int DegreeOfSimilarity { get; set; }
+    }
     public class AnswerDetail
     {
         public string AID { get; set; }
@@ -47,9 +54,9 @@ namespace GraduateDesignBk.Models
            Bars.pbars = new List<QestDetail>();
            Bars.fbars = new List<AnswerDetail>();
            Bars.sbars = new List<AnswerDetail>();
-
-            page = new Paging();
+           page = new Paging();
         }
+        public string sTime { get; set; }
         public string SAuthor { get; set; }
         public string SQue { get; set; }
         public IsPub isPub { get; set; }

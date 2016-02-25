@@ -10,6 +10,7 @@ using GraduateDesignBk.App_Start;
 
 namespace GraduateDesignBk.Controllers
 {
+
     public class FileController : Controller
     {
         private static int FilePageSize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["FilePageSize"]);
@@ -19,6 +20,7 @@ namespace GraduateDesignBk.Controllers
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
+        [Authorize(Roles = "管理员")]
         public ActionResult Index(FileSandP file)
         {
             int pageSize = (int)file.page.PageSize + 8;
@@ -43,7 +45,7 @@ namespace GraduateDesignBk.Controllers
             return value == null ? "" : value;
         }
 
-
+        [AllowAnonymous]
         public JsonResult List(int SearchType, string SearchString,int CurIndex = 1)
         {
             FileSandP file = new FileSandP();
@@ -98,6 +100,8 @@ namespace GraduateDesignBk.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize(Roles = "管理员")]
+
         public ActionResult Details(string id)
         {
             FileDetail filed = new FileDetail();
@@ -125,6 +129,7 @@ namespace GraduateDesignBk.Controllers
         
         //上传文件 公开上传到前台，供大家下载
         [HttpPost]
+        [Authorize(Roles = "管理员")]
         public ActionResult FileUpload(bool Pub)
         {
             HttpPostedFileBase file = Request.Files["file"];
@@ -153,7 +158,6 @@ namespace GraduateDesignBk.Controllers
                 return View();
             }
         }
-        
         [LoginAuthorize]
         public FileStreamResult Download(string id)
         {
@@ -183,6 +187,7 @@ namespace GraduateDesignBk.Controllers
         /// </summary>
         /// <param name="Ids"></param>
         /// <returns></returns>
+        [Authorize(Roles = "管理员")]
         public ActionResult  DeleteMany(string Ids)
         {
             string[] ids = Ids.Split(new char[] { '|'});
@@ -208,6 +213,7 @@ namespace GraduateDesignBk.Controllers
         /// </summary>
         /// <param name="Ids"></param>
         /// <returns></returns>
+        [Authorize(Roles = "管理员,教师")]
         public ActionResult PubMany(string Ids)
         {
             string[] ids = Ids.Split(new char[] { '|' });
@@ -229,6 +235,7 @@ namespace GraduateDesignBk.Controllers
         /// </summary>
         /// <param name="Ids">隐藏文件的id字符串</param>
         /// <returns></returns>
+        [Authorize(Roles = "管理员,教师")]
         public ActionResult HideMany(string Ids)
         {
             string[] ids = Ids.Split(new char[] { '|' });
