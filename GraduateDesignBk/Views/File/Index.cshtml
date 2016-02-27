@@ -8,7 +8,7 @@
     <input type="hidden" id="pagesize" name="page.PageSize" value="@Model.page.PageSize" />
     <input type="hidden" id="CurIndex" name="page.CurIndex" value="@Model.page.CurIndex" />
     <div class="row">
-        <a href="javascript:Submit('DeleteMany');" class="btn btn-default">删除</a>
+        <a href="javascript:Submit('DeleteMany');" onclick="return confirm('确定要删除数据吗？')" class="btn btn-default">删除</a>
         <a class="btn btn-default" data-toggle="modal" data-target="#myModal">
             上传
         </a>
@@ -99,10 +99,9 @@
                 </td>
                 <td>
                     @Html.ActionLink("详情", "Details", new { id = item.FID }) |
-                    @Html.ActionLink("删除", "DeleteMany", new { Ids = item.FID })|
+                    <a href="/File/DeleteMany/?Ids=@item.FID" onclick="return confirm('确定要删除数据吗？')">删除</a>
                     @Html.ActionLink("下载", "Download", new { id = item.FID })
                 </td>
-
             </tr>
         }
     </table>

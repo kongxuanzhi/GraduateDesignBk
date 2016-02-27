@@ -43,9 +43,5 @@ namespace GraduateDesignBk.Models
         [DefaultValue("0")]
         [StringLength(120)]
         public string FromUID { get; set; }
-        [ForeignKey("FromUID")]
-        public ApplicationUser User { get; set; }
-
-        public virtual ICollection<DownUpload> Products { get; set; }
     }  
 }

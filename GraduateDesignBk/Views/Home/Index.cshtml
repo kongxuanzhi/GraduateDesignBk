@@ -2,7 +2,6 @@
     Layout = "~/Views/Shared/_HeaderLayout.cshtml";
     ViewBag.Title = "Home Page";
 }
-
 <style>
     /*所需css*/
     .span-mark {
@@ -196,6 +195,7 @@
             type: "POST",
             data: { "currentIndex": currentIndex, "searchstr": search },
             success: function (data) {
+                //new Date(parseInt(data[i].RaiseQuesTime.replace(/\D/igm, ""))).toLocaleString()
                 $("#" + id).empty();
                 for (var i = 0; i < data.length; i++) {
                     var s =data[i].Solved ==true?'已解决':"待解决";
@@ -219,7 +219,7 @@
 
                                 '</div>' +
                                 '<div class="question-list-bar">' +
-                                    '<span><span class="glyphicon glyphicon-time"></span>' + new Date(parseInt(data[i].RaiseQuesTime.replace(/\D/igm, ""))).toLocaleString() + '</span>' +
+                                    '<span><span class="glyphicon glyphicon-time"></span>' + data[i].RaiseQuesTime + '</span>' +
                                     '<span>&nbsp;</span>' +
                                     '<span><span class="glyphicon glyphicon-plus"></span> ' + data[i].ReadTimes + '次浏览</span>' +
                                     '<span>&nbsp;</span>' +

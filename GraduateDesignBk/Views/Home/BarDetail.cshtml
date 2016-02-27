@@ -279,7 +279,8 @@
             $("#ansNum").html(totalAnswer + "个评论")
             $("#Title").html(data.Bars.pbars[0].Title)
             $("#Description").html(data.Bars.pbars[0].Description)
-            var raisetime = new Date(parseInt(data.Bars.pbars[0].RaiseQuesTime.replace(/\D/igm, ""))).toLocaleString()
+            //var raisetime = new Date(parseInt(data.Bars.pbars[0].RaiseQuesTime.replace(/\D/igm, ""))).toLocaleString()
+            var raisetime = data.Bars.pbars[0].RaiseQuesTime;
             $("#RaiseQuesTime").html(raisetime)
             $("#AuthorImg").attr("src", data.Bars.pbars[0].FromPhoto);
             $("#AuthorName").html(data.Bars.pbars[0].FromName);
@@ -289,7 +290,8 @@
             $("#Likes").html(data.Bars.pbars[0].Likes)
             $("#Solved").html(data.Bars.pbars[0].Solved==true?"已解决":"未解决")
             for (var f = 0; f < totalAnswer; f++) {
-                var anstime = new Date(parseInt(data.Bars.fbars[f].AnswerQuesTime.replace(/\D/igm, ""))).toLocaleString();
+                //var anstime = new Date(parseInt(data.Bars.fbars[f].AnswerQuesTime.replace(/\D/igm, ""))).toLocaleString();
+                var anstime = data.Bars.fbars[f].AnswerQuesTime;
 
                 //  alert($("#AnsList").html());
                 var listStart =
@@ -313,7 +315,6 @@
                     '<div class="mod-footer">' +
                         '<!-- 社交操作 -->' +
                         '<div class="meta clearfix">' +
-                            '<span class="text-color-999 pull-right">' + anstime + '</span>' +
                             '<!-- 投票栏 -->' +
                             '<span class="operate">' +
                                 '<a href="javascript:AnsLike(' + "'" + data.Bars.fbars[f].AID + "'" + ')" class="aw-add-comment"><i data-placement="right" title="" data-toggle="tooltip" class="glyphicon glyphicon-thumbs-up" data-original-title="赞同回复"></i> <b id="' + data.Bars.fbars[f].AID + 'likeans" class="count">' + data.Bars.fbars[f].Likes + '</b></a>' +
@@ -328,6 +329,7 @@
                                      @:'<a class="aw-add-comment" onclick="return confirm('+"'"+'确认要删除该评论以及该评论下的所有回复？'+"'"+')"  href="javascript:DeleteAns(' + "'" + data.Bars.fbars[f].AID + "'" + ')"><i class="glyphicon glyphicon-remove-circle"></i></a>' +
                                 @:'</span>' +
                             }
+                            '<span class="text-color-999 pull-right">' + anstime + '</span>' +
                         '</div>' +
                         '<div class="collapse in" id="collapse' + data.Bars.fbars[f].AID + '">' +
                         '<div class="aw-comment-box" id="aw-comment-box-answer-' + data.Bars.fbars[f].AID + '" style="display: block;">' +
@@ -372,7 +374,8 @@
                }
                 for (var s = 0; s < data.Bars.sbars.length; s++) {
                     if (data.Bars.sbars[s].FAID == data.Bars.fbars[f].AID) {
-                        var ansbacktime = new Date(parseInt(data.Bars.sbars[s].AnswerQuesTime.replace(/\D/igm, ""))).toLocaleString()
+                        var ansbacktime = data.Bars.sbars[s].AnswerQuesTime;
+                        //var ansbacktime = new Date(parseInt(data.Bars.sbars[s].AnswerQuesTime.replace(/\D/igm, ""))).toLocaleString()
                         var li =
                         '<li id="ulback' + data.Bars.sbars[s].AID + '">' +
                            '<a  class="aw-user-name" href="http://wenda.golaravel.com/people/Alano" data-id="1732"><img src="' + data.Bars.sbars[s].FromPhoto + '" alt=""></a>' +

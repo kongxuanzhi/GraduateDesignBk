@@ -13,6 +13,7 @@ namespace GraduateDesignBk.Controllers
     public class NoteController : Controller
     {
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult Display()
         {
            Note note =  db.Notes.OrderByDescending(m => m.Time).First();

@@ -27,11 +27,10 @@ namespace GraduateDesignBk.Models
         [ForeignKey("ToUID")]
         public ApplicationUser user { get; set; }   //外键
 
-
         [StringLength(128)]
         public string FID { get; set; }       //文件的Id
 
-       [ForeignKey("FID")]
+        [ForeignKey("FID")]
         public File Files { get; set; }  //外键 到FileModel表
 
         public ReadState Readstate { get; set; }      //是否接收文件

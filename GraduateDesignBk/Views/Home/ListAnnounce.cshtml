@@ -5,7 +5,7 @@
 <div class="announcement">
     <div>
         <div style="color:#999;height:40px;margin:5px 15px;border-bottom: 1px solid #FF6600;padding-bottom: 5px;">
-            <span style="float: left; width: 100px;font-weight: bold; color: #F60"> [ 全部公告 ] </span>
+            <a href="/Home/ListAnnounce"> <span style="float: left; width: 100px;font-weight: bold; color: #F60"> [ 全部公告 ] </span></a>
             <div style="float: right; width: 200px; text-align: right;">
                 <form class="form-inline search-form">
                     <input class="form-control search" onkeyup="ListAnnounce(1)" type="text" id="searchA" placeholder="搜索公告">
@@ -27,17 +27,23 @@
                 <li class="frount1"> <a href="/view/12766" target="_blank"> [2015-12-22]  关于 “师生意见建议收集处理反馈平台”试用的通知 </a>  </li>
             </ul>
         </div>
-        <div class="pagination">
-            共计 <span id="PageNum">1</span>页<span id="TotalCount">0</span> 条公告
-            <a href="javascript:ListAnnounce(1)">首页</a>
-            <a href="javascript:Previous()">上一页</a>
-            第 <span id="currentIndex">1</span> 页
-            <a href="javascript:Next();" color="blue" alt="下一页"> [ 下一页 ] </a>
-            <a href="javascript:ListAnnounce(parseInt($('#PageNum').html()));" color="blue" alt="尾页"> [ 尾页 ] </a>
-            第
-            <input size="4" style="width:37px;" type="text" id="pageNumber" value="1">
-            页
-            <input type="button" value="转到" onclick="javascript:jump()">
+        <div  style="text-align:center;margin-top:15px">
+            <div class="col-md-12" >
+                <div class="col-md-5 col-md-offset-1">
+                    <a href="javascript:ListAnnounce(1)">[首页]</a>
+                    <a href="javascript:Previous()">[上一页]</a>
+                    第<span id="currentIndex">1</span>页
+                    <a href="javascript:Next();" color="blue" alt="下一页"> [下一页] </a>
+                    <a href="javascript:ListAnnounce(parseInt($('#PageNum').html()));" color="blue" alt="尾页"> [ 尾  页] </a>
+                </div>
+                <div class="col-md-4">
+                    共计<span id="PageNum">1</span>页  <span id="TotalCount">0</span>条公告
+                    第
+                    <input size="4" style="width:37px;" type="text" id="pageNumber" value="1">
+                    页
+                    <input type="button" value="转到" onclick="javascript:jump()">
+                </div>
+            </div>  
         </div>
     </div>
 </div>

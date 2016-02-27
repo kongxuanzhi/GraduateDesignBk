@@ -57,7 +57,7 @@ namespace GraduateDesignBk.Controllers
                    ANID = m.ANID,
                    Title = m.Title,
                    FromUID = m.FromUID,
-                   Time = m.Time.ToString(),
+                   Time = m.Time.Year==DateTime.Now.Year?m.Time.ToString("MM/dd"):m.Time.ToString("yyyy/MM/dd"),
                    Prop = m.Prop,
                    ReadTimes = m.ReadTimes,
                    FromName = UserManager.FindById(m.FromUID).RealName

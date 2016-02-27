@@ -1,0 +1,2 @@
+﻿select VUR.*,Ans.PQID from V_User_Role VUR left join Answers Ans on VUR.Id=Ans.FromUID
+select VUR.RealName teacherName, quesNum = count(DISTINCT  PQID) from V_User_Role VUR left join Answers Ans on VUR.Id=Ans.FromUID   group by all VUR.Id, VUR.RealName

@@ -101,7 +101,6 @@ namespace GraduateDesignBk.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Authorize(Roles = "管理员")]
-
         public ActionResult Details(string id)
         {
             FileDetail filed = new FileDetail();
@@ -114,7 +113,7 @@ namespace GraduateDesignBk.Controllers
                        Name = m.Name,
                        FromId = m.FromUID,
                        Pub = m.Pub,
-                       UploadTime = m.UploadTime.ToShortDateString(),
+                       UploadTime = m.UploadTime.ToString("yyyy/MM/dd"),
                        Type = m.Type,
                        Size = m.Size,
                        DownloadTimes = m.DownloadTimes,

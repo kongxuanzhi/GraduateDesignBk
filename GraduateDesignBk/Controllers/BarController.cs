@@ -26,7 +26,7 @@ namespace Graduatedesignbk.Controllers
             barv.Bars.pbars = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail").OrderBy(m => m.RaiseQuesTime).ToList();
             barv.Bars.pbars = barv.Bars.pbars.Where(m => m.FromName.Contains(cnts(barv.SAuthor))).ToList();
             barv.Bars.pbars = barv.Bars.pbars.Where(m => m.Title.Contains(cnts(barv.SQue)) || m.Description.Contains(cnts(barv.SQue))).ToList();
-            barv.Bars.pbars = barv.Bars.pbars.Where(m => m.RaiseQuesTime.ToString("yyyy-MM-dd").Contains(cnts(barv.sTime))).ToList();
+            barv.Bars.pbars = barv.Bars.pbars.Where(m => m.RaiseQuesTime.Contains(cnts(barv.sTime))).ToList();
 
             if (barv.isPub != 0)
             {
@@ -90,7 +90,7 @@ namespace Graduatedesignbk.Controllers
         {
             List<QestDetail> LatestQues = new List<QestDetail>();
             LatestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where ToUID='0'").ToList();
-            LatestQues = LatestQues.OrderByDescending(m => m.Likes).ThenBy(m=>m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            LatestQues = LatestQues.OrderByDescending(m => m.Likes).ThenBy(m=>Convert.ToDateTime(m.RaiseQuesTime)).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
             return Json(LatestQues);
         }
         [AllowAnonymous]
@@ -99,8 +99,8 @@ namespace Graduatedesignbk.Controllers
         {
             List<QestDetail> LatestQues = new List<QestDetail>();
             LatestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where ToUID='0'").ToList();
-            LatestQues = LatestQues.Where(m=>m.RaiseQuesTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString())).ToList();
-           LatestQues = LatestQues.OrderByDescending(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            LatestQues = LatestQues.Where(m=>Convert.ToDateTime(m.RaiseQuesTime).ToShortDateString().Equals(DateTime.Now.ToShortDateString())).ToList();
+            LatestQues = LatestQues.OrderByDescending(m => Convert.ToDateTime(m.RaiseQuesTime)).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
             return Json(LatestQues);
         }
         [AllowAnonymous]
@@ -109,7 +109,7 @@ namespace Graduatedesignbk.Controllers
         {
             List<QestDetail> HotestQues = new List<QestDetail>();
             HotestQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail VQ where ToUID='0' and VQ.Likes+CommentNum>10 order by VQ.Likes+CommentNum   desc").ToList();
-            HotestQues = HotestQues.OrderByDescending(m => m.Likes).ThenBy(m=>m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            HotestQues = HotestQues.OrderByDescending(m => m.Likes).ThenBy(m=> Convert.ToDateTime(m.RaiseQuesTime)).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
             return Json(HotestQues);
         }
         [AllowAnonymous]
@@ -118,7 +118,7 @@ namespace Graduatedesignbk.Controllers
         {
             List<QestDetail> UnAnsQues = new List<QestDetail>();
             UnAnsQues = db.Database.SqlQuery<QestDetail>("select * from V_QestDetail where  ToUID='0' and CommentNum=0").ToList();
-            UnAnsQues = UnAnsQues.OrderByDescending(m => m.Likes).ThenBy(m => m.RaiseQuesTime).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
+            UnAnsQues = UnAnsQues.OrderByDescending(m => m.Likes).ThenBy(m => Convert.ToDateTime(m.RaiseQuesTime)).Skip(pagesize * (currentIndex - 1)).Take(pagesize).ToList();
             return Json(UnAnsQues);
         }
         [AllowAnonymous]
@@ -450,6 +450,8 @@ namespace Graduatedesignbk.Controllers
             int[] quesN = getPast7QuesN(dt);
             int[] ansTN = getPast7Anses("教师", dt);
             int[] ansSN = getPast7Anses("学生", dt);
+            double[] ansTRate = getAnsRate(ansTN, quesN);
+            double[] ansSRate = getAnsRate(ansSN, quesN);
             JsonResult result = new JsonResult
             {
                 Data = new
@@ -457,15 +459,14 @@ namespace Graduatedesignbk.Controllers
                     Ques = quesN,
                     AnsTN = ansTN,
                     AnsSN = ansSN, 
-                    Week = week
+                    Week = week,
+                    AnsTRate = ansTRate,
+                    AnsSRate = ansSRate,
                 }
             };
             return result;
         }
-        //  double[] ansTRate = getAnsRate(ansTN,quesN);
-        //double[] ansSRate = getAnsRate(ansSN, quesN);
-        //AnsTRate = ansTRate,
-        //AnsSRate = ansSRate,
+       
         private double[] getAnsRate(int[] ansN, int[] quesN)
         {
             double[] rate = new double[statisPastDays];
@@ -516,19 +517,28 @@ namespace Graduatedesignbk.Controllers
 
         public class perday
         {
-            public string teachername { get; set; }
-            public int quesnum { get; set; }
+            public string teacherName { get; set; }
+            public int quesNum { get; set; }
         }
 
-        public JsonResult todayteacherans()
+        public JsonResult TeacherTotalAns()
         {
-            //sqlparameter p = new sqlparameter("@t","教师");
-            //to.teachers = db.Database.SqlQuery<string>("select realname from v_user_role Where name =@t",p).ToList();
-            //int[] a = new int[] { 12,  1 };
-            //to.quesnum.addrange(a);
-            JsonResult result = new JsonResult
+            SqlParameter p = new SqlParameter("@userType", "教师");
+            List<perday> teacherQues = db.Database.SqlQuery<perday>("select VUR.RealName teacherName, quesNum = count(DISTINCT  PQID) from V_User_Role VUR left join Answers Ans on VUR.Id=Ans.FromUID   where VUR.userType=@userType group by VUR.Id,VUR.RealName", p).ToList();
+            List<string> teacherName = new List<string>();
+            List<int> quesNum = new List<int>();
+            foreach(perday pd in teacherQues)
             {
-                //data = t
+                teacherName.Add(pd.teacherName);
+                quesNum.Add(pd.quesNum);
+            }
+            JsonResult result = new JsonResult()
+            {
+                Data = new 
+                {
+                    teacherNames = teacherName,
+                    quesNums = quesNum
+                }
             };
             return result;
         }

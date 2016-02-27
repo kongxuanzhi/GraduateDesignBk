@@ -56,7 +56,7 @@
             <div class="col-md-7">
                 <div class="notice" style="width:100%; float:left">
                     <marquee behavior="scroll" onstart="this.firstChild.innerHTML+=this.firstChild.innerHTML;" scrollamount="5" onmouseover="this.stop();" onmouseout="this.start();">
-                        <span id="Note">通知：请各位同学在下周一之前上交毕业设计文件</span>
+                        <span id="curNotes">通知：请各位同学在下周一之前上交毕业设计文件</span>
                     </marquee>
                 </div>
             </div>
@@ -100,6 +100,18 @@
     @Scripts.Render("~/Content/HeadJs")
     <script>
         $(function ($) {
+            //alert("通知");
+            $.ajax({
+                url: "/Note/Display",
+                data: null,
+                contentType:"text",
+                type: "post",
+                success: function (data) {
+                    if (data != "error") {
+                        $("#curNotes").html("通知：" + data);
+                    }
+                }
+            });
             $.each($("#mynavbar li"), function (i, n) {
                 //alert($(this).children("div").children("a").attr("href").trim())
                 var url = $(this).children("a").attr("href").trim();
@@ -109,20 +121,9 @@
                     $(this).children("a").children("div").addClass("selectNav");
                 }
             });
-
-            //alert("通知");
-            $.ajax({
-                url: "/Note/Display",
-                data: null,
-                type: "post",
-                success: function (data) {
-                    if (data != "error") {
-                        //   alert(data)
-                        $("#Note").html("通知：" + data);
-                    }
-                }
-            });
+          
         });
+    
     </script>
 </body>
 </html>

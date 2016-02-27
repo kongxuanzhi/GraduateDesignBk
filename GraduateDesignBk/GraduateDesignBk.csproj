@@ -327,6 +327,22 @@
     <Compile Include="Migrations\201602240520444_增加问题的浏览次数.Designer.cs">
       <DependentUpon>201602240520444_增加问题的浏览次数.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602270614180_改变了外键关联关系.cs" />
+    <Compile Include="Migrations\201602270614180_改变了外键关联关系.Designer.cs">
+      <DependentUpon>201602270614180_改变了外键关联关系.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602270616191_改变了外键关联关系1.cs" />
+    <Compile Include="Migrations\201602270616191_改变了外键关联关系1.Designer.cs">
+      <DependentUpon>201602270616191_改变了外键关联关系1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602270620426_改变了外键关联关系2.cs" />
+    <Compile Include="Migrations\201602270620426_改变了外键关联关系2.Designer.cs">
+      <DependentUpon>201602270620426_改变了外键关联关系2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602270722580_删除了文件的外键用户id.cs" />
+    <Compile Include="Migrations\201602270722580_删除了文件的外键用户id.Designer.cs">
+      <DependentUpon>201602270722580_删除了文件的外键用户id.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AnnounceModels.cs" />
     <Compile Include="Models\ViewsModel\AccountViewModels.cs" />
@@ -1541,6 +1557,7 @@
     <Content Include="img\jxust2.png" />
     <Content Include="img\jxust_top2.png" />
     <Content Include="img\oneeye.jpg" />
+    <Content Include="img\psb.jpg" />
     <Content Include="obj\Debug\GraduateDesignBk.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\GraduateDesignBk.dll" />
     <Content Include="obj\Debug\GraduateDesignBk.pdb" />
@@ -1681,7 +1698,6 @@
     <Content Include="Views\Bar\Index.cshtml" />
     <Content Include="Views\Shared\_BarsDetailsPartial.cshtml" />
     <Content Include="Views\Shared\_PagingPartial.cshtml" />
-    <Content Include="Views\Bar\EveryDayQues.cshtml" />
     <Content Include="Views\Bar\Statisics.cshtml" />
     <Content Include="Views\Shared\_HeaderLayout.cshtml" />
     <Content Include="Views\Home\FileCenter.cshtml" />
@@ -1821,6 +1837,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602240520444_增加问题的浏览次数.resx">
       <DependentUpon>201602240520444_增加问题的浏览次数.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602270614180_改变了外键关联关系.resx">
+      <DependentUpon>201602270614180_改变了外键关联关系.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602270616191_改变了外键关联关系1.resx">
+      <DependentUpon>201602270616191_改变了外键关联关系1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602270620426_改变了外键关联关系2.resx">
+      <DependentUpon>201602270620426_改变了外键关联关系2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602270722580_删除了文件的外键用户id.resx">
+      <DependentUpon>201602270722580_删除了文件的外键用户id.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="obj\Debug\GraduateDesignBk.Migrations.init.resources" />
   </ItemGroup>

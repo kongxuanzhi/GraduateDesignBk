@@ -3,7 +3,6 @@
         <li role="presentation">
             <a href="/Bar/Index"><span>问题</span>   </a>
         </li>
-       
         <li  class="active role="presentation">
             <a href="/Bar/Statisics"><span>问题答疑统计</span></a>
         </li>
@@ -20,6 +19,121 @@
             url: "/Bar/ThisWeek",
             dataType: "json",
             data: { "k":k},
+            type: "Post",
+            success: function (data) {
+                var past7Ques = data.Ques;
+                var week = data.Week;
+                var AnsTN = data.AnsTN;
+                var AnsSN = data.AnsSN;
+                var AnsSRate = data.AnsSRate;
+                var AnsTRate = data.AnsTRate;
+                $("#pdays").html(week.length);
+                $("#ndays").html(week.length);
+                $('#container').empty();
+                var char = null;
+                //定义一个HighCharts
+                chart = new Highcharts.Chart({
+                    chart: {
+                        renderTo: 'container',  //放置的div id
+                        type: "spline" // 图表类型
+                    },
+                    //配置链接及名称选项
+                    credits: {
+                        enabled: true,
+                        href: '/Bar/Index',
+                        text: '全部问题'
+                    },
+                    //配置标题
+                    title: {
+                        text: '问题统计',
+                        y: 10
+                    },
+                    //配置副标题
+                    subtitle: {
+                        text: '日提问量和日回答量',
+                        y: 30
+                    },
+                    //配置x轴
+                    xAxis: {
+                        categories: week
+                    },
+                    // 配置y轴
+                    yAxis: {
+                        title: {
+                            text: '问题量(个)'
+                        },
+                        lables: {
+                            formatter: function () { return this.value + '个3' }
+                        }
+                    },
+                    //配置数据点提示框
+                    tooltip: {
+                        crosshairs: true,
+                        shared: true
+                    },
+                    //配置数据使其点显示信息
+                    plotOptions: {
+                        spline: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: true
+                        }
+                    },
+                    //配置数据列
+                    series: [{
+                        name: '过去' + week.length + '天问题统计',
+                        marker: {
+                            symbol: 'square'
+                        },
+                        data: past7Ques
+                    }, {
+                        name: '过去' + week.length + '天教师回答个数',
+                        marker: {
+                            symbol: 'diamond'
+                        },
+                        data: AnsTN
+                    }, {
+                        name: '过去' + week.length + '天学生回答个数',
+                        marker: {
+                            symbol: 'diamond'
+                        },
+                        data: AnsSN
+                    }, {
+                        name: '过去' + week.length + '天学生回答率',
+                        marker: {
+                            symbol: 'diamond'
+                        },
+                        data: AnsSRate
+                    }, {
+                        name: '过去' + week.length + '天教师回答率',
+                        marker: {
+                            symbol: 'diamond'
+                        },
+                        data: AnsTRate
+                    }]
+                });
+            }
+        });
+    }
+    function Previous() {
+        k = k + 1;
+          ThisWeek($)
+        }
+    function Next() {
+        k = k - 1;
+        ThisWeek($);
+      }
+    $(document).ready(function () {
+        ThisWeek($);
+        TeacherTotalAns($);
+    });
+
+    function ansRate($,time) {
+        $.ajax({
+            url: "/Bar/ThisWeek",
+            dataType: "json",
+            data: { "k": k },
             type: "Post",
             success: function (data) {
                 var past7Ques = data.Ques;
@@ -105,68 +219,81 @@
             }
         });
     }
-    function Previous() {
-        k = k + 1;
-          ThisWeek($)
-        }
-    function Next() {
-        k = k - 1;
-        ThisWeek($);
-      }
-    $(document).ready(function () {
-        ThisWeek($)
-        });
-        @*//{
-        //    name: '过去7天学生回答率',
-        //    data: AnsSRate
-        //}, {
-        //    name: '过去7天教师回答率',
-        //    data: AnsTRate
-        //}
 
+
+
+    function TeacherTotalAns($) {
         $.ajax({
-            url: "/Bar/TodayTeacherAns",
+            url: "/Bar/TeacherTotalAns",
             dataType: "json",
-            data: null,
+            data:null,
             type: "Post",
             success: function (data) {
-                var teachers = data.teachers;
-                var quesNum = data.quesNum;
-                $('#container2').highcharts({
+                if (data != null) {
+                    $('#container2').empty();
+                    var char = null;
+                    //定义一个HighCharts
+                    chart = new Highcharts.Chart({
                     chart: {
-                        type: 'line'
+                        renderTo: 'container2',  //放置的div id
+                        type: "spline" // 图表类型
                     },
+                    //配置链接及名称选项
+                    credits: {
+                        enabled: true,
+                        href: '/Bar/Index',
+                        text: '全部问题'
+                    },
+                    //配置标题
                     title: {
-                        text: '今日教师回答问题统计'
+                        text: '问题统计',
+                        y: 10
                     },
+                    //配置副标题
                     subtitle: {
-                        text: '@DateTime.Now.Year 年'
+                        text: '教师回答总问题量',
+                        y: 30
                     },
+                    //配置x轴
                     xAxis: {
-                        categories: teachers
+                        categories: data.teacherNames
                     },
+                    // 配置y轴
                     yAxis: {
                         title: {
-                            text: '回答问题量(个)'
+                            text: '问题量(个)'
+                        },
+                        lables: {
+                            formatter: function () { return this.value + '个' }
                         }
                     },
+                    //配置数据点提示框
+                    tooltip: {
+                        crosshairs: true,
+                        shared: true
+                    },
+                    //配置数据使其点显示信息
                     plotOptions: {
-                        line: {
+                        spline: {
                             dataLabels: {
                                 enabled: true
                             },
                             enableMouseTracking: true
                         }
                     },
+                    //配置数据列
                     series: [{
-                        name: '今日回答问题',
-                        data: quesNum
+                        name: '教师回答问题个数统计',
+                        marker: {
+                            symbol: 'square'
+                        },
+                        data: data.quesNums
                     }]
                 });
-
+                }
             }
         });
-    });*@
+    }
 </script>
 <body>
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">

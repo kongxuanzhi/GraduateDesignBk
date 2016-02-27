@@ -17,7 +17,7 @@ namespace GraduateDesignBk.Models
         public ApplicationUser():base(){
             base.Id = Guid.NewGuid().ToString();
             Comment = "暂无评语";
-            Photo = "/img/default.png";
+            Photo = "/img/defaultImg.png";
         }
         [StringLength(128)]
         public string Photo { get; set; }

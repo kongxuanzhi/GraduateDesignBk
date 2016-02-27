@@ -30,7 +30,6 @@ namespace GraduateDesignBk.Models
 
         [StringLength(128)]
         public string FromUID { get; set; }
-        [ForeignKey("FromUID")]
-        public ApplicationUser User2 { get; set; }
+        
     }
 }

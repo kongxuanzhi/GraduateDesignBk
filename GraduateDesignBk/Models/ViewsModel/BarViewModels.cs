@@ -13,7 +13,7 @@ namespace GraduateDesignBk.Models
         public string FromPhoto { get; set; } //头像 和用户表关联
         public string ToUID { get; set; }   // 编号 为空时就是公开提问，否则为私信 指向私信的老师
         public bool Pub { get; set; }  //是否公开
-        public DateTime RaiseQuesTime { get; set; }   //问题提出时间 出发回答问题时间 排序列出
+        public string RaiseQuesTime { get; set; }   //问题提出时间 出发回答问题时间 排序列出
         public string StrRaiseQTime { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }  //内容
@@ -40,7 +40,7 @@ namespace GraduateDesignBk.Models
         public string FromPhoto { get; set; } //头像
         public string FAID { get; set; }  //父级回答   为空时代表是二级回答
         public string PQID { get; set; }    //某个问题下的回答
-        public DateTime AnswerQuesTime { get; set; }   //问题提出时间 出发回答问题时间 排序列出
+        public string AnswerQuesTime { get; set; }   //问题提出时间 出发回答问题时间 排序列出
         public string Description { get; set; }  //内容
         public int Likes { get; set; }
         public int CommentNum { get; set; } 
